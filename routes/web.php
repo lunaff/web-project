@@ -13,7 +13,8 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middl
 
 // Route untuk halaman dashboard
 // Route::get('dashboard', [DashboardController::class, 'index'])->middleware('auth');
-Route::get('dashboard', [DashboardController::class, 'index']);
+// Route::get('dashboard', [DashboardController::class, 'index']);
+Route::resource('dashboard', DashboardController::class);
 
 // Route default yang mengarah ke dashboard setelah login
 // Route::get('/', function () {
