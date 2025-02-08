@@ -1,11 +1,14 @@
 @extends('dashboard.master')
-@section('title', 'Dashboard')
-@section('message', 'Welcome Back!')
+@section('title', 'Kelas')
+@section('message', 'Kelas')
+
 @section('nav')
     @include('dashboard.header')
     @include('dashboard.nav')
 @endsection
-@section('page', 'Dashboard')
+
+@section('page', 'Kelas')
+
 @section('main')
-    @include('dashboard.main')
+    @include('404')
 @endsection
