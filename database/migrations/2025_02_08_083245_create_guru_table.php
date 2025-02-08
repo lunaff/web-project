@@ -1,0 +1,35 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('guru', function (Blueprint $table) {
+            $table->id();
+            $table->string('nip', 20)->unique();
+            $table->string('nama_guru', 300);
+            $table->string('notelp', 15);
+            $table->enum('jk', ['L', 'P']);
+            $table->text('alamat');
+            $table->enum('agama', ['Islam', 'Hindu', 'Buddha', 'Katolik', 'Protestan', 'Lainnya']);
+            $table->string('tempat_lahir', 50);
+            $table->date('tanggal_lahir');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('guru');
+    }
+};
