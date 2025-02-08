@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KompetensiKeahlian;
+use App\Models\Guru;
 use Illuminate\Http\Request;
 
 class KompetensiKeahlianController extends Controller
@@ -21,6 +23,8 @@ class KompetensiKeahlianController extends Controller
     public function create()
     {
         //
+        $guru = Guru::all();
+        return view('kompetensi-keahlian.create', compact('guru'));
     }
 
     /**
@@ -29,6 +33,20 @@ class KompetensiKeahlianController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'kompetensi_keahlian' => 'required|unique:kompetensi_keahlian,kompetensi_keahlian',
+            'guru_nip' => 'required',
+            'tahun_ajaran' => 'required'
+        ]);
+
+        $array = $request->only([
+            'kompetensi_keahlian',
+            'guru_nip',
+            'tahun_ajaran'
+        ]);
+
+        KompetensiKeahlian::create($array);
+        return redirect()->route('kompetensi-keahlian.index')->with('success_message', 'Berhasil menambah Kompetensi Keahlian baru');
     }
 
     /**

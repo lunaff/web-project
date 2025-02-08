@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
+use App\Models\Guru;
+use App\Models\KompetensiKeahlian;
+
 use Illuminate\Http\Request;
 
 class KelasController extends Controller
@@ -21,6 +25,9 @@ class KelasController extends Controller
     public function create()
     {
         //
+        $guru = Guru::all();
+        $kompetensi = KompetensiKeahlian::all();
+        return view('kelas.create', compact('guru', 'kompetensi'));
     }
 
     /**
@@ -29,6 +36,35 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'kelas' => 'required',
+            'kdkompetensi' => 'required',
+            'guru_nip' => 'required',
+            'tahun_ajaran' => 'required'
+        ]);
+
+        $array = $request->only([
+            'kelas',
+            'kdkompetensi',
+            'guru_nip',
+            'tahun_ajaran'
+        ]);
+
+        Kelas::create($array);
+        return redirect()->route('kelas.index')->with('success_message', 'Berhasil menambah Kelas baru');
+
+        $cari_id = Kelas::where('id', '>', 0)->max('id');
+
+        // Ambil data kelas berdasarkan ID terbesar
+        $kelas = Kelas::where('id', $cari_id)->value('kelas'); // Tambahkan first() di sini
+        // dd($kelas);
+
+        // Tampilkan data di view dkelas.create
+        // return view('dkelas.create', [
+        //     'kelas' => $kelas, 
+        //     'siswa' => Siswa::all(),
+        //     'cari_id' => $cari_id
+        // ]);
     }
 
     /**
