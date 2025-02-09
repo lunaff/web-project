@@ -8,6 +8,7 @@
 @endsection
 
 @section('page', 'Siswa')
+@section('link', route('siswa.create'))
 
 @section('main')
     @include('404')

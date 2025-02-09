@@ -8,6 +8,7 @@
 @endsection
 
 @section('page', 'Kelas')
+@section('link', route('kelas.create'))
 
 @section('main')
     @include('404')

@@ -12,6 +12,8 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    protected $table = 'user';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -21,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'level',
+        'guru_nip', // Tambahkan 'guru_nip' ke fillable
+        'siswa_nis', // Tambahkan 'siswa_nis' ke fillable
     ];
 
     /**
@@ -32,6 +37,16 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function fguru()
+    {
+        return $this->belongsTo(Guru::class, 'guru_nip', 'nip');
+    }
+
+    public function fsiswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_nis', 'nis');
+    }
 
     /**
      * Get the attributes that should be cast.

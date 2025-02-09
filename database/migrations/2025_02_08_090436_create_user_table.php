@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('level', [
-                'admin', 'osis',
+                'admin', 'osis', 'kepsek',
                 'kesiswaan', 'bk', 'operator'
             ])->default('kesiswaan');
             $table->string('guru_nip')->nullable();

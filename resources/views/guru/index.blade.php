@@ -8,6 +8,7 @@
 @endsection
 
 @section('page', 'Guru')
+@section('link', route('guru.create'))
 
 @section('main')
     @include('404')
