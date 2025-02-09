@@ -49,4 +49,9 @@ class Siswa extends Model
     {
         return $this->belongsTo(KompetensiKeahlian::class, 'kdkompetensi', 'id');
     }
+
+    public function pelanggaran()
+    {
+        return $this->belongsToMany(Pelanggaran::class, 'pelanggaran_siswa');
+    }
 }
