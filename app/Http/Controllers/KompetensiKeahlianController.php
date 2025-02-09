@@ -55,6 +55,20 @@ class KompetensiKeahlianController extends Controller
     public function show(string $id)
     {
         //
+        $kompetensi = KompetensiKeahlian::with(['fguru'])->get();
+
+        // Mengubah data kelas menjadi format yang diinginkan
+        $data = $kompetensi->map(function ($kompetensi) {
+            return [
+                'id' => $kompetensi->id,
+                'kompetensi_keahlian' => $kompetensi->kompetensi_keahlian,
+                'guru_nip' => $kompetensi->fguru ? $kompetensi->fguru->nama_guru : '-', // Nama guru jika ada
+                'tahun_ajaran' => $kompetensi->tahun_ajaran ? $kompetensi->tahun_ajaran : '-',
+            ];
+        });
+    
+        // Kembalikan data dalam bentuk JSON
+        return response()->json($data);
     }
 
     /**

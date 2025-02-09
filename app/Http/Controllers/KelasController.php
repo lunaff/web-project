@@ -73,6 +73,21 @@ class KelasController extends Controller
     public function show(string $id)
     {
         //
+        $kelas = Kelas::with(['fguru', 'fkompetensi'])->get();
+
+        // Mengubah data kelas menjadi format yang diinginkan
+        $data = $kelas->map(function ($kelas) {
+            return [
+                'id' => $kelas->id,
+                'kelas' => $kelas->kelas,
+                'guru_nip' => $kelas->fguru ? $kelas->fguru->nama_guru : '-', // Nama guru jika ada
+                'kdkompetensi' => $kelas->fkompetensi ? $kelas->fkompetensi->kompetensi_keahlian : '-', // Nama kompetensi jika ada
+                'tahun_ajaran' => $kelas->tahun_ajaran ? $kelas->tahun_ajaran : '-',
+            ];
+        });
+    
+        // Kembalikan data dalam bentuk JSON
+        return response()->json($data);
     }
 
     /**

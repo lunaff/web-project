@@ -25,13 +25,13 @@ class Guru extends Model
         'tanggal_lahir',
     ];
 
-    // public function fkompetensi()
-    // {
-    //     return $this->hasOne(Kompetensi::class, 'guru_nip');
-    // }
+    public function fkompetensi()
+    {
+        return $this->hasOne(KompetensiKeahlian::class, 'guru_nip');
+    }
 
-    // public function fkelas()
-    // {
-    //     return $this->hasOne(Kelas::class, 'guru_nip');
-    // }
+    public function fkelas()
+    {
+        return $this->hasOne(Kelas::class, 'guru_nip');
+    }
 }

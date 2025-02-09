@@ -11,6 +11,20 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     //
+    public function show()
+    {
+        // Fetch all users from the `user` table
+        $users = User::all()->map(function ($user) {
+            // Ganti semua field yang null menjadi '-'
+            foreach ($user->getAttributes() as $key => $value) {
+                $user->{$key} = $value ?? '-';
+            }
+            return $user;
+        });  
+        // Return data as JSON for the Grid.js table
+        return response()->json($users);
+    }
+    
     public function index()
     {
         return view('user.index'); // Pastikan view ada di resources/views/dashboard/dashboard.blade.php

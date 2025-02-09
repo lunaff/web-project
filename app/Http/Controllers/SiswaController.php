@@ -110,8 +110,34 @@ class SiswaController extends Controller
      */
     public function show(string $id)
     {
-        //
-    }
+        // Memuat relasi 'fkelas' dan 'fkompetensi' dengan query 'with'
+        $siswas = Siswa::with('fkelas', 'fkompetensi')->get();
+    
+        // Mengubah data siswa hanya untuk field tertentu tanpa mendeklarasikan semuanya
+        $data = $siswas->map(function ($siswa) {
+            // Ambil semua data siswa, lalu ganti field tertentu dengan nama
+            $siswaAttributes = $siswa->getAttributes();
+    
+            // Ganti 'kdkelas' dan 'kdkompetensi' dengan nama
+            if ($siswa->fkelas) {
+                $siswaAttributes['kdkelas'] = $siswa->fkelas->kelas;
+            } else {
+                $siswaAttributes['kdkelas'] = '-';
+            }
+    
+            if ($siswa->fkompetensi) {
+                $siswaAttributes['kdkompetensi'] = $siswa->fkompetensi->kompetensi_keahlian;
+            } else {
+                $siswaAttributes['kdkompetensi'] = '-';
+            }
+    
+            // Return hasil dengan mengganti hanya field yang diperlukan
+            return $siswaAttributes;
+        });
+    
+        // Return data as JSON
+        return response()->json($data);
+    }    
 
     /**
      * Show the form for editing the specified resource.

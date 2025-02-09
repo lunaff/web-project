@@ -28,7 +28,7 @@
 
             <!-- start page title -->
             <div class="page-title-box align-self-center d-none d-md-block">
-                <h4 class="page-title mb-0">@yield('message')</h4>
+                <h4 class="page-title mb-0">Hi, Welcome Back!</h4>
             </div>
             <!-- end page title -->
 
