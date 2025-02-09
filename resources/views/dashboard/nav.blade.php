@@ -81,15 +81,15 @@
                 <li class="menu-title" data-key="t-kesiswaan">Kesiswaan</li>
 
                 <li>
-                    <a href="#">
-                        <i class="bx bx-certification icon nav-icon"></i>
+                    <a href="{{ route('prestasi.index') }}">
+                        <i class="bx bx-trophy icon nav-icon"></i>
                         <span class="menu-item" data-key="t-prestasi">Prestasi</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
-                        <i class="bx bxs-file-image icon nav-icon"></i>
+                    <a href="{{ route('kegiatan.index') }}">
+                        <i class="bx bx-calendar-event icon nav-icon"></i>
                         <span class="menu-item" data-key="t-kegiatan">Kegiatan Sekolah</span>
                     </a>
                 </li>
