@@ -50,7 +50,7 @@
                                         <div class="mb-3">
                                             <label class="form-label" for="username">Username</label>
                                             <div class="position-relative input-custom-icon">
-                                                <input type="text" class="form-control" id="username" placeholder="Enter username">
+                                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
                                                  <span class="bx bx-user"></span>
                                             </div>
                                         </div>
@@ -62,7 +62,7 @@
                                             <label class="form-label" for="password-input">Password</label>
                                             <div class="position-relative auth-pass-inputgroup input-custom-icon">
                                                 <span class="bx bx-lock-alt"></span>
-                                                <input type="password" class="form-control" id="password-input" placeholder="Enter password">
+                                                <input type="password" class="form-control" id="password-input" name="password" placeholder="Enter password">
                                                 <button type="button" class="btn btn-link position-absolute h-100 end-0 top-0" id="password-addon">
                                                     <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                                 </button>
@@ -75,44 +75,12 @@
                                         </div>
                                         
                                         <div class="mt-3">
-                                            <button href="{{ url('dashboard') }}" class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
+                                            <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                                         </div>
-                                        {{-- <a href="{{ url('/dashboard') }}" class="btn btn-primary">Go to Dashboard</a> --}}
-
-
-                                        {{-- <div class="mt-4 text-center">
-                                            <div class="signin-other-title">
-                                                <h5 class="font-size-14 mb-3 mt-2 title"> Sign in with </h5>
-                                            </div>
-            
-                                            <ul class="list-inline mt-2">
-                                                <li class="list-inline-item">
-                                                    <a href="javascript:void()" class="social-list-item bg-primary text-white border-primary">
-                                                        <i class="bx bxl-facebook"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="javascript:void()" class="social-list-item bg-info text-white border-info">
-                                                        <i class="bx bxl-linkedin"></i>
-                                                    </a>
-                                                </li>
-                                                <li class="list-inline-item">
-                                                    <a href="javascript:void()" class="social-list-item bg-danger text-white border-danger">
-                                                        <i class="bx bxl-google"></i>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-
-                                        <div class="mt-4 text-center">
-                                            <p class="mb-0">Don't have an account ? <a href="auth-register.html" class="fw-medium text-primary"> Signup now </a> </p>
-                                        </div> --}}
                                     </form>
                                 </div>
-            
                             </div>
                         </div>
-
                     </div><!-- end col -->
                 </div><!-- end row -->
             </div>
