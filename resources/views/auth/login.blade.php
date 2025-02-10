@@ -48,9 +48,9 @@
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
                                         <div class="mb-3">
-                                            <label class="form-label" for="username">Username</label>
+                                            <label class="form-label" for="email">Email</label>
                                             <div class="position-relative input-custom-icon">
-                                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
+                                                <input type="text" class="form-control" id="email" name="email" placeholder="Enter email">
                                                  <span class="bx bx-user"></span>
                                             </div>
                                         </div>
