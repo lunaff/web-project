@@ -11,6 +11,7 @@ use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\KegiatanController;
+use App\Http\Controllers\PembinaanController;
 
 
 Route::get('/login', function () {
@@ -31,4 +32,5 @@ Route::resource('kelas', KelasController::class);
 Route::resource('siswa', SiswaController::class);
 Route::resource('prestasi', PrestasiController::class);
 Route::resource('kegiatan', KegiatanController::class);
+Route::resource('pembinaan', PembinaanController::class);
 

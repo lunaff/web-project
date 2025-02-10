@@ -107,6 +107,12 @@
                         <span class="menu-item" data-key="t-pelanggaran">Pelanggaran</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('pembinaan.index') }}">
+                        <i class="bx bx-book-bookmark icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-pembinaan">Pembinaan</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
