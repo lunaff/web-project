@@ -4,23 +4,6 @@
         margin: 20px;
     }
 
-    #addButton {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        padding: 10px 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        z-index: 9999; /* Pastikan tombol ada di atas grid */
-    }
-
-    #addButton:hover {
-        background-color: #0056b3;
-    }
-
     #gridjs {
         z-index: 1; /* Menurunkan z-index Grid.js supaya tombol di atasnya */
     }
@@ -30,13 +13,14 @@
         <div class="container-fluid">
             <div class="container">
                 <div class="card">
-                    <div class="card-header">
+                    <div class="card-header d-flex justify-content-between align-items-center">
                         <h3>Data @yield('page')</h3>
+                        <div class="group">
+                            <a href="@yield('create')" class="btn btn-primary">Add New</a>
+                            <a href="#" class="btn btn-secondary">Import</a>
+                        </div>
                     </div>
                     <div class="table-container">
-                        <!-- Tombol di bagian atas kanan -->
-                        <a href="@yield('create')" id="addButton" class="btn btn-primary">Add New</a>
-
                         <!-- Grid.js Tabel -->
                         <div id="gridjs"></div>
                     </div>

@@ -30,6 +30,17 @@
                 "Agama",
                 "Tempat Lahir",
                 "Tanggal Lahir",
+                {
+                    name: "Actions",
+                    formatter: (cell, row) => gridjs.html(`
+                        <a href="/user/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    `)
+                }
             ],
             server: {
                 url: '/guru/data', // The URL to fetch guru data
@@ -43,7 +54,8 @@
                         guru.alamat,
                         guru.agama,
                         guru.tempat_lahir,
-                        guru.tanggal_lahir
+                        guru.tanggal_lahir,
+                        null
                     ]);
                 }
             },
