@@ -42,6 +42,7 @@ class PembinaanController extends Controller
         $guru = Guru::all();
         return view('pembinaan.create', compact('kasus', 'guru'));
     }
+    
 
     public function store(Request $request)
     {

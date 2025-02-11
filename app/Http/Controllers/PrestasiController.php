@@ -66,7 +66,7 @@ class PrestasiController extends Controller
             'foto' => $fotoPath,
         ]);
 
-        return redirect()->back()->with('success', 'Prestasi berhasil ditambahkan!');
+        return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil ditambahkan!');
     }
 
     public function destroy($id)

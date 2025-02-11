@@ -14,16 +14,13 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PembinaanController;
 
 
-Route::get('/login', function () {
-    return redirect('/dashboard.dashboard');
-})->middleware('auth');
+Route::get('/dashboard', function () {
+    return view('dashboard.dashboard');
+})->middleware('auth')->name('dashboard');
 
-// Route untuk login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('auth');
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-
-// Route untuk logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::resource('dashboard', DashboardController::class);
 Route::resource('user', UserController::class);
 Route::resource('guru', GuruController::class);

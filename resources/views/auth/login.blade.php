@@ -47,14 +47,25 @@
                                 <div class="p-2 mt-4">
                                     <form action="{{ route('login') }}" method="POST">
                                         @csrf
+                                        <!-- Email Field -->
                                         <div class="mb-3">
-                                            <label class="form-label" for="username">Username</label>
+                                            <label class="form-label" for="email">Email</label>
                                             <div class="position-relative input-custom-icon">
-                                                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username">
-                                                 <span class="bx bx-user"></span>
+                                                <input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+                                                <span class="bx bx-envelope"></span>
                                             </div>
                                         </div>
-                
+                                    
+                                        <!-- Username Field -->
+                                        <div class="mb-3">
+                                            <label class="form-label" for="name">Name</label>
+                                            <div class="position-relative input-custom-icon">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                                                <span class="bx bx-user"></span>
+                                            </div>
+                                        </div>
+                                    
+                                        <!-- Password Field -->
                                         <div class="mb-3">
                                             <div class="float-end">
                                                 <a href="auth-recoverpw.html" class="text-muted text-decoration-underline">Forgot password?</a>
@@ -68,12 +79,26 @@
                                                 </button>
                                             </div>
                                         </div>
-                
+                                    
+                                        <!-- Level Field -->
+                                        <div class="mb-3">
+                                            <label class="form-label" for="level">Level</label>
+                                            <select class="form-control" id="level" name="level">
+                                                <option value="admin">Admin</option>
+                                                <option value="operator">Operator</option>
+                                                <option value="osis">Osis</option>
+                                                <option value="bk">BK</option>
+                                                <option value="kesiswaan">Kesiswaan</option>
+                                            </select>
+                                        </div>
+                                    
+                                        <!-- Remember Me -->
                                         <div class="form-check py-1">
                                             <input type="checkbox" class="form-check-input" id="auth-remember-check">
                                             <label class="form-check-label" for="auth-remember-check">Remember me</label>
                                         </div>
-                                        
+                                    
+                                        <!-- Submit Button -->
                                         <div class="mt-3">
                                             <button class="btn btn-primary w-100 waves-effect waves-light" type="submit">Log In</button>
                                         </div>

@@ -27,7 +27,12 @@
                 "Deskripsi",
                 "Siswa/i",
                 "Tanggal Dokumentasi",
-                "Dokumentasi",
+                {
+                    name: "Dokumentasi",
+                    formatter: (cell) => {
+                        return cell ? gridjs.html(`<img src="{{ asset('storage') }}/${cell}" alt="Foto Prestasi" width="100">`) : 'Tidak ada gambar';
+                    }
+                },
                 "Option",
             ],
             server: {
@@ -39,6 +44,7 @@
                         prestasi.deskripsi,
                         prestasi.siswa_id,
                         prestasi.tanggal_dokumentasi,
+                        prestasi.foto,
                     ]);
                 }
             },
