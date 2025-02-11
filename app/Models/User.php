@@ -1,5 +1,7 @@
 <?php
 
+// app/Models/User.php
+
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -9,34 +11,29 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
-    protected $table = 'user';
+    protected $table = 'user'; // Pastikan nama tabel sesuai
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
-        'name',
+        'name', // Jika ada kolom 'name'
         'email',
         'password',
         'level',
         'guru_nip', // Tambahkan 'guru_nip' ke fillable
-        'siswa_nis', // Tambahkan 'siswa_nis' ke fillable
+        'siswa_nis', // Tambahkan 'level' jika ada
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
+
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed', // Pastikan password di-hash
+    ];
+
 
     public function fguru()
     {
@@ -46,18 +43,5 @@ class User extends Authenticatable
     public function fsiswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_nis', 'nis');
-    }
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
     }
 }

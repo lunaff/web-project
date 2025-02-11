@@ -55,9 +55,23 @@ class KegiatanController extends Controller
     /**
      * Menampilkan detail kegiatan.
      */
-    public function show(Kegiatan $kegiatan)
+    public function show(string $id)
     {
-        return view('kegiatan.show', compact('kegiatan'));
+        //
+        $kegiatan = Kegiatan::all();
+
+        $data = $kegiatan->map(function ($kegiatan) {
+            return [
+                'id' => $kegiatan->id,
+                'tanggal' => $kegiatan->tanggal,
+                'nama' => $kegiatan->nama,
+                'penyelenggara' => $kegiatan->penyelenggara,
+                'dokumentasi' => $kegiatan->dokumentasi,
+            ];
+        });
+    
+        // Kembalikan data dalam bentuk JSON
+        return response()->json($data);
     }
 
     /**

@@ -1,25 +1,45 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Prestasi;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PrestasiController extends Controller
 {
     public function index()
     {
-        $prestasi = Prestasi::with('siswa')->get();
-        return view('prestasi.index', compact('prestasi'));
+        return view('prestasi.index');
     }
+
+    public function show(string $id)
+    {
+        //
+        $prestasi = Prestasi::with(['siswa'])->get();
+
+        $data = $prestasi->map(function ($prestasi) {
+            return [
+                'id' => $prestasi->id,
+                'tanggal' => $prestasi->tanggal,
+                'jenis' => $prestasi->jenis,
+                'deskripsi' => $prestasi->deskripsi,
+                'siswa_id' => $prestasi->siswa ?  $prestasi->siswa->nama_lengkap : '-',
+                'tanggal_dokumentasi' => $prestasi->tanggal_dokumentasi,
+                'foto' => $prestasi->foto,
+            ];
+        });
+    
+        // Kembalikan data dalam bentuk JSON
+        return response()->json($data);
+    }
+
 
     public function create()
     {
-        $siswa = Siswa::all(); // Mengambil semua data siswa untuk dropdown
+        $siswa = Siswa::all();
         return view('prestasi.create', compact('siswa'));
     }
-
 
     public function store(Request $request)
     {
@@ -32,7 +52,6 @@ class PrestasiController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        // Upload Foto
         $fotoPath = null;
         if ($request->hasFile('foto')) {
             $fotoPath = $request->file('foto')->store('prestasi', 'public');
@@ -47,7 +66,7 @@ class PrestasiController extends Controller
             'foto' => $fotoPath,
         ]);
 
-        return redirect()->back()->with('success', 'Prestasi berhasil ditambahkan!');
+        return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil ditambahkan!');
     }
 
     public function destroy($id)
@@ -55,13 +74,10 @@ class PrestasiController extends Controller
         $prestasi = Prestasi::findOrFail($id);
 
         if ($prestasi->foto) {
-            $filePath = public_path('uploads/prestasi/' . $prestasi->foto);
-            if (file_exists($filePath)) {
-                unlink($filePath);
-            }
+            Storage::delete('public/' . $prestasi->foto);
         }
-        $prestasi->delete();
-        return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil dihapus.');
-    }
 
+        $prestasi->delete();
+        return response()->json(['success' => true, 'message' => 'Prestasi berhasil dihapus.']);
+    }
 }
