@@ -20,6 +20,9 @@
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
+        const editUrlBase = "{{ route('user.edit', ['user' => '__user_id__']) }}";
+        const deleteUrl = "{{ route('user.destroy', ['user' => '__user_id__']) }}";  // Template route with placeholder
+
         // Initialize Grid.js with dynamic data
         new gridjs.Grid({
             columns: [
@@ -31,12 +34,21 @@
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
-                        <a href="/user/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <td>
+                            <div style="display: flex; gap: 10px;">
+                                <a href="${editUrlBase.replace('__user_id__', row.cells[5].data)}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <form action="${deleteUrl.replace('__user_id__', row.cells[5].data)}" method="POST" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     `)
                 }
             ],
@@ -50,7 +62,7 @@
                         user.level,
                         user.guru_nip,
                         user.siswa_nis,
-                        null
+                        user.id
                     ]);
                 }
             },
@@ -60,27 +72,5 @@
             search: true, // Enable search
             sort: true, // Enable sorting
         }).render(document.getElementById("gridjs"));
-
-        function deleteData(email) {
-            if (confirm("Are you sure you want to delete this user?")) {
-                fetch(`/user/${email}/delete`, {
-                    method: "DELETE",
-                    headers: {
-                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
-                        "Content-Type": "application/json"
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("User deleted successfully!");
-                        location.reload();
-                    } else {
-                        alert("Failed to delete user.");
-                    }
-                })
-                .catch(error => console.error("Error:", error));
-            }
-        }
     </script>
 @endsection

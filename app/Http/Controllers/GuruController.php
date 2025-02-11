@@ -64,4 +64,63 @@ class GuruController extends Controller
         return redirect()->route('guru.index')->with('success_message', 'Berhasil menambah Guru baru');
     }
 
+    public function edit($id)
+    {
+        $guru = Guru::find($id);
+        if (!$guru) return redirect()->route('guru.index')->with('error_message', 'Guru dengan NIP = ' . $id . ' tidak ditemukan');
+        return view('guru.edit', compact('guru'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $guru = Guru::find($id);
+        if (!$guru) {
+            return redirect()->route('guru.index')->with('error_message', 'Guru dengan NIP = ' . $id . ' tidak ditemukan');
+        }
+
+        $request->validate([
+            'nip' => 'required|unique:guru,nip,' . $id,
+            'nama_guru' => 'required',
+            'notelp' => 'required',
+            'jk' => 'required',
+            'alamat' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+        ]);
+
+        $array = $request->only([
+            'nip',
+            'nama_guru',
+            'notelp',
+            'jk',
+            'alamat',
+            'tempat_lahir',
+            'tanggal_lahir'
+        ]);
+
+        $guru->update($array);
+        $guru->save();
+
+        return redirect()->route('guru.index')->with('success_message', 'Berhasil mengubah Guru');
+    }
+
+    public function destroy($id)
+    {
+        // Find the guru by ID
+        $guru = Guru::find($id);
+    
+        // Check if the guru exists
+        if (!$guru) {
+            return redirect()->route('guru.index')
+                ->with('error_message', 'Guru with NIP ' . $id . ' not found.');
+        }
+    
+        // Delete the guru
+        $guru->delete();
+    
+        // Redirect to the guru index page with a success message
+        return redirect()->route('guru.index')
+            ->with('success_message', 'Guru deleted successfully.');
+    }
+
 }

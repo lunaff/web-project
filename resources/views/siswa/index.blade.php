@@ -20,6 +20,9 @@
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
+        const editUrlBase = "{{ route('siswa.edit', ['siswa' => '__siswa_id__']) }}";
+        const deleteUrl = "{{ route('siswa.destroy', ['siswa' => '__siswa_id__']) }}";
+
         // Initialize Grid.js with dynamic data
         new gridjs.Grid({
             columns: [
@@ -51,12 +54,21 @@
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
-                        <a href="/user/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <td>
+                            <div style="display: flex; gap: 10px;">
+                                <a href="${editUrlBase.replace('__siswa_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <form action="${deleteUrl.replace('__siswa_id__', row.cells[0].data)}" method="POST" onsubmit="return confirm('Are you sure you want to delete this siswa?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     `)
                 }
             ],

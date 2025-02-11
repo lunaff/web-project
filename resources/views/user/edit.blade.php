@@ -16,15 +16,17 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title mb-0">Add New Data User</h4>
+                            <h4 class="card-title mb-0">Edit Data User</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('user.store') }}" method="post">
+                            <!-- <p>Debug Level: {{ old('level', $user->level) }}</p> -->
+                            <form action="{{ route('user.update', $user->id) }}" method="post">
+                                @method('PUT')
                                 @csrf
                                 <div class="mb-3">
                                     <label for="exampleInputName">Nama</label>
                                     <input type="text" class="form-control @error('name') is-invalid @enderror"
-                                        id="exampleInputName" placeholder="Nama lengkap" name="name" value="{{ old('name') }}">
+                                        id="exampleInputName" placeholder="Nama lengkap" name="name" value="{{ old('name', $user->name) }}">
                                     @error('name')
                                     <span class="textdanger">{{ $message }}</span>
                                     @enderror
@@ -34,7 +36,7 @@
                                         address</label>
                                     <input type="email" class="form-control @error('email') is-invalid @enderror"
                                         id="exampleInputEmail" placeholder="Masukkan Email" name="email"
-                                        value="{{ old('email') }}">
+                                        value="{{ old('email', $user->email) }}">
                                     @error('email')
                                     <span class="textdanger">{{ $message }}</span>
                                     @enderror
@@ -42,7 +44,7 @@
                                 <div class="mb-3">
                                     <label for="exampleInputPassword">Password</label>
                                     <input type="password" class="form-control @error('password') is-invalid @enderror"
-                                        id="exampleInputPassword" placeholder="Password" name="password">
+                                        id="exampleInputPassword" placeholder="Isi jika ingin mengubah password" name="password">
                                     @error('password')
                                     <span class="textdanger">{{ $message }}</span>
                                     @enderror
@@ -51,17 +53,18 @@
                                     <label for="exampleInputPassword">Konfirmasi
                                         Password</label>
                                     <input type="password" class="form-control" id="exampleInputPassword"
-                                        placeholder="Konfirmasi Password" name="password_confirmation">
+                                        placeholder="Konfirmasi Password Baru" name="password_confirmation">
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputlevel">Level</label>
-                                    <select class="form-control @error('level') is-invalid @enderror" id="exampleInputlevel" name="level" onchange="toggleFields()">
-                                        <option value="admin" {{ old('level') == 'admin' ? 'selected' : '' }}>Admin</option>
-                                        <option value="osis" {{ old('level') == 'osis' ? 'selected' : '' }}>OSIS</option>
-                                        <option value="bk" {{ old('level') == 'bk' ? 'selected' : '' }}>BK</option>
-                                        <option value="kepsek" {{ old('level') == 'kepsek' ? 'selected' : '' }}>Kepala Sekolah</option>
-                                        <option value="kesiswaan" {{ old('level') == 'kesiswaan' ? 'selected' : '' }}>Kesiswaan</option>
-                                        <option value="operator" {{ old('level') == 'operator' ? 'selected' : '' }}>Operator</option>
+                                    <select class="form-control @error('level') is-invalid @enderror"
+                                        id="exampleInputlevel" name="level" onchange="toggleFields()">
+                                        <option value="admin" {{ old('level', $user->level) == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        <option value="osis" {{ old('level', $user->level) == 'osis' ? 'selected' : '' }}>OSIS</option>
+                                        <option value="bk" {{ old('level', $user->level) == 'bk' ? 'selected' : '' }}>BK</option>
+                                        <option value="kepsek" {{ old('level', $user->level) == 'kepsek' ? 'selected' : '' }}>Kepala Sekolah</option>
+                                        <option value="kesiswaan" {{ old('level', $user->level) == 'kesiswaan' ? 'selected' : '' }}>Kesiswaan</option>
+                                        <option value="operator" {{ old('level', $user->level) == 'operator' ? 'selected' : '' }}>Operator</option>
                                     </select>
                                     @error('level')
                                         <span class="text-danger">{{ $message }}</span>
@@ -73,7 +76,7 @@
                                     <label for="guru_nip">Guru</label>
                                     <input type="hidden" name="guru_nip" id="guru_nip" value="{{ old('guru_nip') }}">
                                     <div class="input-group">
-                                        <input type="text" class="form-control @error('nama_guru') is-invalid @enderror" placeholder="Nama Guru" id="nama_guru" name="nama_guru" value="{{ old('nama_guru') }}" readonly>
+                                        <input type="text" class="form-control @error('nama_guru') is-invalid @enderror" placeholder="Nama Guru" id="nama_guru" name="nama_guru" value="{{ old('guru_nip', $user->guru_nip) }}" readonly>
                                         <div class="input-group-append">
                                             <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop1">
                                                 Cari Guru
@@ -87,7 +90,7 @@
                                     <label for="siswa_nis">Siswa</label>
                                     <input type="hidden" name="siswa_nis" id="siswa_nis" value="{{ old('siswa_nis') }}">
                                     <div class="input-group">
-                                        <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" placeholder="Nama Siswa" id="nama_lengkap" name="nama_lengkap" value="{{ old('nama_lengkap') }}" readonly>
+                                        <input type="text" class="form-control @error('nama_lengkap') is-invalid @enderror" placeholder="Nama Siswa" id="nama_lengkap" name="nama_lengkap" value="{{ old('siswa_nis', $user->siswa_nis) }}" readonly>
                                         <div class="input-group-append">
                                             <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">
                                                 Cari Siswa
@@ -208,6 +211,11 @@
             // $('#staticBackdrop1').modal('hide');
         }
 
+        // Jalankan saat halaman dimuat agar tetap terbuka jika ada old() di form
+        document.addEventListener("DOMContentLoaded", function() {
+            toggleFields();
+        });
+
         function toggleFields() {
             var level = document.getElementById("exampleInputlevel").value;
             var guruField = document.getElementById("guruField");
@@ -226,10 +234,5 @@
                 siswaField.style.display = "block";
             }
         }
-
-        // Jalankan saat halaman dimuat agar tetap terbuka jika ada old() di form
-        document.addEventListener("DOMContentLoaded", function() {
-            toggleFields();
-        });
     </script>
 @endsection
