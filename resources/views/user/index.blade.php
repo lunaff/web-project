@@ -28,6 +28,17 @@
                 "Level",
                 "Guru NIP",
                 "Siswa NIS",
+                {
+                    name: "Actions",
+                    formatter: (cell, row) => gridjs.html(`
+                        <a href="/user/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    `)
+                }
             ],
             server: {
                 url: '/user/data', // The URL to fetch user data
@@ -39,12 +50,37 @@
                         user.level,
                         user.guru_nip,
                         user.siswa_nis,
+                        null
                     ]);
                 }
             },
-            pagination: true, // Enable pagination
+            pagination: {
+                limit: 20
+            }, // Enable pagination
             search: true, // Enable search
             sort: true, // Enable sorting
         }).render(document.getElementById("gridjs"));
+
+        function deleteData(email) {
+            if (confirm("Are you sure you want to delete this user?")) {
+                fetch(`/user/${email}/delete`, {
+                    method: "DELETE",
+                    headers: {
+                        "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                        "Content-Type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("User deleted successfully!");
+                        location.reload();
+                    } else {
+                        alert("Failed to delete user.");
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+            }
+        }
     </script>
 @endsection

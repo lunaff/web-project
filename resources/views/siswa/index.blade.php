@@ -47,7 +47,18 @@
                 "Prestasi Akademik",
                 "Prestasi Non Akademik",
                 "Ekstrakurikuler",
-                "Biografi"
+                "Biografi",
+                {
+                    name: "Actions",
+                    formatter: (cell, row) => gridjs.html(`
+                        <a href="/user/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
+                            <i class="fa fa-edit"></i>
+                        </a>
+                        <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    `)
+                }
             ],
             server: {
                 url: '/siswa/data', // The URL to fetch siswa data
@@ -78,11 +89,14 @@
                         siswa.prestasi_akademik,
                         siswa.prestasi_non_akademik,
                         siswa.ekstrakurikuler,
-                        siswa.biografi
+                        siswa.biografi,
+                        null
                     ]);
                 }
             },
-            pagination: true, // Enable pagination
+            pagination: {
+                limit: 20
+            }, // Enable pagination
             search: true, // Enable search
             sort: true, // Enable sorting
         }).render(document.getElementById("gridjs"));
