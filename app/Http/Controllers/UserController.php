@@ -8,6 +8,7 @@ use App\Models\Siswa;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -20,8 +21,15 @@ class UserController extends Controller
             foreach ($user->getAttributes() as $key => $value) {
                 $user->{$key} = $value ?? '-';
             }
+    
+            // Add "(You)" next to the current user's name
+            if (Auth::check() && $user->id === Auth::id()) {
+                $user->name = $user->name . ' (You)';
+            }
+    
             return $user;
-        });  
+        });
+    
         // Return data as JSON for the Grid.js table
         return response()->json($users);
     }

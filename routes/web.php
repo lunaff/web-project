@@ -2,6 +2,7 @@
 
 use App\Models\Prestasi;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\CheckUserLevel;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
@@ -12,23 +13,30 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\KegiatanController;
 
+Route::get('/404', function () { return view('404'); })->name('404');
 
 Route::get('/login', function () {
-    return redirect('/dashboard.dashboard');
+    return redirect('dashboard.dashboard');
 })->middleware('auth');
 
 // Route untuk login
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('auth');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Route untuk logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-Route::resource('dashboard', DashboardController::class);
-Route::resource('user', UserController::class);
-Route::resource('guru', GuruController::class);
-Route::resource('kompetensi-keahlian', KompetensiKeahlianController::class);
-Route::resource('kelas', KelasController::class);
-Route::resource('siswa', SiswaController::class);
-Route::resource('prestasi', PrestasiController::class);
-Route::resource('kegiatan', KegiatanController::class);
 
+Route::middleware([CheckUserLevel::class . ':admin,operator'])->group(function () {
+    // Route dashboard
+    Route::resource('user', UserController::class);
+    Route::resource('guru', GuruController::class);
+    Route::resource('kompetensi-keahlian', KompetensiKeahlianController::class);
+    Route::resource('kelas', KelasController::class);
+    Route::resource('siswa', SiswaController::class);
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('dashboard', DashboardController::class);
+    Route::resource('prestasi', PrestasiController::class);
+    Route::resource('kegiatan', KegiatanController::class);
+});
