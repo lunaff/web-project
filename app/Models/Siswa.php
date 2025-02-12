@@ -11,7 +11,7 @@ class Siswa extends Model
     use HasFactory;
 
     protected $primaryKey = 'nis';
-    public $incrementing = false; 
+    public $incrementing = false;
 
     protected $table = 'siswa';
     protected $fillable = [
@@ -58,4 +58,9 @@ class Siswa extends Model
     {
         return $this->belongsToMany(Pelanggaran::class, 'pelanggaran_siswa');
     }
+
+    public function laporanKasus()
+{
+    return $this->hasMany(LaporanKasus::class, 'kdsiswa', 'id'); // Relasi ke model LaporanKasus
+}
 }

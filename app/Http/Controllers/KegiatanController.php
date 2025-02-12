@@ -15,6 +15,26 @@ class KegiatanController extends Controller
         $kegiatan = Kegiatan::all();
         return view('kegiatan.index', compact('kegiatan'));
     }
+    
+    public function show(string $id)
+    {
+        //
+        $kegiatan = Kegiatan::all();
+
+        $data = $kegiatan->map(function ($kegiatan) {
+            return [
+                'id' => $kegiatan->id,
+                'tanggal' => $kegiatan->tanggal,
+                'nama' => $kegiatan->nama,
+                'penyelenggara' => $kegiatan->penyelenggara,
+                'dokumentasi' => $kegiatan->dokumentasi,
+            ];
+        });
+    
+        // Kembalikan data dalam bentuk JSON
+        return response()->json($data);
+    }
+
 
     /**
      * Menampilkan form tambah kegiatan.
@@ -55,24 +75,6 @@ class KegiatanController extends Controller
     /**
      * Menampilkan detail kegiatan.
      */
-    public function show(string $id)
-    {
-        //
-        $kegiatan = Kegiatan::all();
-
-        $data = $kegiatan->map(function ($kegiatan) {
-            return [
-                'id' => $kegiatan->id,
-                'tanggal' => $kegiatan->tanggal,
-                'nama' => $kegiatan->nama,
-                'penyelenggara' => $kegiatan->penyelenggara,
-                'dokumentasi' => $kegiatan->dokumentasi,
-            ];
-        });
-    
-        // Kembalikan data dalam bentuk JSON
-        return response()->json($data);
-    }
 
     /**
      * Menampilkan form edit kegiatan.

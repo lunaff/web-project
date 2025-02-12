@@ -28,9 +28,14 @@ class LaporanKasus extends Model
         'dampingan_bk' => 'boolean',
     ];
 
+    // Jika nama di database adalah 'status', tetapi di model 'status_kasus'
+    protected $attributes = [
+        'status_kasus' => 'status', // Mapping ke kolom di database
+    ];
+
     // Relasi ke Siswa
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'kdsiswa', 'id');
+        return $this->belongsTo(Siswa::class, 'kdsiswa', 'id'); // Relasi ke model Siswa
     }
 }

@@ -10,7 +10,12 @@ class Pelanggaran extends Model
     use HasFactory;
 
     protected $table = 'pelanggaran';
-    protected $fillable = ['tanggal', 'jenis', 'keterangan', 'sanksi', 'dokumentasi'];
+    protected $fillable = [
+        'tanggal',
+        'jenis',
+        'keterangan',
+        'bukti',
+        'sanksi'];
 
     public function siswa()
     {
