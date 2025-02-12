@@ -7,6 +7,7 @@ use App\Models\Kelas;
 use App\Models\KompetensiKeahlian;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SiswaController extends Controller
 {
@@ -58,12 +59,12 @@ class SiswaController extends Controller
             'nama_sekolah_asal',
             'alamat_sekolah',
             'tahun_lulus',
-            'riwayat_penyakit',
-            'alergi',
-            'prestasi_akademik',
-            'prestasi_non_akademik',
-            'ekstrakurikuler',
-            'biografi'
+            'riwayat_penyakit' => 'nullable',
+            'alergi' => 'nullable',
+            'prestasi_akademik' => 'nullable',
+            'prestasi_non_akademik' => 'nullable',
+            'ekstrakurikuler' => 'nullable',
+            'biografi' => 'nullable'
         ]);
 
         $array = $request->only([
@@ -145,6 +146,12 @@ class SiswaController extends Controller
     public function edit(string $id)
     {
         //
+        $siswa = Siswa::find($id);
+        $kelas = Kelas::all();
+        $kompetensi = KompetensiKeahlian::all();
+        if (!$siswa) return redirect()->route('siswa.index')
+            ->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
+        return view('siswa.edit', compact('siswa', 'kelas', 'kompetensi'));
     }
 
     /**
@@ -153,6 +160,80 @@ class SiswaController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $siswa = Siswa::find($id);
+        if (!$siswa) {
+            return redirect()->route('siswa.index')->with('error_message', 'Siswa dengan id = ' . $id . ' tidak ditemukan');
+        }
+
+        $request->validate([
+            'nis' => [
+                'required',
+                Rule::unique('siswa')->ignore($siswa->id),
+            ],
+            'nama_lengkap',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat',
+            'agama',
+            'kewarganegaraan',
+            'no_hp',
+            'email',
+            'nisn',
+            'kdkelas',
+            'kdkompetensi',
+            'tahun_masuk',
+            'nama_ayah',
+            'nama_ibu',
+            'alamat_ortu',
+            'no_ortu',
+            'nama_sekolah_asal',
+            'alamat_sekolah',
+            'tahun_lulus',
+            'riwayat_penyakit' => 'nullable',
+            'alergi' => 'nullable',
+            'prestasi_akademik' => 'nullable',
+            'prestasi_non_akademik' => 'nullable',
+            'ekstrakurikuler' => 'nullable',
+            'biografi' => 'nullable'
+        ]);
+
+        $array = $request->only([
+            'nis',
+            'nama_lengkap',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'alamat',
+            'agama',
+            'kewarganegaraan',
+            'no_hp',
+            'email',
+            'nisn',
+            'kdkelas',
+            'kdkompetensi',
+            'tahun_masuk',
+            'nama_ayah',
+            'nama_ibu',
+            'alamat_ortu',
+            'no_ortu',
+            'nama_sekolah_asal',
+            'alamat_sekolah',
+            'tahun_lulus',
+            'riwayat_penyakit',
+            'alergi',
+            'prestasi_akademik',
+            'prestasi_non_akademik',
+            'ekstrakurikuler',
+            'biografi'
+        ]);
+
+        $siswa->update($array);
+
+        $siswa->fkelas()->associate($request->input('kdkelas'));
+        $siswa->fkompetensi()->associate($request->input('kdkompetensi'));
+
+        $siswa->save();
+
+        return redirect()->route('siswa.index')->with('success_message', 'Data siswa berhasil diperbarui');
     }
 
     /**
@@ -161,5 +242,16 @@ class SiswaController extends Controller
     public function destroy(string $id)
     {
         //
+        $siswa = Siswa::find($id);
+    
+        if (!$siswa) {
+            return redirect()->route('siswa.index')
+                ->with('error_message', 'Siswa with ID ' . $id . ' not found.');
+        }
+    
+        $siswa->delete();
+    
+        return redirect()->route('siswa.index')
+            ->with('success_message', 'Siswa deleted successfully.');
     }
 }

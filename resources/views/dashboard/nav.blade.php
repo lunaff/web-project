@@ -40,9 +40,11 @@
                         <span class="menu-item" data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
-
-                <li class="menu-title" data-key="t-master">Data Master</li>
                 
+                @if(in_array(Auth::user()->level, ['admin', 'operator']))
+                
+                <li class="menu-title" data-key="t-master">Data Master</li>
+
                 <li>
                     <a href="{{ route('user.index') }}">
                         <i class="bx bx-user icon nav-icon"></i>
@@ -77,6 +79,8 @@
                         <span class="menu-item" data-key="t-siswa">Siswa</span>
                     </a>
                 </li>
+
+                @endif
                 
                 <li class="menu-title" data-key="t-kesiswaan">Kesiswaan</li>
 

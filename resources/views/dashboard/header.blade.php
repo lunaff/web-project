@@ -28,7 +28,7 @@
 
             <!-- start page title -->
             <div class="page-title-box align-self-center d-none d-md-block">
-                <h4 class="page-title mb-0">Hi, Welcome Back!</h4>
+                <h4 class="page-title mb-0">Aplikasi Kesiswaan</h4>
             </div>
             <!-- end page title -->
 
@@ -161,13 +161,10 @@
                     <a class="dropdown-item d-flex align-items-center" href="#"><i class="mdi mdi-cog-outline text-muted font-size-16 align-middle me-2"></i> <span class="align-middle me-3">Settings</span><span class="badge bg-success-subtle text-success  ms-auto">New</span></a>
                     <a class="dropdown-item" href="auth-lock-screen.html"><i class="mdi mdi-lock text-muted font-size-16 align-middle me-2"></i> <span class="align-middle">Lock screen</span></a>
                     <div class="dropdown-divider"></div>
-                    <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
-                        <button type="submit" class="dropdown-item">
-                            <i class="mdi mdi-logout text-muted font-size-16 align-middle me-2"></i>
-                            <span class="align-middle">Logout</span>
-                        </button>
-                    </form>                
+                    </form>
+                    <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><i class="mdi mdi-logout text-muted font-size-16 align-middle me-2"></i> <span class="align-middle">Logout</span></a>
                 </div>
             </div>
         </div>

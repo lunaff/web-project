@@ -10,8 +10,8 @@ class Guru extends Model
     //
     use HasFactory;
 
-    protected $primaryKey = 'nip'; // Tentukan 'nip' sebagai primary key
-    public $incrementing = false; // Karena 'nip' adalah string, atur incrementing ke false
+    protected $primaryKey = 'nip';
+    public $incrementing = false;
     
     protected $table = 'guru';
     protected $fillable = [

@@ -96,6 +96,13 @@ class KelasController extends Controller
     public function edit(string $id)
     {
         //
+        $kelas = Kelas::find($id);
+        $kompetensi = KompetensiKeahlian::all();
+        $guru = Guru::all();
+
+        if (!$kelas) return redirect()->route('kelas.index')
+            ->with('error_message', 'Kelas dengan id = ' . $id . ' tidak ditemukan');
+        return view('kelas.edit', compact('kelas', 'kompetensi', 'guru'));
     }
 
     /**
@@ -104,6 +111,17 @@ class KelasController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'kelas' => 'required|unique:kelas,kelas,' . $id
+        ]);
+        $kelas = Kelas::find($id);
+        $kelas->kelas = $request->kelas;
+        $kelas->kdkompetensi = $request->kdkompetensi;
+        $kelas->guru_nip = $request->guru_nip;
+        $kelas->tahun_ajaran = $request->tahun_ajaran;
+        $kelas->save();
+        return redirect()->route('kelas.index')
+            ->with('success_message', 'Berhasil mengubah Kelas');
     }
 
     /**
@@ -112,5 +130,16 @@ class KelasController extends Controller
     public function destroy(string $id)
     {
         //
+        $kelas = Kelas::find($id);
+    
+        if (!$kelas) {
+            return redirect()->route('kelas.index')
+                ->with('error_message', 'Kelas with ID ' . $id . ' not found.');
+        }
+    
+        $kelas->delete();
+    
+        return redirect()->route('kelas.index')
+            ->with('success_message', 'Kelas deleted successfully.');
     }
 }

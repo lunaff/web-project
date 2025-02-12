@@ -77,6 +77,12 @@ class KompetensiKeahlianController extends Controller
     public function edit(string $id)
     {
         //
+        $kompetensi = KompetensiKeahlian::find($id);
+        $guru = Guru::all();
+
+        if (!$kompetensi) return redirect()->route('kompetensi-keahlian.index')
+            ->with('error_message', 'kompetensi dengan id = ' . $id . ' tidak ditemukan');
+        return view('kompetensi-keahlian.edit', compact('kompetensi', 'guru'));
     }
 
     /**
@@ -85,6 +91,16 @@ class KompetensiKeahlianController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $request->validate([
+            'kompetensi_keahlian' =>
+            'required|unique:kompetensi_keahlian,kompetensi_keahlian,' . $id
+        ]);
+        $kompetensi = KompetensiKeahlian::find($id);
+        $kompetensi->kompetensi_keahlian = $request->kompetensi_keahlian;
+        $kompetensi->guru_nip = $request->guru_nip;
+        $kompetensi->tahun_ajaran = $request->tahun_ajaran;
+        $kompetensi->save();
+        return redirect()->route('kompetensi-keahlian.index')->with('success_message', 'Berhasil mengubah Kompetensi Keahlian');
     }
 
     /**
@@ -93,5 +109,16 @@ class KompetensiKeahlianController extends Controller
     public function destroy(string $id)
     {
         //
+        $kompetensi = KompetensiKeahlian::find($id);
+    
+        if (!$kompetensi) {
+            return redirect()->route('kompetensi-keahlian.index')
+                ->with('error_message', 'Kompetensi Keahlian with ID ' . $id . ' not found.');
+        }
+    
+        $kompetensi->delete();
+    
+        return redirect()->route('kompetensi-keahlian.index')
+            ->with('success_message', 'Kompetensi Keahlian deleted successfully.');
     }
 }
