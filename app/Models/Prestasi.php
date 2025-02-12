@@ -23,6 +23,6 @@ class Prestasi extends Model
     // Relasi ke tabel siswa (Setiap prestasi dimiliki oleh satu siswa)
     public function siswa()
     {
-        return $this->belongsTo(Siswa::class, 'siswa_id');
+        return $this->belongsTo(Siswa::class, 'siswa_id', 'id');
     }
 }

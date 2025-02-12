@@ -16,7 +16,7 @@ class PrestasiController extends Controller
     public function show(string $id)
     {
         //
-        $prestasi = Prestasi::with(['siswa'])->get();
+        $prestasi = Prestasi::with('siswa')->get();
 
         $data = $prestasi->map(function ($prestasi) {
             return [
@@ -24,7 +24,7 @@ class PrestasiController extends Controller
                 'tanggal' => $prestasi->tanggal,
                 'jenis' => $prestasi->jenis,
                 'deskripsi' => $prestasi->deskripsi,
-                'siswa_id' => $prestasi->siswa ?  $prestasi->siswa->nama_lengkap : '-',
+                'siswa_id' => $prestasi->siswa->nama_lengkap ?? '-',
                 'tanggal_dokumentasi' => $prestasi->tanggal_dokumentasi,
                 'foto' => $prestasi->foto,
             ];
@@ -33,7 +33,6 @@ class PrestasiController extends Controller
         // Kembalikan data dalam bentuk JSON
         return response()->json($data);
     }
-
 
     public function create()
     {
@@ -56,7 +55,6 @@ class PrestasiController extends Controller
         if ($request->hasFile('foto')) {
             $fotoPath = $request->file('foto')->store('prestasi', 'public');
         }
-
         Prestasi::create([
             'tanggal' => $request->tanggal,
             'jenis' => $request->jenis,
@@ -69,6 +67,47 @@ class PrestasiController extends Controller
         return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil ditambahkan!');
     }
 
+    public function edit(string $id)
+    {
+        $prestasi = Prestasi::findOrFail($id);
+        $siswa = Siswa::all();
+        return view('prestasi.edit', compact('prestasi', 'siswa'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'tanggal' => 'required|date',
+            'jenis' => 'required|in:akademik,non-akademik',
+            'deskripsi' => 'nullable|string',
+            'siswa_id' => 'required|exists:siswa,id',
+            'tanggal_dokumentasi' => 'nullable|date',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        $prestasi = Prestasi::findOrFail($id);
+
+        if ($request->hasFile('foto')) {
+            if ($prestasi->foto) {
+                Storage::delete('public/' . $prestasi->foto);
+            }
+            $fotoPath = $request->file('foto')->store('prestasi', 'public');
+        } else {
+            $fotoPath = $prestasi->foto;
+        }
+
+        $prestasi->update([
+            'tanggal' => $request->tanggal,
+            'jenis' => $request->jenis,
+            'deskripsi' => $request->deskripsi,
+            'siswa_id' => $request->siswa_id,
+            'tanggal_dokumentasi' => $request->tanggal_dokumentasi,
+            'foto' => $fotoPath,
+        ]);
+
+        return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil diperbarui!');
+    }
+
     public function destroy($id)
     {
         $prestasi = Prestasi::findOrFail($id);
@@ -78,6 +117,6 @@ class PrestasiController extends Controller
         }
 
         $prestasi->delete();
-        return response()->json(['success' => true, 'message' => 'Prestasi berhasil dihapus.']);
+        return redirect()->route('prestasi.index')->with('success_message', 'Prestasi deleted successfully.');
     }
 }
