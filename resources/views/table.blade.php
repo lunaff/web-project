@@ -5,7 +5,8 @@
     }
 
     #gridjs {
-        z-index: 1; /* Menurunkan z-index Grid.js supaya tombol di atasnya */
+        z-index: 1;
+        /* Menurunkan z-index Grid.js supaya tombol di atasnya */
     }
 </style>
 <div class="main-content">
@@ -15,9 +16,15 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h3>Data @yield('page')</h3>
-                        <div class="group">
+                        <div class="d-flex gap-1">
                             <a href="@yield('create')" class="btn btn-primary">Add New</a>
-                            <a href="#" class="btn btn-secondary">Import</a>
+                            <form id="importForm" action="@yield('import')" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" name="file" id="fileInput" required style="display: none;" onchange="submitForm()">
+                                <button type="button" class="btn btn-secondary" onclick="document.getElementById('fileInput').click();">
+                                    Import
+                                </button>
+                            </form>
                         </div>
                     </div>
                     <div class="table-container">
@@ -29,3 +36,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    function submitForm() {
+        document.getElementById("importForm").submit();
+    }
+</script>

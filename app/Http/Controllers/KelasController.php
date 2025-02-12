@@ -5,11 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Guru;
 use App\Models\KompetensiKeahlian;
+use App\Imports\KelasImport;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class KelasController extends Controller
 {
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new KelasImport, $request->file('file'));
+
+        return back()->with('success', 'Data kelas berhasil diimport!');
+    }
+
     /**
      * Display a listing of the resource.
      */

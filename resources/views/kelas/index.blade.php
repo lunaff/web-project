@@ -13,6 +13,7 @@
 
 @section('page', 'Kelas')
 @section('create', route('kelas.create'))
+@section('import', route('kelas.import'))
 
 @section('main')
     @include('table')
