@@ -20,8 +20,8 @@ return new class extends Migration
             $table->text('kasus'); // Bisa menyimpan deskripsi lebih panjang
             $table->string('bukti')->nullable(); // Path file bukti (foto/video)
             $table->string('tindak_lanjut', 100); // Bisa diisi lebih panjang
-            $table->enum('status_kasus', ['Penanganan Walas', 'Penanganan Kesiswaan', 'Kasus Selesai'])
-                ->default('Penanganan Kesiswaan');
+            $table->enum('status', ['penanganan_walas', 'penanganan_kesiswaan', 'selesai'])
+                ->default('penanganan_kesiswaan');
             $table->boolean('dampingan_bk')->default(false); // true = Ya, false = Tidak
             $table->enum('semester', ['Ganjil', 'Genap']);
             $table->string('tahun_ajaran', 30); // Format: 2023/2024

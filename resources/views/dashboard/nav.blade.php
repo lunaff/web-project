@@ -40,9 +40,9 @@
                         <span class="menu-item" data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
-                
+
                 @if(in_array(Auth::user()->level, ['admin', 'operator']))
-                
+
                 <li class="menu-title" data-key="t-master">Data Master</li>
 
                 <li>
@@ -72,7 +72,7 @@
                         <span class="menu-item" data-key="t-kelas">Kelas</span>
                     </a>
                 </li>
-                
+
                 <li>
                     <a href="{{ route('siswa.index') }}">
                         <i class="bx bx-user-pin icon nav-icon"></i>
@@ -81,7 +81,7 @@
                 </li>
 
                 @endif
-                
+
                 <li class="menu-title" data-key="t-kesiswaan">Kesiswaan</li>
 
                 <li>
@@ -99,14 +99,14 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('laporan-kasus.index') }}">
                         <i class="bx bx-file-find icon nav-icon"></i>
                         <span class="menu-item" data-key="t-lap-kasus">Laporan Kasus</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="{{ route('pelanggaran.index') }}">
                         <i class="bx bx-error-alt icon nav-icon"></i>
                         <span class="menu-item" data-key="t-pelanggaran">Pelanggaran</span>
                     </a>
@@ -291,7 +291,7 @@
                             <i class="mdi mdi-logout text-muted font-size-16 align-middle me-2"></i>
                             <span class="align-middle">Logout</span>
                         </button>
-                    </form>                
+                    </form>
                 </div>
             </div>
         </div>

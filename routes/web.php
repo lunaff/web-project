@@ -13,6 +13,8 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\PrestasiController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PembinaanController;
+use App\Http\Controllers\PelanggaranController;
+use App\Http\Controllers\LaporanKasusController;
 
 Route::get('/404', function () { return view('404'); })->name('404');
 
@@ -41,4 +43,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('prestasi', PrestasiController::class);
     Route::resource('kegiatan', KegiatanController::class);
     Route::resource('pembinaan', PembinaanController::class);
+    Route::resource('pelanggaran', PelanggaranController::class);
+    Route::resource('laporan-kasus', LaporanKasusController::class);
 });

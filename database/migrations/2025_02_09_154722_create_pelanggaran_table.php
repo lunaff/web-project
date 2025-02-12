@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('pelanggaran', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->enum('jenis', ['terlambat', 'attitude', 'penampilan', 'asusila']);
+            $table->enum('jenis', ['terlambat', 'perilaku', 'penampilan', 'asusila']);
             $table->text('keterangan');
-            $table->string('sanksi');
             $table->string('bukti')->nullable(); // Untuk menyimpan path foto/video
+            $table->string('sanksi');
             $table->timestamps();
         });
     }
