@@ -41,7 +41,7 @@
                     </a>
                 </li>
                 
-                @if(Auth::user()->level == ['admin', 'operator'])
+                @if(in_array(Auth::user()->level, ['admin', 'operator']))
                 
                 <li class="menu-title" data-key="t-master">Data Master</li>
 
