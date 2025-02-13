@@ -21,16 +21,14 @@
                             <div class="card-body">
                                 <form action="{{ route('laporan-kasus.update', $laporanKasus->id) }}" method="post" enctype="multipart/form-data">
                                     @csrf
-                                    @method('PUT') <!-- Method untuk update -->
+                                    @method('PUT')
 
-                                    <!-- Input Tanggal -->
                                     <div class="mb-3">
                                         <label for="tanggal">Tanggal</label>
                                         <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal', $laporanKasus->tanggal) }}">
                                         @error('tanggal') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <!-- Input Nama Siswa dengan Modal -->
                                     <div class="mb-3">
                                         <label for="kdsiswa">Nama Siswa</label>
                                         <input type="hidden" name="kdsiswa" id="kdsiswa" value="{{ old('kdsiswa', $laporanKasus->kdsiswa) }}">
@@ -45,14 +43,12 @@
                                         @error('kdsiswa') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <!-- Input Kasus -->
                                     <div class="mb-3">
                                         <label for="kasus">Kasus</label>
                                         <textarea rows="5" class="form-control @error('kasus') is-invalid @enderror" id="kasus" name="kasus">{{ old('kasus', $laporanKasus->kasus) }}</textarea>
                                         @error('kasus') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <!-- Input Bukti -->
                                     <div class="mb-3">
                                         <label for="bukti" class="form-label">Bukti</label>
                                         <input type="file" id="bukti" name="bukti" class="form-control" placeholder="Bukti" aria-label="Bukti">
@@ -61,17 +57,15 @@
                                         @endif
                                     </div>
 
-                                    <!-- Input Tindak Lanjut -->
                                     <div class="mb-3">
                                         <label for="tindak_lanjut">Tindak Lanjut</label>
                                         <input type="text" class="form-control @error('tindak_lanjut') is-invalid @enderror" id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut" value="{{ old('tindak_lanjut', $laporanKasus->tindak_lanjut) }}">
                                         @error('tindak_lanjut') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <!-- Dropdown Status -->
                                     <div class="mb-3">
                                         <label for="status">Status</label>
-                                        <select class="form-select @error('status') is-invalid @enderror" id="status" name="status">
+                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus" name="status">
                                             <option value="" selected hidden>Pilih Status</option>
                                             <option value="penanganan_walas" @if(old('status', $laporanKasus->status) == 'penanganan_walas') selected @endif>Penanganan Walas</option>
                                             <option value="penanganan_kesiswaan" @if(old('status', $laporanKasus->status) == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan</option>
@@ -80,7 +74,6 @@
                                         @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <!-- Input Dampingan BK -->
                                     <div class="mb-3">
                                         <label>Dampingan BK</label>
                                         <div class="row">
@@ -99,7 +92,6 @@
                                         </div>
                                     </div>
 
-                                    <!-- Input Semester -->
                                     <div class="mb-3">
                                         <label for="semester">Semester</label>
                                         <select class="form-select @error('semester') is-invalid @enderror" id="semester" name="semester">
@@ -110,7 +102,6 @@
                                         @error('semester') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
-                                    <!-- Input Tahun Ajaran -->
                                     <div class="mb-3">
                                         <label for="tahun_ajaran">Tahun Ajaran</label>
                                         <input type="text" class="form-control @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" placeholder="yyyy/yyyy" name="tahun_ajaran" value="{{ old('tahun_ajaran', $laporanKasus->tahun_ajaran) }}">
@@ -118,9 +109,47 @@
                                     </div>
 
                                     <!-- Modal Siswa -->
-                                    @include('laporan-kasus.modal-siswa') <!-- Pisahkan modal ke file terpisah -->
+                                    <div class="modal fade" id="modalSiswa" tabindex="-1" aria-labelledby="modalSiswaLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="modalSiswaLabel">Pilih Siswa</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>No</th>
+                                                                <th>NIS</th>
+                                                                <th>Nama</th>
+                                                                <th>Kelas</th>
+                                                                <th>Jurusan</th>
+                                                                <th>Aksi</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($siswa as $key => $s)
+                                                                <tr>
+                                                                    <td>{{ $key + 1 }}</td>
+                                                                    <td>{{ $s->nis }}</td>
+                                                                    <td>{{ $s->nama_lengkap }}</td>
+                                                                    <td>{{ $s->fkelas->nama_kelas ?? '-' }}</td>
+                                                                    <td>{{ $s->fkompetensi->nama_jurusan ?? '-' }}</td>
+                                                                    <td>
+                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="pilihSiswa('{{ $s->id }}', '{{ $s->nama_lengkap }}')">
+                                                                            Pilih
+                                                                        </button>
+                                                                    </td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                    <!-- Tombol Simpan dan Batal -->
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
                                         <a href="{{ route('laporan-kasus.index') }}" class="btn btn-danger">Batal</a>

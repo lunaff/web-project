@@ -2,6 +2,7 @@
 
 @section('title', 'Laporan Kasus')
 @section('message', 'Daftar Laporan Kasus')
+
 @section('style')
     <link rel="stylesheet" href="{{ asset('assets/libs/gridjs/theme/mermaid.min.css') }}">
     <style>
@@ -15,7 +16,7 @@
             /* Menurunkan z-index Grid.js supaya tombol di atasnya */
         }
     </style>
-@endsection
+    @endsection
 
 @section('nav')
     @include('dashboard.header')
@@ -38,7 +39,6 @@
                             </div>
                         </div>
                         <div class="table-container">
-                            <!-- Grid.js Tabel -->
                             <div id="gridjs"></div>
                         </div>
                     </div>
@@ -51,46 +51,46 @@
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
+        const editUrlBase = "{{ route('laporan-kasus.edit', ['laporan_kasu' => '__laporan_kasus_id__']) }}";
+        const deleteUrl = "{{ route('laporan-kasus.destroy', ['laporan_kasu' => '__laporan_kasus_id__']) }}";
+
         new gridjs.Grid({
-            columns: [{
-                    name: "No",
-                    formatter: (_, row) => `${row.cells[0].data}.` // Nomor dengan tanda titik
-                },
+            columns: [
+                { name: "No", formatter: (_, row) => `${row.cells[0].data}.` },
                 "Tanggal",
                 "Nama Siswa",
                 "Kasus",
-                {
-                    name: "Bukti",
-                    formatter: (cell) => cell ? gridjs.html(
-                        `<a href="/storage/${cell}" target="_blank">Lihat</a>`) : '-'
-                },
+                { name: "Bukti", formatter: (cell) => cell ? gridjs.html(`<a href="/storage/${cell}" target="_blank">Lihat</a>`) : '-' },
                 "Tindak Lanjut",
                 "Status",
-                {
-                    name: "Dampingan BK",
-                    formatter: (cell) => cell ? 'Ya' : 'Tidak'
-                },
+                { name: "Dampingan BK", formatter: (cell) => cell ? 'Ya' : 'Tidak' },
                 "Semester",
                 "Tahun Ajaran",
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
-        <div>
-            <a href="/laporan-kasus/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
-                <i class="fa fa-edit"></i>
-            </a>
-            <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
-                <i class="fa fa-trash"></i>
-            </button>
-        </div>
-    `)
+                        <td>
+                            <div style="display: flex; gap: 10px;">
+                                <a href="${editUrlBase.replace('__laporan_kasus_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+
+                                <form action="${deleteUrl.replace('__laporan_kasus_id__', row.cells[0].data)}" method="POST" onsubmit="return confirm('Are you sure you want to delete this laporan kasus?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    `)
                 }
             ],
             server: {
-                url: '/laporan-kasus/show', // Endpoint untuk mengambil data
+                url: '/laporan-kasus/show',
                 then: data => data.map(item => [
-                    item.no, // Nomor urut
-                    // item.id, // ID untuk action
+                    item.no,
                     item.tanggal,
                     item.nama_siswa,
                     item.kasus,
@@ -105,6 +105,6 @@
             pagination: true,
             search: true,
             sort: true,
-        }).render(document.getElementById("gridjs"))
+        }).render(document.getElementById("gridjs"));
     </script>
 @endsection

@@ -17,7 +17,7 @@ class LaporanKasus extends Model
         'kasus',
         'bukti',
         'tindak_lanjut',
-        'status_kasus',
+        'status',
         'dampingan_bk',
         'semester',
         'tahun_ajaran'
@@ -26,11 +26,6 @@ class LaporanKasus extends Model
     protected $casts = [
         'tanggal' => 'date',
         'dampingan_bk' => 'boolean',
-    ];
-
-    // Jika nama di database adalah 'status', tetapi di model 'status_kasus'
-    protected $attributes = [
-        'status_kasus' => 'status', // Mapping ke kolom di database
     ];
 
     // Relasi ke Siswa

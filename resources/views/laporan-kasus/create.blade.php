@@ -31,7 +31,6 @@
                                         @enderror
                                     </div>
 
-                                    <!-- Input Nama Siswa dengan Modal -->
                                     <div class="mb-3">
                                         <label for="kdsiswa">Nama Siswa</label>
                                         <input type="hidden" name="kdsiswa" id="kdsiswa" value="{{ old('kdsiswa') }}">
@@ -42,10 +41,13 @@
                                                 aria-label="nama_siswa" value="{{ old('nama_siswa') }}"
                                                 aria-describedby="cari" readonly>
                                             <div class="input-group-append">
-                                                <button class="btn btn-warning" type="button" data-bs-toggle="modal"
+                                                {{-- <button class="btn btn-warning" type="button" data-bs-toggle="modal"
                                                     data-bs-target="#modalSiswa">
                                                     Cari Siswa
-                                                </button>
+                                                </button> --}}
+                                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
+                                                    Cari Siswa
+                                                </a>
                                             </div>
                                         </div>
                                         @error('kdsiswa')
@@ -78,21 +80,20 @@
                                         @enderror
                                     </div>
 
-                                    <!-- Dropdown Status -->
                                     <div class="mb-3">
                                         <label for="status">Status</label>
-                                        <select class="form-select @error('status') is-invalid @enderror"
-                                            id="status_laporan_kasus" name="status">
+                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus"
+                                            name="status_kasus">
                                             <option value="" selected hidden>Pilih Status</option>
                                             <option value="penanganan_walas"
-                                                @if (old('status') == 'penanganan_walas') selected @endif>Penanganan Walas</option>
+                                                @if (old('status_kasus') == 'penanganan_walas') selected @endif>Penanganan Walas</option>
                                             <option value="penanganan_kesiswaan"
-                                                @if (old('status') == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan
+                                                @if (old('status_kasus') == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan
                                             </option>
-                                            <option value="selesai" @if (old('status') == 'selesai') selected @endif>
+                                            <option value="selesai" @if (old('status_kasus') == 'selesai') selected @endif>
                                                 Selesai</option>
                                         </select>
-                                        @error('status')
+                                        @error('status_kasus')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -171,15 +172,11 @@
                                                                     <td>{{ $s->nis }}</td>
                                                                     <td>{{ $s->nama_lengkap }}</td>
                                                                     <td>{{ $s->fkelas->nama_kelas ?? '-' }}</td>
-                                                                    <!-- Tampilkan kelas -->
                                                                     <td>{{ $s->fkompetensi->nama_jurusan ?? '-' }}</td>
-                                                                    <!-- Tampilkan jurusan -->
                                                                     <td>
-                                                                        <button type="button"
-                                                                            class="btn btn-primary btn-sm"
-                                                                            onclick="pilihSiswa('{{ $s->id }}', '{{ $s->nama_lengkap }}')">
+                                                                        <a href="#" class="btn btn-primary btn-xs" onclick="pilih1('{{ $s->id }}', '{{ $s->nama_lengkap }}')" data-bs-toggle="modal">
                                                                             Pilih
-                                                                        </button>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -202,12 +199,18 @@
             </div>
         </div>
     </div>
+@endsection
 
+@section('script')
     <script>
-        function pilihSiswa(id, nama) {
+        $('#example2').DataTable({
+            "responsive": true,
+        });
+
+        function pilih1(id, nama) {
             document.getElementById('kdsiswa').value = id;
             document.getElementById('nama_siswa').value = nama;
-            $('#modalSiswa').modal('hide'); // Tutup modal setelah memilih
+            // $('#staticBackdrop1').modal('hide');
         }
     </script>
 @endsection
