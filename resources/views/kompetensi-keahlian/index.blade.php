@@ -13,6 +13,7 @@
 
 @section('page', 'Kompetensi Keahlian')
 @section('create', route('kompetensi-keahlian.create'))
+@section('import', route('kompetensi-keahlian.import'))
 
 @section('main')
     @include('table')
