@@ -19,7 +19,7 @@ class KompetensiKeahlianController extends Controller
 
         Excel::import(new KompetensiKeahlianImport, $request->file('file'));
 
-        return back()->with('success', 'Data kelas berhasil diimport!');
+        return back()->with('success', 'Data kompetensi keahlian berhasil diimport!');
     }
     /**
      * Display a listing of the resource.

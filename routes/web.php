@@ -37,6 +37,7 @@ Route::middleware([CheckUserLevel::class . ':admin,operator'])->group(function (
     Route::resource('kelas', KelasController::class);
     Route::resource('siswa', SiswaController::class);
     // Import routes
+    Route::post('user/import', [UserController::class, 'import'])->name('user.import');
     Route::post('kelas/import', [KelasController::class, 'import'])->name('kelas.import');
     Route::post('kompetensi-keahlian/import', [KompetensiKeahlianController::class, 'import'])->name('kompetensi-keahlian.import');
 });

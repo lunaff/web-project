@@ -13,6 +13,7 @@
 
 @section('page', 'User')
 @section('create', route('user.create'))
+@section('import', route('user.import'))
 
 @section('main')
     @include('table')

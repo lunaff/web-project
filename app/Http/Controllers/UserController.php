@@ -5,14 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Guru;
 use App\Models\Siswa;
+use App\Imports\UserImport;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
     //
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new UserImport, $request->file('file'));
+
+        return back()->with('success', 'Data user berhasil diimport!');
+    }
+
     public function show()
     {
         // Fetch all users from the `user` table
