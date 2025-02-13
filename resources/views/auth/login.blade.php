@@ -4,7 +4,7 @@
     <head>
 
         <meta charset="utf-8" />
-        <title>Login | WEebProject</title>
+        <title>Login | Aplikasi Kesiswaan</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesdesign" name="author" />
@@ -56,15 +56,6 @@
                                             </div>
                                         </div>
                                     
-                                        <!-- Username Field -->
-                                        <div class="mb-3">
-                                            <label class="form-label" for="name">Name</label>
-                                            <div class="position-relative input-custom-icon">
-                                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
-                                                <span class="bx bx-user"></span>
-                                            </div>
-                                        </div>
-                                    
                                         <!-- Password Field -->
                                         <div class="mb-3">
                                             <div class="float-end">
@@ -78,18 +69,6 @@
                                                     <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                                 </button>
                                             </div>
-                                        </div>
-                                    
-                                        <!-- Level Field -->
-                                        <div class="mb-3">
-                                            <label class="form-label" for="level">Level</label>
-                                            <select class="form-control" id="level" name="level">
-                                                <option value="admin">Admin</option>
-                                                <option value="operator">Operator</option>
-                                                <option value="osis">Osis</option>
-                                                <option value="bk">BK</option>
-                                                <option value="kesiswaan">Kesiswaan</option>
-                                            </select>
                                         </div>
                                     
                                         <!-- Remember Me -->
