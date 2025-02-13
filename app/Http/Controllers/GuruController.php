@@ -1,13 +1,27 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Guru;
+use App\Imports\GuruImport;
 
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuruController extends Controller
 {
     //
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new GuruImport, $request->file('file'));
+
+        return back()->with('success', 'Data guru berhasil diimport!');
+    }
+
     public function show()
     {
         $gurus = Guru::all()->map(function ($guru) {
