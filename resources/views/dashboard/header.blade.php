@@ -146,8 +146,7 @@
             <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item user text-start d-flex align-items-center" id="page-header-user-dropdown-v"
                     data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img class="rounded-circle header-profile-user" src="assets/images/users/avatar-3.jpg"
-                    alt="Header Avatar">
+                    <i class="bx bx-user-circle font-size-24"></i>
                     <span class="d-none d-xl-inline-block ms-2 fw-medium font-size-15">{{ Auth::user()->name }}</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-end pt-0">
