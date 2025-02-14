@@ -15,6 +15,7 @@ use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\PembinaanController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\LaporanKasusController;
+use App\Http\Controllers\KunjunganRumahController;
 
 Route::get('/404', function () { return view('404'); })->name('404');
 
@@ -50,4 +51,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('pembinaan', PembinaanController::class);
     Route::resource('pelanggaran', PelanggaranController::class);
     Route::resource('laporan-kasus', LaporanKasusController::class);
+    Route::resource('kunjungan-rumah', KunjunganRumahController::class);
 });

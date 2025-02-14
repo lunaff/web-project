@@ -117,6 +117,12 @@
                         <span class="menu-item" data-key="t-pembinaan">Pembinaan</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('kunjungan-rumah.index') }}">
+                        <i class="bx bx-home icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-kunjungan-rumah">Kunjungan Rumah</span>
+                    </a>
+                </li>
             </ul>
         </div>
         <!-- Sidebar -->
