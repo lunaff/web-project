@@ -40,6 +40,12 @@
                         <span class="menu-item" data-key="t-dashboard">Dashboard</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('calendar.index') }}">
+                        <i class="bx bx-calendar icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-calendar">Calendar</span>
+                    </a>
+                </li>
 
                 @if(in_array(Auth::user()->level, ['admin', 'operator']))
 
