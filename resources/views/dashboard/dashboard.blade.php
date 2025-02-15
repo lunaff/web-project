@@ -9,3 +9,6 @@
 @section('main')
     @include('dashboard.main')
 @endsection
+@section('script')
+    <script src="{{ asset('assets/js/dashboard.js') }}"></script>
+@endsection
