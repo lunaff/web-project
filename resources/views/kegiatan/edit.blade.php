@@ -48,6 +48,24 @@
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="file">Foto Dokumentasi</label>
+                                        <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file[]" multiple>
+                                        @error('file')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <!-- <div class="mt-2">
+                                        @if ($kegiatan->dokumentasi->isNotEmpty())
+                                            @foreach ($kegiatan->dokumentasi as $foto)
+                                                <img src="{{ asset('storage/' . $foto->file) }}" alt="Foto Dokumentasi" width="150">
+                                            @endforeach
+                                        @else
+                                            <p class="text-muted">Tidak ada dokumentasi</p>
+                                        @endif
+                                    </div> -->
+
+                                    <!-- <div class="mb-3">
                                         <label for="dokumentasi">Foto Dokumentasi</label>
                                         <input type="file" class="form-control @error('dokumentasi') is-invalid @enderror" id="dokumentasi" name="dokumentasi">
                                         @error('dokumentasi')
@@ -58,7 +76,7 @@
                                                 <img src="{{ asset('storage/' . $kegiatan->dokumentasi) }}" alt="Foto Dokumentasi" width="150">
                                             </div>
                                         @endif
-                                    </div>
+                                    </div> -->
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Simpan</button>

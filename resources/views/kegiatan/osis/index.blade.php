@@ -11,17 +11,15 @@
 @endsection
 
 @section('page', 'Kegiatan')
-@section('create', route('kegiatan.create'))
 
 @section('main')
-    @include('table')
+    @include('table2')
 @endsection
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
-        const editUrlBase = "{{ route('kegiatan.edit', ['kegiatan' => '__kegiatan_id__']) }}";
+        const editUrlBase = "{{ route('osis-kegiatan.form', ['kegiatan' => '__kegiatan_id__']) }}";
         const docUrlBase = "{{ route('kegiatan.dokumentasi', ['kegiatan' => '__kegiatan_id__']) }}";
-        const deleteUrlBase = "{{ route('kegiatan.destroy', ['kegiatan' => '__kegiatan_id__']) }}";
 
         new gridjs.Grid({
             columns: [
@@ -40,18 +38,11 @@
                     formatter: (cell, row) => gridjs.html(`
                         <div style="display: flex; gap: 10px;">
                             <a href="${editUrlBase.replace('__kegiatan_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
-                                <i class="fa fa-edit"></i>
+                                <i class="fas fa-upload"></i>
                             </a>
                             <a href="${docUrlBase.replace('__kegiatan_id__', row.cells[0].data)}" class="btn btn-sm btn-info">
                                 <i class="fas fa-images"></i>
                             </a>
-                            <form action="${deleteUrlBase.replace('__kegiatan_id__', row.cells[0].data)}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </form>
                         </div>
                     `)
                 },

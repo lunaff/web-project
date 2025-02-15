@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('kegiatan', function (Blueprint $table) {
+        Schema::create('dokumentasi_kegiatan', function (Blueprint $table) {
             $table->id();
-            $table->date('tanggal'); // Tanggal kegiatan
-            $table->string('nama'); // Nama kegiatan
-            $table->string('penyelenggara'); // Penyelenggara kegiatan
-            // $table->string('dokumentasi')->nullable(); // Path file foto dokumentasi
+            $table->foreignId('kegiatan_id')->constrained('kegiatan')->onDelete('cascade'); // Relasi ke kegiatan
+            $table->string('file');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('kegiatan');
+        Schema::dropIfExists('dokumentasi_kegiatan');
     }
 };

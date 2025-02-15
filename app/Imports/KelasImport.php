@@ -25,7 +25,7 @@ class KelasImport implements ToModel, WithHeadingRow
         
         return new Kelas([
             'kelas'         => $row['kelas'] ?? '',
-            'guru_nip'      => $row['nip_wali_kelas'] ?? '',
+            'guru_nip'      => $row['wali_kelas'] ?? '',
             'kdkompetensi'  => $kompetensi->id, // Simpan kode kompetensi
             'tahun_ajaran'  => $row['tahun_ajaran'] ?? '',
         ]);

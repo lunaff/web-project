@@ -31,7 +31,7 @@
 
                                     <div class="mb-3">
                                         <label for="kdkompetensi">Kompetensi Keahlian</label>
-                                        <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ old('kdkompetensi') }}">
+                                        <input type="hidden" name="kdkompetensi" id="kdkompetensi" value="{{ old('kdkompetensi', $kelas->fkompetensi->id) }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control @error('kompetensi_keahlian') is-invalid @enderror" placeholder="Kompetensi Keahlian" id="kompetensi_keahlian" name="kompetensi_keahlian" aria-label="kompetensi_keahlian" value="{{ old('kompetensi_keahlian', $kelas->fkompetensi->kompetensi_keahlian) }}" aria-describedby="cari" readonly>
                                             <div class="input-group-append">
@@ -44,7 +44,7 @@
 
                                     <div class="mb-3">
                                         <label for="guru_nip">Wali Kelas</label>
-                                        <input type="hidden" name="guru_nip" id="guru_nip" value="{{ old('guru_nip') }}">
+                                        <input type="hidden" name="guru_nip" id="guru_nip" value="{{ old('guru_nip', $kelas->fguru->nip) }}">
                                         <div class="input-group">
                                             <input type="text" class="form-control @error('nama_guru') is-invalid @enderror" placeholder="Nama Wali Kelas" id="nama_guru" name="nama_guru" aria-label="nama_guru" value="{{ old('nama_guru', $kelas->fguru->nama_guru) }}" aria-describedby="cari" readonly>
                                             <div class="input-group-append">

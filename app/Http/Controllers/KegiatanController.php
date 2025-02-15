@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kegiatan;
+use App\Models\DokumentasiKegiatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class KegiatanController extends Controller
 {
@@ -13,7 +16,12 @@ class KegiatanController extends Controller
     public function index()
     {
         $kegiatan = Kegiatan::all();
-        return view('kegiatan.index', compact('kegiatan'));
+
+        if (Auth::user()->level == 'osis') {
+            return view('kegiatan.osis.index', compact('kegiatan'));
+        } else {
+            return view('kegiatan.index', compact('kegiatan'));
+        }
     }
     
     public function show(string $id)
@@ -27,7 +35,7 @@ class KegiatanController extends Controller
                 'tanggal' => $kegiatan->tanggal,
                 'nama' => $kegiatan->nama,
                 'penyelenggara' => $kegiatan->penyelenggara,
-                'dokumentasi' => $kegiatan->dokumentasi,
+                // 'dokumentasi' => $kegiatan->dokumentasi->file,
             ];
         });
     
@@ -53,20 +61,12 @@ class KegiatanController extends Controller
             'tanggal' => 'required|date',
             'nama' => 'required|string|max:255',
             'penyelenggara' => 'required|string|max:255',
-            'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-        // Upload Foto
-        $fotoPath = null;
-        if ($request->hasFile('dokumentasi')) {
-            $fotoPath = $request->file('dokumentasi')->store('kegiatan', 'public');
-        }
 
         Kegiatan::create([
             'tanggal' => $request->tanggal,
             'nama' => $request->nama,
             'penyelenggara' => $request->penyelenggara,
-            'dokumentasi' => $fotoPath,
         ]);
 
         return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil ditambahkan!');
@@ -93,20 +93,28 @@ class KegiatanController extends Controller
             'tanggal' => 'required|date',
             'nama' => 'required|string|max:255',
             'penyelenggara' => 'required|string|max:255',
-            'dokumentasi' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
-
-        // Upload Foto
-        if ($request->hasFile('dokumentasi')) {
-            $fotoPath = $request->file('dokumentasi')->store('kegiatan', 'public');
-            $kegiatan->dokumentasi = $fotoPath;
-        }
 
         $kegiatan->update([
             'tanggal' => $request->tanggal,
             'nama' => $request->nama,
             'penyelenggara' => $request->penyelenggara,
         ]);
+
+        $request->validate([
+            'file.*' => 'required|image|mimes:jpg,png,jpeg|max:2048', // Validasi untuk banyak file
+        ]);
+    
+        if ($request->hasFile('file')) {
+            foreach ($request->file('file') as $file) {
+                $path = $file->store('kegiatan', 'public');
+
+                DokumentasiKegiatan::create([
+                    'kegiatan_id' => $kegiatan->id,
+                    'file' => $path,
+                ]);
+            }
+        }        
 
         return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil diperbarui!');
     }

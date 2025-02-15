@@ -18,6 +18,8 @@ use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CalendarController;
 
+use App\Http\Controllers\Dokumentasi\DokumentasiKegiatanController;
+
 Route::get('/404', function () { return view('404'); })->name('404');
 
 Route::get('/login', function () {
@@ -31,21 +33,32 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 // Route untuk logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 
-Route::middleware([CheckUserLevel::class . ':admin,operator'])->group(function () {
-    // Route dashboard
-    Route::resource('user', UserController::class);
-    Route::resource('guru', GuruController::class);
-    Route::resource('kompetensi-keahlian', KompetensiKeahlianController::class);
-    Route::resource('kelas', KelasController::class);
-    Route::resource('siswa', SiswaController::class);
-    // Import routes
-    Route::post('user/import', [UserController::class, 'import'])->name('user.import');
-    Route::post('guru/import', [GuruController::class, 'import'])->name('guru.import');
-    Route::post('kelas/import', [KelasController::class, 'import'])->name('kelas.import');
-    Route::post('kompetensi-keahlian/import', [KompetensiKeahlianController::class, 'import'])->name('kompetensi-keahlian.import');
-});
-
+// Middleware untuk route yang membutuhkan login
 Route::middleware(['auth'])->group(function () {
+    // Middleware yang sudah ada
+    Route::middleware([CheckUserLevel::class . ':admin,operator'])->group(function () {
+        // Route dashboard dan lainnya
+        Route::resource('user', UserController::class);
+        Route::resource('guru', GuruController::class);
+        Route::resource('kompetensi-keahlian', KompetensiKeahlianController::class);
+        Route::resource('kelas', KelasController::class);
+        Route::resource('siswa', SiswaController::class);
+
+        // Import routes
+        Route::post('user/import', [UserController::class, 'import'])->name('user.import');
+        Route::post('guru/import', [GuruController::class, 'import'])->name('guru.import');
+        Route::post('kelas/import', [KelasController::class, 'import'])->name('kelas.import');
+        Route::post('kompetensi-keahlian/import', [KompetensiKeahlianController::class, 'import'])->name('kompetensi-keahlian.import');
+    });
+
+    Route::middleware([CheckUserLevel::class . ':admin,osis'])->group(function () {
+        Route::get('osis/kegiatan', [DokumentasiKegiatanController::class, 'index'])->name('osis-kegiatan.index');
+        Route::get('kegiatan/{kegiatan}/dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('kegiatan.dokumentasi');
+        Route::get('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'create'])->name('osis-kegiatan.form');
+        Route::post('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'store'])->name('kegiatan.upload');
+    });
+
+    // Routes yang membutuhkan login tetapi tidak terbatas oleh level user
     Route::resource('dashboard', DashboardController::class);
     Route::resource('prestasi', PrestasiController::class);
     Route::resource('kegiatan', KegiatanController::class);

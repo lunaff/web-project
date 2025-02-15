@@ -46,13 +46,13 @@
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3">
+                                    <!-- <div class="mb-3">
                                         <label for="dokumentasi">Foto Dokumentasi</label>
                                         <input type="file" class="form-control @error('dokumentasi') is-invalid @enderror" id="dokumentasi" name="dokumentasi">
                                         @error('dokumentasi')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                    </div>
+                                    </div> -->
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Simpan</button>

@@ -104,6 +104,8 @@
                     </a>
                 </li>
 
+                @if(Auth::user()->level != 'osis')
+
                 <li>
                     <a href="{{ route('laporan-kasus.index') }}">
                         <i class="bx bx-file-find icon nav-icon"></i>
@@ -129,6 +131,8 @@
                         <span class="menu-item" data-key="t-kunjungan-rumah">Kunjungan Rumah</span>
                     </a>
                 </li>
+
+                @endif
             </ul>
         </div>
         <!-- Sidebar -->

@@ -55,6 +55,15 @@
                                                 <span class="bx bx-envelope"></span>
                                             </div>
                                         </div>
+
+                                        <!-- Username Field -->
+                                        <div class="mb-3">
+                                            <label class="form-label" for="name">Name</label>
+                                            <div class="position-relative input-custom-icon">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name">
+                                                <span class="bx bx-user"></span>
+                                            </div>
+                                        </div>
                                     
                                         <!-- Password Field -->
                                         <div class="mb-3">
@@ -69,6 +78,18 @@
                                                     <i class="mdi mdi-eye-outline font-size-18 text-muted"></i>
                                                 </button>
                                             </div>
+                                        </div>
+
+                                        <!-- Level Field -->
+                                        <div class="mb-3">
+                                            <label class="form-label" for="level">Level</label>
+                                            <select class="form-control" id="level" name="level">
+                                                <option value="admin">Admin</option>
+                                                <option value="operator">Operator</option>
+                                                <option value="osis">Osis</option>
+                                                <option value="bk">BK</option>
+                                                <option value="kesiswaan">Kesiswaan</option>
+                                            </select>
                                         </div>
                                     
                                         <!-- Remember Me -->

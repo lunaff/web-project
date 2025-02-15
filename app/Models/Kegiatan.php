@@ -15,6 +15,11 @@ class Kegiatan extends Model
         'tanggal',
         'nama',
         'penyelenggara',
-        'dokumentasi',
+        // 'dokumentasi',
     ];
+
+    public function dokumentasi()
+    {
+        return $this->hasMany(DokumentasiKegiatan::class);
+    }
 }
