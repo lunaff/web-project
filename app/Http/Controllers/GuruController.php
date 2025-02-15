@@ -75,7 +75,7 @@ class GuruController extends Controller
 
         ]);
         $guru = Guru::create($array);
-        return redirect()->route('guru.index')->with('success_message', 'Berhasil menambah Guru baru');
+        return redirect()->route('guru.index')->with('success', 'Berhasil menambah Guru baru');
     }
 
     public function edit($id)
@@ -115,7 +115,7 @@ class GuruController extends Controller
         $guru->update($array);
         $guru->save();
 
-        return redirect()->route('guru.index')->with('success_message', 'Berhasil mengubah Guru');
+        return redirect()->route('guru.index')->with('success', 'Berhasil mengubah Guru');
     }
 
     public function destroy($id)
@@ -134,7 +134,7 @@ class GuruController extends Controller
     
         // Redirect to the guru index page with a success message
         return redirect()->route('guru.index')
-            ->with('success_message', 'Guru deleted successfully.');
+            ->with('success', 'Guru deleted successfully.');
     }
 
 }

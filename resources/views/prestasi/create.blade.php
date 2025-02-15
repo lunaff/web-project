@@ -73,7 +73,7 @@
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3">
+                                    {{-- <div class="mb-3">
                                         <label for="foto">Foto Dokumentasi</label>
                                         <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
                                         @error('foto')
@@ -84,7 +84,7 @@
                                                 <img src="{{ asset('storage/' . $prestasi->foto) }}" alt="Foto Prestasi" width="150">
                                             </div>
                                         @endif
-                                    </div>
+                                    </div> --}}
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Simpan</button>

@@ -59,7 +59,7 @@ class KompetensiKeahlianController extends Controller
         ]);
 
         KompetensiKeahlian::create($array);
-        return redirect()->route('kompetensi-keahlian.index')->with('success_message', 'Berhasil menambah Kompetensi Keahlian baru');
+        return redirect()->route('kompetensi-keahlian.index')->with('success', 'Berhasivalue: l menambah Kompetensi Keahlian baru');
     }
 
     /**
@@ -113,7 +113,7 @@ class KompetensiKeahlianController extends Controller
         $kompetensi->guru_nip = $request->guru_nip;
         $kompetensi->tahun_ajaran = $request->tahun_ajaran;
         $kompetensi->save();
-        return redirect()->route('kompetensi-keahlian.index')->with('success_message', 'Berhasil mengubah Kompetensi Keahlian');
+        return redirect()->route('kompetensi-keahlian.index')->with('success', 'Berhasil mengubah Kompetensi Keahlian');
     }
 
     /**
@@ -132,6 +132,6 @@ class KompetensiKeahlianController extends Controller
         $kompetensi->delete();
     
         return redirect()->route('kompetensi-keahlian.index')
-            ->with('success_message', 'Kompetensi Keahlian deleted successfully.');
+            ->with('success', 'Kompetensi Keahlian deleted successfully.');
     }
 }

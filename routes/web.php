@@ -19,6 +19,7 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CalendarController;
 
 use App\Http\Controllers\Dokumentasi\DokumentasiKegiatanController;
+use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController; 
 
 Route::get('/404', function () { return view('404'); })->name('404');
 
@@ -56,6 +57,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kegiatan/{kegiatan}/dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('kegiatan.dokumentasi');
         Route::get('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'create'])->name('osis-kegiatan.form');
         Route::post('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'store'])->name('kegiatan.upload');
+        Route::get('osis/prestasi', [DokumentasiPrestasiController::class, 'index'])->name('osis-prestasi.index');
+        Route::get('prestasi/{prestasi}/dokumentasi', [DokumentasiPrestasiController::class, 'index'])->name('prestasi.dokumentasi');
+        Route::get('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'create'])->name('osis-prestasi.form');
+        Route::post('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'store'])->name('prestasi.upload');
     });
 
     // Routes yang membutuhkan login tetapi tidak terbatas oleh level user

@@ -75,18 +75,28 @@
                                         @enderror
                                     </div>
 
-                                    <div class="mb-3">
-                                        <label for="foto">Foto Dokumentasi</label>
-                                        <input type="file" class="form-control @error('foto') is-invalid @enderror" id="foto" name="foto">
-                                        @error('foto')
+                                    <!-- <div class="mt-2">
+                                        @if ($prestasi->dokumentasi->isNotEmpty())
+                                            @foreach ($prestasi->dokumentasi as $foto)
+                                                <img src="{{ asset('storage/' . $foto->file) }}" alt="Foto Dokumentasi" width="150">
+                                            @endforeach
+                                        @else
+                                            <p class="text-muted">Tidak ada dokumentasi</p>
+                                        @endif
+                                    </div> -->
+
+                                    <!-- <div class="mb-3">
+                                        <label for="dokumentasi">Foto Dokumentasi</label>
+                                        <input type="file" class="form-control @error('dokumentasi') is-invalid @enderror" id="dokumentasi" name="dokumentasi">
+                                        @error('dokumentasi')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                        @if($prestasi->foto)
+                                        @if($prestasi->dokumentasi)
                                             <div class="mt-2">
-                                                <img src="{{ asset('storage/' . $prestasi->foto) }}" alt="Foto Prestasi" width="150">
+                                                <img src="{{ asset('storage/' . $prestasi->dokumentasi) }}" alt="Foto Dokumentasi" width="150">
                                             </div>
                                         @endif
-                                    </div>
+                                    </div> -->
 
                                     <div class="card-footer">
                                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -143,8 +153,8 @@
         });
 
         function pilihSiswa(id, nama_lengkap) {
-            document.getElementById('siswa_id').value = id; // Simpan NIS di input hidden
-            document.getElementById('nama_lengkap').value = nama_lengkap; // Tampilkan Nama di input teks
+            document.getElementById('siswa_id').value = id; 
+            document.getElementById('nama_lengkap').value = nama_lengkap;
         }
     </script>
 @endsection

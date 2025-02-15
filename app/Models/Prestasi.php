@@ -17,12 +17,15 @@ class Prestasi extends Model
         'deskripsi',
         'siswa_id',
         'tanggal_dokumentasi',
-        'foto',
     ];
 
     // Relasi ke tabel siswa (Setiap prestasi dimiliki oleh satu siswa)
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_id', 'id');
+    }
+    public function dokumentasi()
+    {
+        return $this->hasMany(DokumentasiPrestasi::class);
     }
 }

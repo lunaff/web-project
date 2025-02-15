@@ -64,7 +64,7 @@ class KelasController extends Controller
         ]);
 
         Kelas::create($array);
-        return redirect()->route('kelas.index')->with('success_message', 'Berhasil menambah Kelas baru');
+        return redirect()->route('kelas.index')->with('success', 'Berhasil menambah Kelas baru');
 
         $cari_id = Kelas::where('id', '>', 0)->max('id');
 
@@ -134,7 +134,7 @@ class KelasController extends Controller
         $kelas->tahun_ajaran = $request->tahun_ajaran;
         $kelas->save();
         return redirect()->route('kelas.index')
-            ->with('success_message', 'Berhasil mengubah Kelas');
+            ->with('success', 'Berhasil mengubah Kelas');
     }
 
     /**
@@ -153,6 +153,6 @@ class KelasController extends Controller
         $kelas->delete();
     
         return redirect()->route('kelas.index')
-            ->with('success_message', 'Kelas deleted successfully.');
+            ->with('success', 'Kelas deleted successfully.');
     }
 }

@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('deskripsi')->nullable(); // Deskripsi prestasi
             $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade'); 
             $table->date('tanggal_dokumentasi')->nullable(); 
-            $table->string('foto')->nullable(); 
             $table->timestamps();
         });
     }

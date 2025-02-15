@@ -93,7 +93,7 @@ class UserController extends Controller
         User::create($array);
     
         // Redirect with success message
-        return redirect()->route('user.index')->with('success_message', 'Berhasil menambah User baru');
+        return redirect()->route('user.index')->with('success', 'Berhasil menambah User baru');
     }
 
     public function edit(string $id)
@@ -148,7 +148,7 @@ class UserController extends Controller
         $user->save();
     
         // Redirect with a success message
-        return redirect()->route('user.index')->with('success_message', 'Berhasil mengubah User');
+        return redirect()->route('user.index')->with('success', 'Berhasil mengubah User');
     }    
 
     public function destroy($id)
@@ -167,7 +167,7 @@ class UserController extends Controller
     
         // Redirect to the user index page with a success message
         return redirect()->route('user.index')
-            ->with('success_message', 'User deleted successfully.');
+            ->with('success', 'User deleted successfully.');
     }
     
 }

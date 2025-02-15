@@ -103,7 +103,7 @@ class SiswaController extends Controller
 
         $siswa->save();
 
-        return redirect()->route('siswa.index')->with('success_message', 'Berhasil menambah siswa baru');
+        return redirect()->route('siswa.index')->with('success', 'Berhasil menambah siswa baru');
     }
 
     /**
@@ -233,7 +233,7 @@ class SiswaController extends Controller
 
         $siswa->save();
 
-        return redirect()->route('siswa.index')->with('success_message', 'Data siswa berhasil diperbarui');
+        return redirect()->route('siswa.index')->with('success', 'Data siswa berhasil diperbarui');
     }
 
     /**
@@ -252,6 +252,6 @@ class SiswaController extends Controller
         $siswa->delete();
     
         return redirect()->route('siswa.index')
-            ->with('success_message', 'Siswa deleted successfully.');
+            ->with('success', 'Siswa deleted successfully.');
     }
 }

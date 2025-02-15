@@ -3,14 +3,22 @@ namespace App\Http\Controllers;
 
 use App\Models\Prestasi;
 use App\Models\Siswa;
+use App\Models\DokumentasiPrestasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class PrestasiController extends Controller
 {
     public function index()
     {
-        return view('prestasi.index');
+        $prestasi = Prestasi::all();
+
+        if (Auth::user()->level == 'osis') {
+            return view('prestasi.osis.index', compact('prestasi'));
+        } else {
+            return view('prestasi.index', compact('prestasi'));
+        }
     }
 
     public function show(string $id)
@@ -26,7 +34,6 @@ class PrestasiController extends Controller
                 'deskripsi' => $prestasi->deskripsi,
                 'siswa_id' => $prestasi->siswa->nama_lengkap ?? '-',
                 'tanggal_dokumentasi' => $prestasi->tanggal_dokumentasi,
-                'foto' => $prestasi->foto,
             ];
         });
     
@@ -48,20 +55,14 @@ class PrestasiController extends Controller
             'deskripsi' => 'nullable|string',
             'siswa_id' => 'required|exists:siswa,id',
             'tanggal_dokumentasi' => 'nullable|date',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $fotoPath = null;
-        if ($request->hasFile('foto')) {
-            $fotoPath = $request->file('foto')->store('prestasi', 'public');
-        }
         Prestasi::create([
             'tanggal' => $request->tanggal,
             'jenis' => $request->jenis,
             'deskripsi' => $request->deskripsi,
             'siswa_id' => $request->siswa_id,
             'tanggal_dokumentasi' => $request->tanggal_dokumentasi,
-            'foto' => $fotoPath,
         ]);
 
         return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil ditambahkan!');
@@ -82,19 +83,9 @@ class PrestasiController extends Controller
             'deskripsi' => 'nullable|string',
             'siswa_id' => 'required|exists:siswa,id',
             'tanggal_dokumentasi' => 'nullable|date',
-            'foto' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        $prestasi = Prestasi::findOrFail($id);
-
-        if ($request->hasFile('foto')) {
-            if ($prestasi->foto) {
-                Storage::delete('public/' . $prestasi->foto);
-            }
-            $fotoPath = $request->file('foto')->store('prestasi', 'public');
-        } else {
-            $fotoPath = $prestasi->foto;
-        }
+        $prestasi = Prestasi::findOrFail($id); 
 
         $prestasi->update([
             'tanggal' => $request->tanggal,
@@ -102,8 +93,22 @@ class PrestasiController extends Controller
             'deskripsi' => $request->deskripsi,
             'siswa_id' => $request->siswa_id,
             'tanggal_dokumentasi' => $request->tanggal_dokumentasi,
-            'foto' => $fotoPath,
         ]);
+
+        $request->validate([
+            'file.*' => 'required|image|mimes:jpg,png,jpeg|max:2048',
+        ]);
+
+        if ($request->hasFile('file')) {
+            foreach ($request->file('file') as $file) {
+                $path = $file->store('prestasi', 'public');
+
+                DokumentasiPrestasi::create([
+                    'kegiatan_id' => $prestasi->id,
+                    'file' => $path,
+                ]);
+            }
+        }     
 
         return redirect()->route('prestasi.index')->with('success', 'Prestasi berhasil diperbarui!');
     }
@@ -111,12 +116,7 @@ class PrestasiController extends Controller
     public function destroy($id)
     {
         $prestasi = Prestasi::findOrFail($id);
-
-        if ($prestasi->foto) {
-            Storage::delete('public/' . $prestasi->foto);
-        }
-
         $prestasi->delete();
-        return redirect()->route('prestasi.index')->with('success_message', 'Prestasi deleted successfully.');
+        return redirect()->route('prestasi.index')->with('success', 'Prestasi deleted successfully.');
     }
 }

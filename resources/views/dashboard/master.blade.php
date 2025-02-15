@@ -212,7 +212,30 @@
             </div>
         </div>
 
+        @if(session('success'))
+            <div class="position-fixed top-50 start-50 translate-middle" style="z-index: 1050;">
+                <div class="alert alert-success alert-dismissible fade show px-4 text-center" role="alert" style="width: 300px;">
+                    <i class="mdi mdi-check-all d-block display-4 mt-2 mb-3 text-success"></i>
+                    <h5 class="text-success">Success</h5>
+                    <p>{{ session('success') }}</p>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            
+            <script>
+                // Auto-hide alert setelah 3 detik
+                setTimeout(function() {
+                    var alert = document.querySelector('.alert');
+                    if (alert) {
+                        var bsAlert = new bootstrap.Alert(alert);
+                        bsAlert.close();
+                    }
+                }, 2000);
+            </script>
+        @endif
+
         <!-- JAVASCRIPT -->
+        <script src="{{ asset('assets/js/pages/alert.init.js') }}"></script>
         <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
         <script src="{{ asset('assets/libs/metismenujs/metismenujs.min.js') }}"></script>
         <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
