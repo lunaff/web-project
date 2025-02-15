@@ -42,7 +42,7 @@
         <!-- END layout-wrapper -->
 
         <!-- Right Sidebar -->
-        <!-- <a href="#" class="right-bar-toggle layout-setting-btn" id="right-bar-toggle">
+        <!-- <a href="javascript:void(0);" class="right-bar-toggle layout-setting-btn" id="right-bar-toggle">
             <i class="bx bx-cog icon-sm font-size-18"></i> <span>Settings</span>
         </a> -->
 

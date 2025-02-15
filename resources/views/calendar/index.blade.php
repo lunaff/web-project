@@ -134,6 +134,8 @@
     </div>
     <!-- End Page-content -->
 </div>
+@endsection
+
 @section('script')
 <script src="assets/libs/fullcalendar/index.global.min.js"></script>
 
