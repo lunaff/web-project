@@ -39,7 +39,7 @@ class DokumentasiPrestasiController extends Controller
             }
         }
     
-        return redirect()->route('osis-prestasi.index', $prestasi_id)->with('success', 'Dokumentasi berhasil diupload!');
+        return redirect()->route('prestasi.index', $prestasi_id)->with('success', 'Dokumentasi berhasil diupload!');
     }
     
     public function show(string $id)

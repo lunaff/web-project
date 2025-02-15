@@ -57,9 +57,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kegiatan/{kegiatan}/dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('kegiatan.dokumentasi');
         Route::get('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'create'])->name('kegiatan.form');
         Route::post('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'store'])->name('kegiatan.upload');
-        Route::get('osis/prestasi', [DokumentasiPrestasiController::class, 'index'])->name('osis-prestasi.index');
         Route::get('prestasi/{prestasi}/dokumentasi', [DokumentasiPrestasiController::class, 'index'])->name('prestasi.dokumentasi');
-        Route::get('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'create'])->name('osis-prestasi.form');
+        Route::get('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'create'])->name('prestasi.form');
         Route::post('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'store'])->name('prestasi.upload');
     });
 

@@ -18,7 +18,7 @@
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
-        const editUrlBase = "{{ route('osis-prestasi.form', ['prestasi' => '__prestasi_id__']) }}";
+        const editUrlBase = "{{ route('prestasi.form', ['prestasi' => '__prestasi_id__']) }}";
         const docUrlBase = "{{ route('prestasi.dokumentasi', ['prestasi' => '__prestasi_id__']) }}";
 
         new gridjs.Grid({
