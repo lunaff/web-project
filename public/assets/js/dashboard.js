@@ -104,15 +104,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
             data.slice(0, 5).forEach(item => {
                 const listItem = `
-                    <div class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="d-flex align-items-center mt-2">
+                    <div class="list-group-item d-flex justify-content-between align-items-start py-2 border-bottom">
+                        <div class="d-flex align-items-center mt-3">
                             <i class="fa fa-medal text-warning font-size-20 mx-3"></i>
                             <div>
                                 <h6 class="mb-0">${item.siswa.nama_lengkap}</h6>
                                 <small class="text-muted">${item.jenis} - ${item.deskripsi}</small>
                             </div>
                         </div>
-                        <small class="text-muted text-end">${new Date(item.tanggal).toLocaleDateString()}</small>
+                        <small class="text-muted text-end mt-3">${new Date(item.tanggal).toLocaleDateString()}</small>
                     </div>
                 `;
                 container.innerHTML += listItem;
