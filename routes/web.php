@@ -52,9 +52,8 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::middleware([CheckUserLevel::class . ':admin,osis'])->group(function () {
-        Route::get('osis/kegiatan', [DokumentasiKegiatanController::class, 'index'])->name('osis-kegiatan.index');
         Route::get('kegiatan/{kegiatan}/dokumentasi', [DokumentasiKegiatanController::class, 'index'])->name('kegiatan.dokumentasi');
-        Route::get('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'create'])->name('osis-kegiatan.form');
+        Route::get('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'create'])->name('kegiatan.form');
         Route::post('kegiatan/{kegiatan}/upload', [DokumentasiKegiatanController::class, 'store'])->name('kegiatan.upload');
     });
 

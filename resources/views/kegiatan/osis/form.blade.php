@@ -46,7 +46,7 @@
 
                                 <div class="card-footer">
                                     <button type="submit" class="btn btn-primary">Upload</button>
-                                    <a href="{{ route('osis-kegiatan.index') }}" class="btn btn-danger">Cancel</a>
+                                    <a href="{{ route('kegiatan.index') }}" class="btn btn-danger">Cancel</a>
                                 </div>
                             </form>
                         </div>
