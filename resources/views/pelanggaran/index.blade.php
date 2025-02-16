@@ -21,9 +21,12 @@
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
+        const editUrlBase = "{{ route('pelanggaran.edit', ['pelanggaran' => '__pelanggaran_id__']) }}";
+        const deleteUrlBase = "{{ route('pelanggaran.destroy', ['pelanggaran' => '__pelanggaran_id__']) }}";
+        
         new gridjs.Grid({
             columns: [
-                { name: "No", formatter: (_, row) => row.index + 1 },
+                // { name: "No", formatter: (_, row) => row.index + 1 },
                 "Tanggal",
                 "Jenis",
                 "Keterangan",
@@ -33,12 +36,20 @@
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
-                        <a href="/user/${row.cells[1].data}/edit" class="btn btn-sm btn-primary">
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <button class="btn btn-sm btn-danger" onclick="deleteData('${row.cells[1].data}')">
-                            <i class="fa fa-trash"></i>
-                        </button>
+                        <td>
+                            <div style="display: flex; gap: 10px;">
+                                <a href="${editUrlBase.replace('__pelanggaran_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-edit"></i>
+                                </a>
+                                <form action="${deleteUrlBase.replace('__pelanggaran_id__', row.cells[0].data)}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-sm btn-danger">
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
                     `)
                 }
             ],
