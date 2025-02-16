@@ -50,28 +50,40 @@ class PelanggaranController extends Controller
             'keterangan' => 'required|string',
             'bukti'      => 'nullable|file|mimes:jpg,jpeg,png,mp4',
             'sanksi'     => 'required|string',
-            'siswa_ids'  => 'required|array',
+            'siswa_ids'  => 'required|string',
         ]);
 
+        // Konversi siswa_ids ke array
+        $siswa_ids = explode(',', $request->siswa_ids);
+
+        // Simpan pelanggaran
         $pelanggaran = Pelanggaran::create($request->only('tanggal', 'jenis', 'keterangan', 'sanksi'));
 
+        // Simpan bukti jika ada
         if ($request->hasFile('bukti')) {
-            $path = $request->file('bukti')->store('public/bukti_pelanggaran');
-            $pelanggaran->update(['bukti' => str_replace('public/', '', $path)]);
+            $path = $request->file('bukti')->store('bukti_pelanggaran', 'public');
+            // dd($path); // Cek apakah path file tersimpan
+            $pelanggaran->update(['bukti' => $path]);
         }
 
-        // Karena pivot menggunakan siswa_nis, pastikan array siswa_ids berisi nilai-nilai nis.
-        $pelanggaran->siswa()->attach($request->siswa_ids);
+        // Hubungkan dengan siswa
+        $pelanggaran->siswa()->attach($siswa_ids);
 
         return redirect()->route('pelanggaran.index')->with('success', 'Pelanggaran berhasil ditambahkan.');
     }
+
 
     public function edit(Pelanggaran $pelanggaran)
     {
         $siswa = Siswa::all();
         $pelanggaran->load('siswa');
-        return view('pelanggaran.edit', compact('pelanggaran', 'siswa'));
+
+        // Jika ada old value, pakai old, jika tidak, ambil dari pelanggaran->siswa
+        $selectedSiswa = old('siswa_ids') ? explode(',', old('siswa_ids')) : $pelanggaran->siswa->pluck('nis')->toArray();
+
+        return view('pelanggaran.edit', compact('pelanggaran', 'siswa', 'selectedSiswa'));
     }
+
 
     public function update(Request $request, Pelanggaran $pelanggaran)
     {
@@ -81,27 +93,33 @@ class PelanggaranController extends Controller
             'keterangan' => 'required|string',
             'bukti'      => 'nullable|file|mimes:jpg,jpeg,png,mp4',
             'sanksi'     => 'required|string',
-            'siswa_ids'  => 'required|array',
+            'siswa_ids'  => 'required|string',
         ]);
 
+        // Konversi siswa_ids menjadi array
+        $siswa_ids = explode(',', $request->siswa_ids);
+
+        // Update pelanggaran
         $pelanggaran->update($request->only('tanggal', 'jenis', 'keterangan', 'sanksi'));
 
-        // Jika ingin menghapus bukti yang lama
+        // Hapus bukti lama jika ada permintaan hapus
         if ($request->has('hapus_bukti') && $pelanggaran->bukti) {
             Storage::delete('public/' . $pelanggaran->bukti);
             $pelanggaran->update(['bukti' => null]);
         }
 
-        // Jika ada file bukti baru
+        // Simpan bukti baru jika ada
         if ($request->hasFile('bukti')) {
             if ($pelanggaran->bukti) {
                 Storage::delete('public/' . $pelanggaran->bukti);
             }
-            $path = $request->file('bukti')->store('public/bukti_pelanggaran');
-            $pelanggaran->update(['bukti' => str_replace('public/', '', $path)]);
+            $path = $request->file('bukti')->store('bukti_pelanggaran', 'public');
+            // dd($path); // Cek apakah path file tersimpan
+            $pelanggaran->update(['bukti' => $path]);
         }
 
-        $pelanggaran->siswa()->sync($request->siswa_ids);
+        // Sinkronisasi siswa yang dipilih
+        $pelanggaran->siswa()->sync($siswa_ids);
 
         return redirect()->route('pelanggaran.index')->with('success', 'Pelanggaran berhasil diperbarui.');
     }

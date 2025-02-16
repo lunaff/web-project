@@ -68,7 +68,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('kegiatan', KegiatanController::class);
     Route::resource('pembinaan', PembinaanController::class);
     Route::resource('pelanggaran', PelanggaranController::class);
-    Route::resource('laporan-kasus', LaporanKasusController::class);
+    Route::resource('laporan-kasus', LaporanKasusController::class)->parameters([
+        'laporan-kasus' => 'laporan_kasus'
+    ]);
     Route::resource('kunjungan-rumah', KunjunganRumahController::class);
     Route::resource('calendar', CalendarController::class);
 

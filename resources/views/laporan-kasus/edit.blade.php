@@ -50,28 +50,24 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="bukti" class="form-label">Bukti</label>
-                                        <input type="file" id="bukti" name="bukti" class="form-control" placeholder="Bukti" aria-label="Bukti">
+                                        <label for="bukti" class="form-label">Bukti (opsional)</label>
+                                        <input type="file" id="bukti" name="bukti" class="form-control">
                                         @if($laporanKasus->bukti)
-                                            <a href="{{ asset('storage/' . $laporanKasus->bukti) }}" target="_blank">Lihat Bukti</a>
+                                            <div class="mt-2">
+                                                <a href="{{ asset('storage/' . $laporanKasus->bukti) }}" target="_blank">Lihat Bukti</a>
+                                                <div class="form-check mt-1">
+                                                    <input class="form-check-input" type="checkbox" name="hapus_bukti" id="hapusBukti" value="1">
+                                                    <label class="form-check-label" for="hapusBukti">Hapus Bukti</label>
+                                                </div>
+                                            </div>
                                         @endif
+                                        @error('bukti') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="tindak_lanjut">Tindak Lanjut</label>
                                         <input type="text" class="form-control @error('tindak_lanjut') is-invalid @enderror" id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut" value="{{ old('tindak_lanjut', $laporanKasus->tindak_lanjut) }}">
                                         @error('tindak_lanjut') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="status">Status</label>
-                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus" name="status">
-                                            <option value="" selected hidden>Pilih Status</option>
-                                            <option value="penanganan_walas" @if(old('status', $laporanKasus->status) == 'penanganan_walas') selected @endif>Penanganan Walas</option>
-                                            <option value="penanganan_kesiswaan" @if(old('status', $laporanKasus->status) == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan</option>
-                                            <option value="selesai" @if(old('status', $laporanKasus->status) == 'selesai') selected @endif>Selesai</option>
-                                        </select>
-                                        @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-3">
@@ -106,6 +102,17 @@
                                         <label for="tahun_ajaran">Tahun Ajaran</label>
                                         <input type="text" class="form-control @error('tahun_ajaran') is-invalid @enderror" id="tahun_ajaran" placeholder="yyyy/yyyy" name="tahun_ajaran" value="{{ old('tahun_ajaran', $laporanKasus->tahun_ajaran) }}">
                                         @error('tahun_ajaran') <span class="text-danger">{{ $message }}</span> @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="status">Status</label>
+                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus" name="status">
+                                            <option value="" selected hidden>Pilih Status</option>
+                                            <option value="penanganan_walas" @if(old('status', $laporanKasus->status) == 'penanganan_walas') selected @endif>Penanganan Walas</option>
+                                            <option value="penanganan_kesiswaan" @if(old('status', $laporanKasus->status) == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan</option>
+                                            <option value="selesai" @if(old('status', $laporanKasus->status) == 'selesai') selected @endif>Selesai</option>
+                                        </select>
+                                        @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
                                     <!-- Modal Siswa -->

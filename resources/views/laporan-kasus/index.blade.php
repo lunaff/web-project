@@ -10,10 +10,8 @@
             position: relative;
             margin: 20px;
         }
-
         #gridjs {
             z-index: 1;
-            /* Menurunkan z-index Grid.js supaya tombol di atasnya */
         }
     </style>
 @endsection
@@ -51,8 +49,8 @@
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
     <script>
-        const editUrlBase = "{{ route('laporan-kasus.edit', ['laporan_kasu' => '__laporan_kasus_id__']) }}";
-        const deleteUrl = "{{ route('laporan-kasus.destroy', ['laporan_kasu' => '__laporan_kasus_id__']) }}";
+        const editUrlBase = "{{ route('laporan-kasus.edit', ['laporan_kasus' => '__laporan_kasus_id__']) }}";
+        const deleteUrl = "{{ route('laporan-kasus.destroy', ['laporan_kasus' => '__laporan_kasus_id__']) }}";
 
         new gridjs.Grid({
             columns: [{
@@ -68,6 +66,12 @@
                         `<a href="/storage/${cell}" target="_blank">Lihat</a>`) : '-'
                 },
                 "Tindak Lanjut",
+                {
+                    name: "Dampingan BK",
+                    formatter: (cell) => cell ? 'Ya' : 'Tidak'
+                },
+                "Semester",
+                "Tahun Ajaran",
                 {
                     name: "Status",
                     formatter: (cell) => {
@@ -86,21 +90,15 @@
                     }
                 },
                 {
-                    name: "Dampingan BK",
-                    formatter: (cell) => cell ? 'Ya' : 'Tidak'
-                },
-                "Semester",
-                "Tahun Ajaran",
-                {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
                         <td>
                             <div style="display: flex; gap: 10px;">
-                                <a href="${editUrlBase.replace('__laporan_kasus_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
+                                <a href="${editUrlBase.replace('__laporan_kasus_id__', row.cells[10].data)}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
 
-                                <form action="${deleteUrl.replace('__laporan_kasus_id__', row.cells[0].data)}" method="POST" onsubmit="return confirm('Are you sure you want to delete this laporan kasus?');">
+                                <form action="${deleteUrl.replace('__laporan_kasus_id__', row.cells[10].data)}" method="POST" onsubmit="return confirm('Are you sure you want to delete this laporan kasus?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">
@@ -121,10 +119,11 @@
                     item.kasus,
                     item.bukti,
                     item.tindak_lanjut,
-                    item.status,
                     item.dampingan_bk,
                     item.semester,
-                    item.tahun_ajaran
+                    item.tahun_ajaran,
+                    item.status,
+                    item.id
                 ])
             },
             pagination: true,
