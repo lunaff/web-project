@@ -38,11 +38,10 @@ class PembinaanController extends Controller
 
     public function create()
     {
-        $kasus = LaporanKasus::all();
+        $kasus = LaporanKasus::where('dampingan_bk', true)->get();
         $guru = Guru::all();
         return view('pembinaan.create', compact('kasus', 'guru'));
     }
-    
 
     public function store(Request $request)
     {
@@ -60,6 +59,31 @@ class PembinaanController extends Controller
         return redirect()->route('pembinaan.index')->with('success', 'Data Pembinaan berhasil ditambahkan.');
     }
 
+    public function edit($id)
+    {
+        $pembinaan = Pembinaan::findOrFail($id);
+        $kasus = LaporanKasus::where('dampingan_bk', true)->get();
+        $guru = Guru::all();
+        return view('pembinaan.edit', compact('pembinaan', 'kasus', 'guru'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'id_kasus' => 'required|exists:laporan_kasus,id',
+            'id_guru' => 'required|exists:guru,id',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
+            'status' => 'required|in:kasus baru,dalam pembinaan,kasus selesai',
+            'note' => 'nullable|string'
+        ]);
+
+        $pembinaan = Pembinaan::findOrFail($id);
+        $pembinaan->update($request->all());
+
+        return redirect()->route('pembinaan.index')->with('success', 'Data Pembinaan berhasil diperbarui.');
+    }
+    
     public function destroy($id)
     {
         Pembinaan::findOrFail($id)->delete();

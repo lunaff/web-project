@@ -16,17 +16,18 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4 class="card-title mb-0">Add New Data Pembinaan</h4>
+                                <h4 class="card-title mb-0">Edit Data Pembinaan</h4>
                             </div>                            
                             <div class="card-body">
-                                <form action="{{ route('pembinaan.store') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('pembinaan.update', $pembinaan) }}" method="post">
+                                    @method('PUT')
                                     @csrf
                                     <div class="mb-3">
                                         <label for="status">Status Pembinaan</label>
                                         <select class="form-control @error('status') is-invalid @enderror" id="status_pembinaan" name="status">
-                                            <option value="kasus baru" {{ old('status') == 'kasus baru' ? 'selected' : '' }}>Kasus Baru</option>
-                                            <option value="dalam pembinaan" {{ old('status') == 'dalam pembinaan' ? 'selected' : '' }}>Dalam Pembinaan</option>
-                                            <option value="kasus selesai" {{ old('status') == 'kasus selesai' ? 'selected' : '' }}>Kasus Selesai</option>
+                                            <option value="kasus baru" {{ old('status', $pembinaan->status) == 'kasus baru' ? 'selected' : '' }}>Kasus Baru</option>
+                                            <option value="dalam pembinaan" {{ old('status', $pembinaan->status) == 'dalam pembinaan' ? 'selected' : '' }}>Dalam Pembinaan</option>
+                                            <option value="kasus selesai" {{ old('status', $pembinaan->status) == 'kasus selesai' ? 'selected' : '' }}>Kasus Selesai</option>
                                         </select>
                                         @error('status')
                                         <span class="text-danger">{{ $message }}</span>
@@ -35,7 +36,7 @@
                                     
                                     <div class="mb-3">
                                         <label for="tanggal_mulai">Tanggal Mulai Pembinaan</label>
-                                        <input type="date" class="form-control @error('tanggal_mulai') is-invalid @enderror" id="tanggal_mulai" name="tanggal_mulai" value="{{ old('tanggal_mulai') }}">
+                                        <input type="date" class="form-control @error('tanggal_mulai') is-invalid @enderror" id="tanggal_mulai" name="tanggal_mulai" value="{{ old('tanggal_mulai', $pembinaan->tanggal_mulai) }}">
                                         @error('tanggal_mulai')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -43,7 +44,7 @@
 
                                     <div class="mb-3">
                                         <label for="tanggal_selesai">Tanggal Selesai Pembinaan</label>
-                                        <input type="date" class="form-control @error('tanggal_selesai') is-invalid @enderror" id="tanggal_selesai" name="tanggal_selesai" value="{{ old('tanggal_selesai') }}">
+                                        <input type="date" class="form-control @error('tanggal_selesai') is-invalid @enderror" id="tanggal_selesai" name="tanggal_selesai" value="{{ old('tanggal_selesai', $pembinaan->tanggal_selesai) }}">
                                         @error('tanggal_selesai')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -51,9 +52,9 @@
 
                                     <div class="mb-3">
                                         <label for="id_kasus">Deskripsi Kasus</label>
-                                        <input type="hidden" name="id_kasus" id="id_kasus" value="{{ old('id_kasus') }}">
+                                        <input type="hidden" name="id_kasus" id="id_kasus" value="{{ old('id_kasus', $pembinaan->id_kasus) }}">
                                         <div class="input-group">
-                                            <input type="text" class="form-control @error('id_kasus') is-invalid @enderror" placeholder="Pilih Kasus" id="deskripsi_kasus" name="deskripsi_kasus" value="{{ old('deskripsi_kasus') }}" readonly>
+                                            <input type="text" class="form-control @error('id_kasus') is-invalid @enderror" placeholder="Pilih Kasus" id="deskripsi_kasus" name="deskripsi_kasus" value="{{ old('deskripsi_kasus', $pembinaan->kasus->kasus) }}" readonly>
                                             <div class="input-group-append">
                                                 <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalKasus">Cari Kasus</a>
                                             </div>
@@ -65,9 +66,9 @@
                                     
                                     <div class="mb-3">
                                         <label for="nama_guru">Nama Guru</label>
-                                        <input type="hidden" name="id_guru" id="id_guru" value="{{ old('id_guru') }}">
+                                        <input type="hidden" name="id_guru" id="id_guru" value="{{ old('id_guru', $pembinaan->id_guru) }}">
                                         <div class="input-group">
-                                            <input type="text" class="form-control @error('id_guru') is-invalid @enderror" placeholder="Pilih Guru" id="nama_guru" name="nama_guru" value="{{ old('nama_guru') }}" readonly>
+                                            <input type="text" class="form-control @error('id_guru') is-invalid @enderror" placeholder="Pilih Guru" id="nama_guru" name="nama_guru" value="{{ old('nama_guru', $pembinaan->guru->nama_guru) }}" readonly>
                                             <div class="input-group-append">
                                                 <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalGuru">Cari Guru</a>
                                             </div>
@@ -79,7 +80,7 @@
 
                                     <div class="mb-3">
                                         <label for="durasi">Durasi Pembinaan (hari)</label>
-                                        <input type="number" class="form-control @error('durasi') is-invalid @enderror" id="durasi" name="durasi" value="{{ old('durasi') }}" readonly placeholder="Pilih Tanggal Mulai dan Tanggal Selesai untuk menghitung Durasi Pembinaan">
+                                        <input type="number" class="form-control @error('durasi') is-invalid @enderror" id="durasi" name="durasi" value="{{ old('durasi', $pembinaan->durasi) }}" readonly placeholder="Pilih Tanggal Mulai dan Tanggal Selesai untuk menghitung Durasi Pembinaan">
                                         @error('durasi')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -87,7 +88,7 @@
 
                                     <div class="mb-3">
                                         <label for="note">Catatan</label>
-                                        <textarea class="form-control @error('note') is-invalid @enderror" id="note" name="note" rows="3" placeholder="Catatan">{{ old('note') }}</textarea>
+                                        <textarea class="form-control @error('note') is-invalid @enderror" id="note" name="note" rows="3" placeholder="Catatan">{{ old('note', $pembinaan->note) }}</textarea>
                                         @error('note')
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
