@@ -35,9 +35,9 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control @error('nama_siswa') is-invalid @enderror" placeholder="Nama Siswa" id="nama_siswa" name="nama_siswa" aria-label="nama_siswa" value="{{ old('nama_siswa', $laporanKasus->siswa->nama_lengkap) }}" aria-describedby="cari" readonly>
                                             <div class="input-group-append">
-                                                <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
+                                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
                                                     Cari Siswa
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                         @error('kdsiswa') <span class="text-danger">{{ $message }}</span> @enderror
@@ -137,9 +137,9 @@
                                                                     <td>{{ $s->fkelas->nama_kelas ?? '-' }}</td>
                                                                     <td>{{ $s->fkompetensi->nama_jurusan ?? '-' }}</td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="pilihSiswa('{{ $s->id }}', '{{ $s->nama_lengkap }}')">
+                                                                        <a href="#" class="btn btn-primary btn-xs" onclick="pilih1('{{ $s->id }}', '{{ $s->nama_lengkap }}')" data-bs-toggle="modal">
                                                                             Pilih
-                                                                        </button>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -155,13 +155,6 @@
                                         <a href="{{ route('laporan-kasus.index') }}" class="btn btn-danger">Batal</a>
                                     </div>
                                 </form>
-
-                                <!-- Form Delete -->
-                                <form id="deleteForm" action="{{ route('laporan-kasus.destroy', $laporanKasus->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Hapus</button>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -169,22 +162,17 @@
             </div>
         </div>
     </div>
-
-    <!-- Script untuk Delete Confirmation -->
+@endsection
+@section('script')
     <script>
-        function confirmDelete() {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                document.getElementById('deleteForm').submit();
-            }
-        }
-    </script>
+        $('#example2').DataTable({
+            "responsive": true,
+        });
 
-    <!-- Script untuk Modal Siswa -->
-    <script>
-        function pilihSiswa(id, nama) {
+        function pilih1(id, nama) {
             document.getElementById('kdsiswa').value = id;
             document.getElementById('nama_siswa').value = nama;
-            $('#modalSiswa').modal('hide'); // Tutup modal setelah memilih
+            // $('#staticBackdrop1').modal('hide');
         }
     </script>
 @endsection

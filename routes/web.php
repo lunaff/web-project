@@ -19,7 +19,7 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CalendarController;
 
 use App\Http\Controllers\Dokumentasi\DokumentasiKegiatanController;
-use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController; 
+use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController;
 use App\Http\Controllers\ReportController;
 
 Route::get('/404', function () { return view('404'); })->name('404');

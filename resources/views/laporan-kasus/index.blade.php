@@ -16,7 +16,7 @@
             /* Menurunkan z-index Grid.js supaya tombol di atasnya */
         }
     </style>
-    @endsection
+@endsection
 
 @section('nav')
     @include('dashboard.header')
@@ -42,10 +42,33 @@
                 "Tanggal",
                 "Nama Siswa",
                 "Kasus",
-                { name: "Bukti", formatter: (cell) => cell ? gridjs.html(`<a href="/storage/${cell}" target="_blank">Lihat</a>`) : '-' },
+                {
+                    name: "Bukti",
+                    formatter: (cell) => cell ? gridjs.html(
+                        `<a href="/storage/${cell}" target="_blank">Lihat</a>`) : '-'
+                },
                 "Tindak Lanjut",
-                "Status",
-                { name: "Dampingan BK", formatter: (cell) => cell ? 'Ya' : 'Tidak' },
+                {
+                    name: "Status",
+                    formatter: (cell) => {
+                        let badgeClass = '';
+                        if (cell === 'penanganan_walas') {
+                            badgeClass = 'badge bg-warning';
+                            cell = 'Penanganan Walas';
+                        } else if (cell === 'penanganan_kesiswaan') {
+                            badgeClass = 'badge bg-danger';
+                            cell = 'Penanganan Kesiswaan';
+                        } else if (cell === 'selesai') {
+                            badgeClass = 'badge bg-success';
+                            cell = 'Selesai';
+                        }
+                        return gridjs.html(`<span class="${badgeClass}">${cell}</span>`);
+                    }
+                },
+                {
+                    name: "Dampingan BK",
+                    formatter: (cell) => cell ? 'Ya' : 'Tidak'
+                },
                 "Semester",
                 "Tahun Ajaran",
                 {
