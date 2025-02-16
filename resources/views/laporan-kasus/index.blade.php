@@ -27,25 +27,7 @@
 @section('create', route('laporan-kasus.create'))
 
 @section('main')
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                <div class="container">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3>Data @yield('page')</h3>
-                            <div class="group">
-                                <a href="@yield('create')" class="btn btn-primary">Add New</a>
-                            </div>
-                        </div>
-                        <div class="table-container">
-                            <div id="gridjs"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    @include('table1')
 @endsection
 
 @section('script')
@@ -56,7 +38,7 @@
 
         new gridjs.Grid({
             columns: [
-                { name: "No", formatter: (_, row) => `${row.cells[0].data}.` },
+                // { name: "No", formatter: (_, row) => `${row.cells[0].data}.` },
                 "Tanggal",
                 "Nama Siswa",
                 "Kasus",
@@ -90,13 +72,13 @@
             server: {
                 url: '/laporan-kasus/show',
                 then: data => data.map(item => [
-                    item.no,
+                    // item.no,
                     item.tanggal,
                     item.nama_siswa,
                     item.kasus,
                     item.bukti,
                     item.tindak_lanjut,
-                    item.status,
+                    gridjs.html(`<span class="badge bg-${item.status === 'Selesai' ? 'success' : 'warning'}">${item.status}</span>`),
                     item.dampingan_bk,
                     item.semester,
                     item.tahun_ajaran
