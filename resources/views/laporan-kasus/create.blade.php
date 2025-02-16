@@ -41,10 +41,6 @@
                                                 aria-label="nama_siswa" value="{{ old('nama_siswa') }}"
                                                 aria-describedby="cari" readonly>
                                             <div class="input-group-append">
-                                                {{-- <button class="btn btn-warning" type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#modalSiswa">
-                                                    Cari Siswa
-                                                </button> --}}
                                                 <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
                                                     Cari Siswa
                                                 </a>

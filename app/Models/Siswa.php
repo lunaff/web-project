@@ -56,11 +56,11 @@ class Siswa extends Model
 
     public function pelanggaran()
     {
-        return $this->belongsToMany(Pelanggaran::class, 'pelanggaran_siswa');
+        return $this->belongsToMany(Pelanggaran::class, 'pelanggaran_siswa', 'siswa_nis', 'pelanggaran_id');
     }
 
     public function laporanKasus()
-{
-    return $this->hasMany(LaporanKasus::class, 'kdsiswa', 'id'); // Relasi ke model LaporanKasus
-}
+    {
+        return $this->hasMany(LaporanKasus::class, 'kdsiswa', 'id'); // Relasi ke model LaporanKasus
+    }
 }

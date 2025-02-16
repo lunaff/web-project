@@ -16,14 +16,15 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="card-title mb-0">Add New Data Pelanggaran</h4>
+                            <h4 class="card-title mb-0">Edit Data Pelanggaran</h4>
                         </div>
                         <div class="card-body">
-                            <form action="{{ route('pelanggaran.store') }}" method="post" enctype="multipart/form-data">
+                            <form action="{{ route('pelanggaran.update', $pelanggaran->id) }}" method="post" enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="mb-3">
                                     <label for="tanggal">Tanggal</label>
-                                    <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal') }}">
+                                    <input type="date" class="form-control @error('tanggal') is-invalid @enderror" id="tanggal" name="tanggal" value="{{ old('tanggal', $pelanggaran->tanggal) }}">
                                     @error('tanggal') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
@@ -31,17 +32,17 @@
                                     <label for="jenis">Jenis</label>
                                     <select class="form-select @error('jenis') is-invalid @enderror" id="jenis" name="jenis">
                                         <option value="" selected hidden>Pilih Jenis Pelanggaran</option>
-                                        <option value="terlambat" @if(old('jenis')=='terlambat') selected @endif>Terlambat</option>
-                                        <option value="perilaku" @if(old('jenis')=='perilaku') selected @endif>Perilaku</option>
-                                        <option value="penampilan" @if(old('jenis')=='penampilan') selected @endif>Penampilan</option>
-                                        <option value="asusila" @if(old('jenis')=='asusila') selected @endif>Asusila</option>
+                                        <option value="terlambat" @if(old('jenis', $pelanggaran->jenis)=='terlambat') selected @endif>Terlambat</option>
+                                        <option value="perilaku" @if(old('jenis', $pelanggaran->jenis)=='perilaku') selected @endif>Perilaku</option>
+                                        <option value="penampilan" @if(old('jenis', $pelanggaran->jenis)=='penampilan') selected @endif>Penampilan</option>
+                                        <option value="asusila" @if(old('jenis', $pelanggaran->jenis)=='asusila') selected @endif>Asusila</option>
                                     </select>
                                     @error('jenis') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="keterangan">Keterangan</label>
-                                    <textarea rows="5" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan">{{ old('keterangan') }}</textarea>
+                                    <textarea rows="5" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan" name="keterangan">{{ old('keterangan', $pelanggaran->keterangan) }}</textarea>
                                     @error('keterangan') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
@@ -52,21 +53,14 @@
                                         Pilih Siswa
                                     </button>
                                     <div id="selectedSiswa" class="mt-2">
-                                        @if(old('siswa_ids'))
-                                            @foreach(old('siswa_ids') as $nis)
-                                                @php $siswaObj = $siswa->where('nis', $nis)->first(); @endphp
-                                                @if($siswaObj)
-                                                    <span class="badge bg-primary me-1" data-nis="{{ $nis }}">{{ $siswaObj->nama_lengkap }}</span>
-                                                @endif
-                                            @endforeach
-                                        @endif
+                                        @foreach($pelanggaran->siswa as $siswaItem)
+                                            <span class="badge bg-primary me-1" data-nis="{{ $siswaItem->nis }}">{{ $siswaItem->nama_lengkap }}</span>
+                                        @endforeach
                                     </div>
                                     <div id="selectedSiswaInputs">
-                                        @if(old('siswa_ids'))
-                                            @foreach(old('siswa_ids') as $nis)
-                                                <input type="hidden" name="siswa_ids[]" value="{{ $nis }}">
-                                            @endforeach
-                                        @endif
+                                        @foreach($pelanggaran->siswa as $siswaItem)
+                                            <input type="hidden" name="siswa_ids[]" value="{{ $siswaItem->nis }}">
+                                        @endforeach
                                     </div>
                                     @error('siswa_ids') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
@@ -74,12 +68,21 @@
                                 <div class="mb-3">
                                     <label for="bukti" class="form-label">Bukti (opsional)</label>
                                     <input type="file" id="bukti" name="bukti" class="form-control">
+                                    @if($pelanggaran->bukti)
+                                        <div class="mt-2">
+                                            <a href="{{ asset('storage/' . $pelanggaran->bukti) }}" target="_blank">Lihat Bukti</a>
+                                            <div class="form-check mt-1">
+                                                <input class="form-check-input" type="checkbox" name="hapus_bukti" id="hapusBukti">
+                                                <label class="form-check-label" for="hapusBukti">Hapus Bukti</label>
+                                            </div>
+                                        </div>
+                                    @endif
                                     @error('bukti') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="sanksi">Sanksi</label>
-                                    <input type="text" class="form-control @error('sanksi') is-invalid @enderror" id="sanksi" name="sanksi" value="{{ old('sanksi') }}">
+                                    <input type="text" class="form-control @error('sanksi') is-invalid @enderror" id="sanksi" name="sanksi" value="{{ old('sanksi', $pelanggaran->sanksi) }}">
                                     @error('sanksi') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
 
@@ -96,7 +99,7 @@
     </div>
 </div>
 
-<!-- Modal untuk memilih siswa -->
+<!-- Modal untuk memilih siswa (sama seperti di create) -->
 <div class="modal fade" id="siswaModal" tabindex="-1" aria-labelledby="siswaModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -148,7 +151,6 @@ function saveSelectedSiswa(){
         selectedSiswaContainer.innerHTML += `<span class="badge bg-primary me-1" data-nis="${nis}">${nama}</span>`;
         selectedSiswaInputs.innerHTML += `<input type="hidden" name="siswa_ids[]" value="${nis}">`;
     });
-    // Tutup modal
     var siswaModalEl = document.getElementById('siswaModal');
     var modal = bootstrap.Modal.getInstance(siswaModalEl);
     modal.hide();

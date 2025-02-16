@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('pelanggaran_siswa', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pelanggaran_id');
-            $table->unsignedBigInteger('siswa_id');
+            $table->string('siswa_nis'); // Menggunakan 'siswa_nis' bukan 'siswa_id'
+            $table->timestamps();
+
             // Foreign Key Constraints
             $table->foreign('pelanggaran_id')->references('id')->on('pelanggaran')->onDelete('cascade');
-            $table->foreign('siswa_id')->references('id')->on('siswa')->onDelete('cascade');
-            $table->timestamps();
+            $table->foreign('siswa_nis')->references('nis')->on('siswa')->onDelete('cascade'); // Sesuai primary key siswa
         });
     }
 
