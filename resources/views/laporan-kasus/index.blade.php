@@ -67,7 +67,7 @@
                     formatter: (cell, row) => gridjs.html(`
                         <td>
                             <div style="display: flex; gap: 10px;">
-                                <a href="${editUrlBase.replace('__laporan_kasus_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
+                                <a href="${editUrlBase.replace('__laporan_kasus_id__', row.cells[10].data)}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
                                 ${row.cells[6].data ? `
