@@ -31,7 +31,12 @@
                 "Nama Siswa",
                 "Kasus",
                 "Solusi",
-                "Surat",
+                {
+                    name: "Surat",
+                    formatter: (cell) => {
+                        return cell ? gridjs.html(`<a href="{{ asset('storage') }}/${cell}" target="_blank">Lihat Surat</a>`) : 'Tidak ada surat';
+                    }
+                },
                 {
                     name: "Dokumentasi",
                     formatter: (cell) => {

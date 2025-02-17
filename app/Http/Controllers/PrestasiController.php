@@ -31,6 +31,7 @@ class PrestasiController extends Controller
                 'id' => $prestasi->id,
                 'tanggal' => $prestasi->tanggal,
                 'jenis' => $prestasi->jenis,
+                'tingkat' => $prestasi->tingkat,
                 'deskripsi' => $prestasi->deskripsi,
                 'siswa_id' => $prestasi->siswa->nama_lengkap ?? '-',
                 'tanggal_dokumentasi' => $prestasi->tanggal_dokumentasi,
@@ -52,6 +53,7 @@ class PrestasiController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'jenis' => 'required|in:akademik,non-akademik',
+            'tingkat' => 'required|in:Nasional,Provinsi,Internasional,Kabupaten/Kota',
             'deskripsi' => 'nullable|string',
             'siswa_id' => 'required|exists:siswa,id',
             'tanggal_dokumentasi' => 'nullable|date',
@@ -60,6 +62,7 @@ class PrestasiController extends Controller
         Prestasi::create([
             'tanggal' => $request->tanggal,
             'jenis' => $request->jenis,
+            'tingkat' => $request->tingkat,
             'deskripsi' => $request->deskripsi,
             'siswa_id' => $request->siswa_id,
             'tanggal_dokumentasi' => $request->tanggal_dokumentasi,
@@ -80,6 +83,7 @@ class PrestasiController extends Controller
         $request->validate([
             'tanggal' => 'required|date',
             'jenis' => 'required|in:akademik,non-akademik',
+            'tingkat' => 'required|in:Nasional,Provinsi,Internasional,Kabupaten/Kota',
             'deskripsi' => 'nullable|string',
             'siswa_id' => 'required|exists:siswa,id',
             'tanggal_dokumentasi' => 'nullable|date',
@@ -90,6 +94,7 @@ class PrestasiController extends Controller
         $prestasi->update([
             'tanggal' => $request->tanggal,
             'jenis' => $request->jenis,
+            'tingkat' => $request->tingkat,
             'deskripsi' => $request->deskripsi,
             'siswa_id' => $request->siswa_id,
             'tanggal_dokumentasi' => $request->tanggal_dokumentasi,

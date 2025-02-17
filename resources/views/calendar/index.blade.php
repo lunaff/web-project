@@ -19,7 +19,7 @@
                             <div class="card card-h-100">
                                 <div class="card-body">
                                     <button class="btn btn-primary w-100" id="btn-new-event"><i class="mdi mdi-plus"></i> Create New Schedule</button>
-                                    <div id="external-events">
+                                    {{-- <div id="external-events">
                                         <br>
                                         <div class="external-event fc-event bg-success" data-class="bg-success">
                                             <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>New Event Planning
@@ -33,7 +33,7 @@
                                         <div class="external-event fc-event bg-danger" data-class="bg-danger">
                                             <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>Create New theme
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row justify-content-center mt-5">
                                         <img src="assets/images/calendar-img.png" alt="" class="img-fluid d-block">
                                     </div>

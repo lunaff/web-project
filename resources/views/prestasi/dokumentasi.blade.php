@@ -20,7 +20,16 @@
                         </div>
                         <div class="card-body">
                             <div class="mt-4">
-                                <h5 class="font-size-13 mb-2">{{ $prestasi->nama }} ({{ $prestasi->tanggal }})</h5>
+                                <h5 class="font-size-13 mb-2">
+                                    @if (!empty(trim($prestasi->siswa->nama_lengkap)) && !empty(trim($prestasi->deskripsi)))
+                                        {{ $prestasi->siswa->nama_lengkap }} - {{ $prestasi->deskripsi }}
+                                    @elseif (!empty(trim($prestasi->siswa->nama_lengkap)))
+                                        {{ $prestasi->siswa->nama_lengkap }}
+                                    @elseif (!empty(trim($prestasi->deskripsi)))
+                                        {{ $prestasi->deskripsi }}
+                                    @endif
+                                    - {{ $prestasi->tanggal }}
+                                </h5>
                                 <div class="bg-light-subtle p-3 text-center">
                                     <div class="row align-items-center" style="min-height: 6rem;">
                                         @foreach ($prestasi->dokumentasi as $foto)
