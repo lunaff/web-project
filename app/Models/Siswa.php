@@ -27,6 +27,7 @@ class Siswa extends Model
         'no_hp',
         'email',
         'nisn',
+        'jk',
         'tahun_masuk',
         'nama_ayah',
         'nama_ibu',
