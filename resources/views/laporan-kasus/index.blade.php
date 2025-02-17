@@ -25,25 +25,25 @@
 @section('create', route('laporan-kasus.create'))
 
 @section('main')
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                <div class="container">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h3>Data @yield('page')</h3>
-                            <div class="group">
-                                <a href="@yield('create')" class="btn btn-primary">Add New</a>
-                            </div>
+<div class="main-content">
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="container">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h3>Data @yield('page')</h3>
+                        <div class="group">
+                            <a href="@yield('create')" class="btn btn-primary">Add New</a>
                         </div>
-                        <div class="table-container">
-                            <div id="gridjs"></div>
-                        </div>
+                    </div>
+                    <div class="table-container">
+                        <div id="gridjs"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @endsection
 
 @section('script')
@@ -53,7 +53,8 @@
         const deleteUrl = "{{ route('laporan-kasus.destroy', ['laporan_kasus' => '__laporan_kasus_id__']) }}";
 
         new gridjs.Grid({
-            columns: [{
+            columns: [
+                {
                     name: "No",
                     formatter: (_, row) => `${row.cells[0].data}.`
                 },

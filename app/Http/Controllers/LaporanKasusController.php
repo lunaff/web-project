@@ -25,22 +25,23 @@ class LaporanKasusController extends Controller
 
     // Menyimpan laporan kasus baru ke database
     public function store(Request $request)
-    {
-        $request->validate([
-            'kdsiswa' => 'required|exists:siswa,id',
-            'tanggal' => 'required|date',
-            'kasus' => 'required|string',
-            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,mp4',
-            'tindak_lanjut' => 'required|string',
-            'status_kasus' => 'required|in:penanganan_walas,penanganan_kesiswaan,selesai',
-            'dampingan_bk' => 'required|boolean',
-            'semester' => 'required|in:Ganjil,Genap',
-            'tahun_ajaran' => 'required|string',
-        ]);
+{
+    $request->validate([
+        'kdsiswa' => 'required|exists:siswa,id',
+        'tanggal' => 'required|date',
+        'kasus' => 'required|string',
+        'bukti' => 'nullable|file|mimes:jpg,jpeg,png,mp4',
+        'tindak_lanjut' => 'required|string',
+        'status_kasus' => 'required|in:penanganan_walas,penanganan_kesiswaan,selesai', // Validasi pakai status_kasus
+        'dampingan_bk' => 'required|boolean',
+        'semester' => 'required|in:Ganjil,Genap',
+        'tahun_ajaran' => 'required|string',
+    ]);
 
-        $data = $request->all();
-        $data['status'] = $data['status_kasus'];
-        unset($data['status_kasus']);
+    // Mapping `status_kasus` ke `status`
+    $data = $request->all();
+    $data['status'] = $data['status_kasus']; // Sesuaikan dengan field di database
+    unset($data['status_kasus']); // Hapus key `status_kasus` agar tidak ada data berlebih
 
         if ($request->hasFile('bukti')) {
             $data['bukti'] = $request->file('bukti')->store('bukti', 'public');
@@ -48,10 +49,11 @@ class LaporanKasusController extends Controller
 
         LaporanKasus::create($data);
 
-        return redirect()->route('laporan-kasus.index')->with('success', 'Laporan kasus berhasil ditambahkan.');
-    }
+    return redirect()->route('laporan-kasus.index')->with('success', 'Laporan kasus berhasil ditambahkan.');
+}
 
-    // Menampilkan form edit laporan kasus
+
+    // Menampilkan form untuk mengedit laporan kasus
     public function edit(LaporanKasus $laporanKasus)
 {
     $siswa = Siswa::with(['fkelas', 'fkompetensi'])->get();
@@ -127,6 +129,7 @@ class LaporanKasusController extends Controller
                 'dampingan_bk' => $item->dampingan_bk,
                 'semester' => $item->semester,
                 'tahun_ajaran' => $item->tahun_ajaran,
+                // 'status' => $this->getStatusLabel($item->status),
                 'status' => $item->status,
                 'id' => $item->id
             ];
@@ -134,4 +137,15 @@ class LaporanKasusController extends Controller
 
         return response()->json($data);
     }
+
+    // private function getStatusLabel($status)
+    // {
+    //     $statusMap = [
+    //         'penanganan_walas' => 'Penanganan Walas',
+    //         'penanganan_kesiswaan' => 'Penanganan Kesiswaan',
+    //         'selesai' => 'Selesai',
+    //     ];
+
+    //     return $statusMap[$status] ?? 'Tidak Diketahui';
+    // }
 }

@@ -15,7 +15,7 @@
 @section('create', route('prestasi.create'))
 
 @section('main')
-    @include('table')
+    @include('table1')
 @endsection
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>

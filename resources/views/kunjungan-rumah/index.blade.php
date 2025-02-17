@@ -15,7 +15,7 @@
 @section('create', route('kunjungan-rumah.create'))
 
 @section('main')
-    @include('table')
+    @include('table1')
 @endsection
 
 @section('script')
