@@ -51,9 +51,9 @@
 
                                     <div class="mb-3">
                                         <label for="id_kasus">Deskripsi Kasus</label>
-                                        <input type="hidden" name="id_kasus" id="id_kasus" value="{{ old('id_kasus') }}">
+                                        <input type="hidden" name="id_kasus" id="id_kasus" value="{{ old('id_kasus', $selectedKasus->kasus ?? '') }}">
                                         <div class="input-group">
-                                            <input type="text" class="form-control @error('id_kasus') is-invalid @enderror" placeholder="Pilih Kasus" id="deskripsi_kasus" name="deskripsi_kasus" value="{{ old('deskripsi_kasus') }}" readonly>
+                                            <input type="text" class="form-control @error('id_kasus') is-invalid @enderror" placeholder="Pilih Kasus" id="deskripsi_kasus" name="deskripsi_kasus" value="{{ old('deskripsi_kasus', $selectedKasus->kasus ?? '') }}" readonly>
                                             <div class="input-group-append">
                                                 <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalKasus">Cari Kasus</a>
                                             </div>

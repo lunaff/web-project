@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LaporanKasusController extends Controller
 {
@@ -51,7 +52,6 @@ class LaporanKasusController extends Controller
 
     return redirect()->route('laporan-kasus.index')->with('success', 'Laporan kasus berhasil ditambahkan.');
 }
-
 
     // Menampilkan form untuk mengedit laporan kasus
     public function edit(LaporanKasus $laporanKasus)
@@ -116,7 +116,12 @@ class LaporanKasusController extends Controller
     // Mengambil data laporan kasus untuk GridJS
     public function show()
     {
-        $laporanKasus = LaporanKasus::with('siswa')->get();
+        if (Auth::user()->level == 'bk') {
+            $laporanKasus = LaporanKasus::where('dampingan_bk', true)->with('siswa')->get();
+        }
+        else {
+            $laporanKasus = LaporanKasus::with('siswa')->get();
+        }
 
         $data = $laporanKasus->map(function ($item, $index) {
             return [
@@ -129,8 +134,7 @@ class LaporanKasusController extends Controller
                 'dampingan_bk' => $item->dampingan_bk,
                 'semester' => $item->semester,
                 'tahun_ajaran' => $item->tahun_ajaran,
-                // 'status' => $this->getStatusLabel($item->status),
-                'status' => $item->status,
+                'status' => $this->getStatusLabel($item->status),
                 'id' => $item->id
             ];
         });
@@ -138,14 +142,14 @@ class LaporanKasusController extends Controller
         return response()->json($data);
     }
 
-    // private function getStatusLabel($status)
-    // {
-    //     $statusMap = [
-    //         'penanganan_walas' => 'Penanganan Walas',
-    //         'penanganan_kesiswaan' => 'Penanganan Kesiswaan',
-    //         'selesai' => 'Selesai',
-    //     ];
+    private function getStatusLabel($status)
+    {
+        $statusMap = [
+            'penanganan_walas' => 'Penanganan Walas',
+            'penanganan_kesiswaan' => 'Penanganan Kesiswaan',
+            'selesai' => 'Selesai',
+        ];
 
-    //     return $statusMap[$status] ?? 'Tidak Diketahui';
-    // }
+        return $statusMap[$status] ?? 'Tidak Diketahui';
+    }
 }
