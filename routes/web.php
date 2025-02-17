@@ -19,7 +19,7 @@ use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CalendarController;
 
 use App\Http\Controllers\Dokumentasi\DokumentasiKegiatanController;
-use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController; 
+use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController;
 use App\Http\Controllers\ReportController;
 
 Route::get('/404', function () { return view('404'); })->name('404');
@@ -68,7 +68,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('kegiatan', KegiatanController::class);
     Route::resource('pembinaan', PembinaanController::class);
     Route::resource('pelanggaran', PelanggaranController::class);
-    Route::resource('laporan-kasus', LaporanKasusController::class);
+    Route::resource('laporan-kasus', LaporanKasusController::class)->parameters([
+        'laporan-kasus' => 'laporan_kasus'
+    ]);
     Route::resource('kunjungan-rumah', KunjunganRumahController::class);
     Route::resource('calendar', CalendarController::class);
 

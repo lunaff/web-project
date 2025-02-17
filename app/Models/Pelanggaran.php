@@ -15,10 +15,13 @@ class Pelanggaran extends Model
         'jenis',
         'keterangan',
         'bukti',
-        'sanksi'];
+        'sanksi'
+    ];
 
+    // Relasi many-to-many ke Siswa dengan pivot kolom siswa_nis
     public function siswa()
     {
-        return $this->belongsToMany(Siswa::class, 'pelanggaran_siswa');
+        return $this->belongsToMany(Siswa::class, 'pelanggaran_siswa', 'pelanggaran_id', 'siswa_nis');
     }
+
 }

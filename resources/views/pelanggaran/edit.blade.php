@@ -16,15 +16,18 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center">
-                                <h4 class="card-title mb-0">Add New Data Pelanggaran</h4>
+                                <h4 class="card-title mb-0">Edit Data Pelanggaran</h4>
                             </div>
                             <div class="card-body">
-                                <form action="{{ route('pelanggaran.store') }}" method="post" enctype="multipart/form-data">
+                                <form action="{{ route('pelanggaran.update', $pelanggaran->id) }}" method="post"
+                                    enctype="multipart/form-data">
                                     @csrf
+                                    @method('PUT')
                                     <div class="mb-3">
                                         <label for="tanggal">Tanggal</label>
                                         <input type="date" class="form-control @error('tanggal') is-invalid @enderror"
-                                            id="tanggal" name="tanggal" value="{{ old('tanggal') }}">
+                                            id="tanggal" name="tanggal"
+                                            value="{{ old('tanggal', $pelanggaran->tanggal) }}">
                                         @error('tanggal')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -35,13 +38,13 @@
                                         <select class="form-select @error('jenis') is-invalid @enderror" id="jenis"
                                             name="jenis">
                                             <option value="" selected hidden>Pilih Jenis Pelanggaran</option>
-                                            <option value="terlambat" @if (old('jenis') == 'terlambat') selected @endif>
+                                            <option value="terlambat" @if (old('jenis', $pelanggaran->jenis) == 'terlambat') selected @endif>
                                                 Terlambat</option>
-                                            <option value="perilaku" @if (old('jenis') == 'perilaku') selected @endif>
+                                            <option value="perilaku" @if (old('jenis', $pelanggaran->jenis) == 'perilaku') selected @endif>
                                                 Perilaku</option>
-                                            <option value="penampilan" @if (old('jenis') == 'penampilan') selected @endif>
+                                            <option value="penampilan" @if (old('jenis', $pelanggaran->jenis) == 'penampilan') selected @endif>
                                                 Penampilan</option>
-                                            <option value="asusila" @if (old('jenis') == 'asusila') selected @endif>
+                                            <option value="asusila" @if (old('jenis', $pelanggaran->jenis) == 'asusila') selected @endif>
                                                 Asusila</option>
                                         </select>
                                         @error('jenis')
@@ -52,7 +55,7 @@
                                     <div class="mb-3">
                                         <label for="keterangan">Keterangan</label>
                                         <textarea rows="5" class="form-control @error('keterangan') is-invalid @enderror" id="keterangan"
-                                            name="keterangan">{{ old('keterangan') }}</textarea>
+                                            name="keterangan">{{ old('keterangan', $pelanggaran->keterangan) }}</textarea>
                                         @error('keterangan')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -62,21 +65,32 @@
                                     <div class="mb-3">
                                         <label for="kdsiswa">Nama Siswa</label>
                                         <input type="hidden" name="siswa_ids" id="kdsiswa"
-                                            value="{{ old('siswa_ids') ? implode(',', (array) old('siswa_ids')) : '' }}">
+                                            value="{{ old('siswa_ids', isset($pelanggaran) ? implode(',', $pelanggaran->siswa->pluck('nis')->toArray()) : '') }}">
 
                                         <div class="input-group">
                                             <div class="form-control d-flex flex-wrap align-items-center"
                                                 id="nama_siswa_container" style="min-height: 38px;">
-                                                @if (old('siswa_ids'))
-                                                    @foreach ((array) old('siswa_ids') as $nis)
+                                                @php
+                                                    $selectedSiswa = old('siswa_ids')
+                                                        ? explode(',', old('siswa_ids'))
+                                                        : (isset($pelanggaran)
+                                                            ? $pelanggaran->siswa->pluck('nis')->toArray()
+                                                            : []);
+                                                @endphp
+
+                                                @foreach ($selectedSiswa as $nis)
+                                                    @php
+                                                        $siswaData = $siswa->where('nis', $nis)->first();
+                                                    @endphp
+                                                    @if ($siswaData)
                                                         <span class="badge bg-primary me-1 siswa-badge"
                                                             data-nis="{{ $nis }}">
-                                                            {{ $siswa->where('nis', $nis)->first()->nama_lengkap ?? '' }}
+                                                            {{ $siswaData->nama_lengkap }}
                                                             <button type="button" class="btn-close btn-sm btn-remove-siswa"
                                                                 data-nis="{{ $nis }}"></button>
                                                         </span>
-                                                    @endforeach
-                                                @endif
+                                                    @endif
+                                                @endforeach
                                             </div>
                                             <div class="input-group-append">
                                                 <button type="button" class="btn btn-warning" data-bs-toggle="modal"
@@ -87,9 +101,21 @@
                                         </div>
                                     </div>
 
+
                                     <div class="mb-3">
                                         <label for="bukti" class="form-label">Bukti (opsional)</label>
                                         <input type="file" id="bukti" name="bukti" class="form-control">
+                                        @if ($pelanggaran->bukti)
+                                            <div class="mt-2">
+                                                <a href="{{ asset('storage/' . $pelanggaran->bukti) }}"
+                                                    target="_blank">Lihat Bukti</a>
+                                                <div class="form-check mt-1">
+                                                    <input class="form-check-input" type="checkbox" name="hapus_bukti"
+                                                        id="hapusBukti">
+                                                    <label class="form-check-label" for="hapusBukti">Hapus Bukti</label>
+                                                </div>
+                                            </div>
+                                        @endif
                                         @error('bukti')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -98,7 +124,8 @@
                                     <div class="mb-3">
                                         <label for="sanksi">Sanksi</label>
                                         <input type="text" class="form-control @error('sanksi') is-invalid @enderror"
-                                            id="sanksi" name="sanksi" value="{{ old('sanksi') }}">
+                                            id="sanksi" name="sanksi"
+                                            value="{{ old('sanksi', $pelanggaran->sanksi) }}">
                                         @error('sanksi')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
@@ -140,7 +167,8 @@
                                 <tr>
                                     <td>
                                         <input type="checkbox" class="siswa-checkbox" value="{{ $s->nis }}"
-                                            data-nama="{{ $s->nama_lengkap }}">
+                                            data-nama="{{ $s->nama_lengkap }}"
+                                            @if (in_array($s->nis, $selectedSiswa)) checked @endif>
                                     </td>
                                     <td>{{ $s->nis }}</td>
                                     <td>{{ $s->nama_lengkap }}</td>
@@ -163,7 +191,22 @@
         document.addEventListener("DOMContentLoaded", function() {
             let selectedSiswa = [];
 
-            // Fungsi untuk memperbarui tampilan daftar siswa di form
+            function loadSelectedSiswa() {
+                let siswaInput = document.getElementById("kdsiswa").value;
+                let siswaArray = siswaInput ? siswaInput.split(",") : [];
+
+                selectedSiswa = siswaArray.map(nis => {
+                    let nama = document.querySelector(`.siswa-checkbox[value="${nis}"]`)?.getAttribute(
+                        "data-nama") || "";
+                    return {
+                        nis,
+                        nama
+                    };
+                });
+
+                updateSiswaContainer();
+            }
+
             function updateSiswaContainer() {
                 let container = document.getElementById("nama_siswa_container");
                 container.innerHTML = "";
@@ -179,10 +222,12 @@
                 `;
                     container.innerHTML += badgeHtml;
                 });
+
                 document.getElementById("kdsiswa").value = selectedSiswa.map(s => s.nis).join(",");
             }
 
-            // Menyimpan pilihan siswa dari modal ke form
+            loadSelectedSiswa();
+
             document.getElementById("btnSimpanSiswa").addEventListener("click", function() {
                 selectedSiswa = [];
                 document.querySelectorAll("#siswaTableBody .siswa-checkbox:checked").forEach(checkbox => {
@@ -196,16 +241,14 @@
 
                 updateSiswaContainer();
                 let modal = bootstrap.Modal.getInstance(document.getElementById('modalSiswa'));
-                modal.hide(); // Menutup modal setelah menyimpan
+                modal.hide();
             });
 
-            // Hapus siswa dari daftar yang dipilih
             document.getElementById("nama_siswa_container").addEventListener("click", function(e) {
                 if (e.target.classList.contains("btn-remove-siswa")) {
                     let nis = e.target.getAttribute("data-nis");
                     selectedSiswa = selectedSiswa.filter(s => s.nis !== nis);
 
-                    // Uncheck checkbox di modal jika siswa dihapus dari form
                     let checkbox = document.querySelector(`.siswa-checkbox[value="${nis}"]`);
                     if (checkbox) checkbox.checked = false;
 
@@ -213,7 +256,6 @@
                 }
             });
 
-            // Fungsi pencarian siswa di modal
             document.getElementById("searchSiswa").addEventListener("keyup", function() {
                 let searchText = this.value.toLowerCase();
                 document.querySelectorAll("#siswaTableBody tr").forEach(row => {
@@ -224,13 +266,11 @@
                 });
             });
 
-            // Pilih semua checkbox
             document.getElementById("selectAll").addEventListener("change", function() {
                 let isChecked = this.checked;
                 document.querySelectorAll(".siswa-checkbox").forEach(cb => cb.checked = isChecked);
             });
 
-            // Sinkronisasi modal dengan data yang sudah dipilih
             function syncModalCheckboxes() {
                 document.querySelectorAll(".siswa-checkbox").forEach(checkbox => {
                     let nis = checkbox.value;
@@ -238,14 +278,8 @@
                 });
             }
 
-            // Saat modal dibuka, sinkronkan checkbox dengan daftar siswa yang dipilih
             document.getElementById("modalSiswa").addEventListener("shown.bs.modal", function() {
                 syncModalCheckboxes();
-            });
-
-            // Saat modal ditutup, tetap perbarui daftar siswa
-            document.getElementById("modalSiswa").addEventListener("hidden.bs.modal", function() {
-                updateSiswaContainer();
             });
 
         });

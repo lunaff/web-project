@@ -35,9 +35,9 @@
                                         <div class="input-group">
                                             <input type="text" class="form-control @error('nama_siswa') is-invalid @enderror" placeholder="Nama Siswa" id="nama_siswa" name="nama_siswa" aria-label="nama_siswa" value="{{ old('nama_siswa', $laporanKasus->siswa->nama_lengkap) }}" aria-describedby="cari" readonly>
                                             <div class="input-group-append">
-                                                <button class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
+                                                <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
                                                     Cari Siswa
-                                                </button>
+                                                </a>
                                             </div>
                                         </div>
                                         @error('kdsiswa') <span class="text-danger">{{ $message }}</span> @enderror
@@ -50,28 +50,24 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="bukti" class="form-label">Bukti</label>
-                                        <input type="file" id="bukti" name="bukti" class="form-control" placeholder="Bukti" aria-label="Bukti">
+                                        <label for="bukti" class="form-label">Bukti (opsional)</label>
+                                        <input type="file" id="bukti" name="bukti" class="form-control">
                                         @if($laporanKasus->bukti)
-                                            <a href="{{ asset('storage/' . $laporanKasus->bukti) }}" target="_blank">Lihat Bukti</a>
+                                            <div class="mt-2">
+                                                <a href="{{ asset('storage/' . $laporanKasus->bukti) }}" target="_blank">Lihat Bukti</a>
+                                                <div class="form-check mt-1">
+                                                    <input class="form-check-input" type="checkbox" name="hapus_bukti" id="hapusBukti" value="1">
+                                                    <label class="form-check-label" for="hapusBukti">Hapus Bukti</label>
+                                                </div>
+                                            </div>
                                         @endif
+                                        @error('bukti') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="tindak_lanjut">Tindak Lanjut</label>
                                         <input type="text" class="form-control @error('tindak_lanjut') is-invalid @enderror" id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut" value="{{ old('tindak_lanjut', $laporanKasus->tindak_lanjut) }}">
                                         @error('tindak_lanjut') <span class="text-danger">{{ $message }}</span> @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="status">Status</label>
-                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus" name="status">
-                                            <option value="" selected hidden>Pilih Status</option>
-                                            <option value="penanganan_walas" @if(old('status', $laporanKasus->status) == 'penanganan_walas') selected @endif>Penanganan Walas</option>
-                                            <option value="penanganan_kesiswaan" @if(old('status', $laporanKasus->status) == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan</option>
-                                            <option value="selesai" @if(old('status', $laporanKasus->status) == 'selesai') selected @endif>Selesai</option>
-                                        </select>
-                                        @error('status') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
                                     <div class="mb-3">
@@ -108,6 +104,17 @@
                                         @error('tahun_ajaran') <span class="text-danger">{{ $message }}</span> @enderror
                                     </div>
 
+                                    <div class="mb-3">
+                                        <label for="status">Status</label>
+                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus" name="status">
+                                            <option value="" selected hidden>Pilih Status</option>
+                                            <option value="penanganan_walas" @if(old('status', $laporanKasus->status) == 'penanganan_walas') selected @endif>Penanganan Walas</option>
+                                            <option value="penanganan_kesiswaan" @if(old('status', $laporanKasus->status) == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan</option>
+                                            <option value="selesai" @if(old('status', $laporanKasus->status) == 'selesai') selected @endif>Selesai</option>
+                                        </select>
+                                        @error('status') <span class="text-danger">{{ $message }}</span> @enderror
+                                    </div>
+
                                     <!-- Modal Siswa -->
                                     <div class="modal fade" id="modalSiswa" tabindex="-1" aria-labelledby="modalSiswaLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
@@ -137,9 +144,9 @@
                                                                     <td>{{ $s->fkelas->nama_kelas ?? '-' }}</td>
                                                                     <td>{{ $s->fkompetensi->nama_jurusan ?? '-' }}</td>
                                                                     <td>
-                                                                        <button type="button" class="btn btn-primary btn-sm" onclick="pilihSiswa('{{ $s->id }}', '{{ $s->nama_lengkap }}')">
+                                                                        <a href="#" class="btn btn-primary btn-xs" onclick="pilih1('{{ $s->id }}', '{{ $s->nama_lengkap }}')" data-bs-toggle="modal">
                                                                             Pilih
-                                                                        </button>
+                                                                        </a>
                                                                     </td>
                                                                 </tr>
                                                             @endforeach
@@ -155,13 +162,6 @@
                                         <a href="{{ route('laporan-kasus.index') }}" class="btn btn-danger">Batal</a>
                                     </div>
                                 </form>
-
-                                <!-- Form Delete -->
-                                <form id="deleteForm" action="{{ route('laporan-kasus.destroy', $laporanKasus->id) }}" method="POST" style="display: inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="button" class="btn btn-danger" onclick="confirmDelete()">Hapus</button>
-                                </form>
                             </div>
                         </div>
                     </div>
@@ -169,22 +169,17 @@
             </div>
         </div>
     </div>
-
-    <!-- Script untuk Delete Confirmation -->
+@endsection
+@section('script')
     <script>
-        function confirmDelete() {
-            if (confirm('Apakah Anda yakin ingin menghapus data ini?')) {
-                document.getElementById('deleteForm').submit();
-            }
-        }
-    </script>
+        $('#example2').DataTable({
+            "responsive": true,
+        });
 
-    <!-- Script untuk Modal Siswa -->
-    <script>
-        function pilihSiswa(id, nama) {
+        function pilih1(id, nama) {
             document.getElementById('kdsiswa').value = id;
             document.getElementById('nama_siswa').value = nama;
-            $('#modalSiswa').modal('hide'); // Tutup modal setelah memilih
+            // $('#staticBackdrop1').modal('hide');
         }
     </script>
 @endsection

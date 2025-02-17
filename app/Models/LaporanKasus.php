@@ -24,7 +24,6 @@ class LaporanKasus extends Model
     ];
 
     protected $casts = [
-        'tanggal' => 'date',
         'dampingan_bk' => 'boolean',
     ];
 

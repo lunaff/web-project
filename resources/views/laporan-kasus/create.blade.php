@@ -41,10 +41,6 @@
                                                 aria-label="nama_siswa" value="{{ old('nama_siswa') }}"
                                                 aria-describedby="cari" readonly>
                                             <div class="input-group-append">
-                                                {{-- <button class="btn btn-warning" type="button" data-bs-toggle="modal"
-                                                    data-bs-target="#modalSiswa">
-                                                    Cari Siswa
-                                                </button> --}}
                                                 <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalSiswa">
                                                     Cari Siswa
                                                 </a>
@@ -76,24 +72,6 @@
                                             id="tindak_lanjut" placeholder="Tindak Lanjut" name="tindak_lanjut"
                                             value="{{ old('tindak_lanjut') }}">
                                         @error('tindak_lanjut')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label for="status">Status</label>
-                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus"
-                                            name="status_kasus">
-                                            <option value="" selected hidden>Pilih Status</option>
-                                            <option value="penanganan_walas"
-                                                @if (old('status_kasus') == 'penanganan_walas') selected @endif>Penanganan Walas</option>
-                                            <option value="penanganan_kesiswaan"
-                                                @if (old('status_kasus') == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan
-                                            </option>
-                                            <option value="selesai" @if (old('status_kasus') == 'selesai') selected @endif>
-                                                Selesai</option>
-                                        </select>
-                                        @error('status_kasus')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
@@ -139,6 +117,24 @@
                                             id="tahun_ajaran" placeholder="yyyy/yyyy" name="tahun_ajaran"
                                             value="{{ old('tahun_ajaran') }}">
                                         @error('tahun_ajaran')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="status">Status</label>
+                                        <select class="form-select @error('status') is-invalid @enderror" id="status_kasus"
+                                            name="status_kasus">
+                                            <option value="" selected hidden>Pilih Status</option>
+                                            <option value="penanganan_walas"
+                                                @if (old('status_kasus') == 'penanganan_walas') selected @endif>Penanganan Walas</option>
+                                            <option value="penanganan_kesiswaan"
+                                                @if (old('status_kasus') == 'penanganan_kesiswaan') selected @endif>Penanganan Kesiswaan
+                                            </option>
+                                            <option value="selesai" @if (old('status_kasus') == 'selesai') selected @endif>
+                                                Selesai</option>
+                                        </select>
+                                        @error('status_kasus')
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>

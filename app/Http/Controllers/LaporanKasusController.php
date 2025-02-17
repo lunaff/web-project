@@ -7,6 +7,7 @@ use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class LaporanKasusController extends Controller
 {
@@ -43,61 +44,65 @@ class LaporanKasusController extends Controller
     $data['status'] = $data['status_kasus']; // Sesuaikan dengan field di database
     unset($data['status_kasus']); // Hapus key `status_kasus` agar tidak ada data berlebih
 
-    if ($request->hasFile('bukti')) {
-        $data['bukti'] = $request->file('bukti')->store('bukti', 'public');
-    }
+        if ($request->hasFile('bukti')) {
+            $data['bukti'] = $request->file('bukti')->store('bukti', 'public');
+        }
 
-    LaporanKasus::create($data);
+        LaporanKasus::create($data);
 
     return redirect()->route('laporan-kasus.index')->with('success', 'Laporan kasus berhasil ditambahkan.');
 }
 
-
     // Menampilkan form untuk mengedit laporan kasus
-    public function edit($id)
-    {
-        $laporanKasus = LaporanKasus::find($id);
-        if (!$laporanKasus) {
-            return redirect()->route('laporan-kasus.index')->with('error', 'Laporan kasus tidak ditemukan.');
-        }
-        $siswa = Siswa::with(['fkelas', 'fkompetensi'])->get();
-        return view('laporan-kasus.edit', compact('laporanKasus', 'siswa'));
-    }
+    public function edit(LaporanKasus $laporanKasus)
+{
+    $siswa = Siswa::with(['fkelas', 'fkompetensi'])->get();
+    return view('laporan-kasus.edit', compact('laporanKasus', 'siswa'));
+}
+
     // Menyimpan perubahan laporan kasus ke database
-    public function update(Request $request, $id)
-    {
-        $laporanKasus = LaporanKasus::find($id);
+    public function update(Request $request, LaporanKasus $laporanKasus)
+{
+    $request->validate([
+        'kdsiswa' => 'required|exists:siswa,id',
+        'tanggal' => 'required|date',
+        'kasus' => 'required|string',
+        'bukti' => 'nullable|file|mimes:jpg,jpeg,png,mp4',
+        'hapus_bukti' => 'nullable|boolean',
+        'tindak_lanjut' => 'required|string',
+        'status' => 'required|in:penanganan_walas,penanganan_kesiswaan,selesai',
+        'dampingan_bk' => 'required|boolean',
+        'semester' => 'required|in:Ganjil,Genap',
+        'tahun_ajaran' => 'required|string',
+    ]);
 
-        $request->validate([
-            'kdsiswa' => 'required|exists:siswa,id',
-            'tanggal' => 'required|date',
-            'kasus' => 'required|string',
-            'bukti' => 'nullable|file|mimes:jpg,jpeg,png,mp4',
-            'tindak_lanjut' => 'required|string',
-            'status' => 'required|in:penanganan_walas,penanganan_kesiswaan,selesai',
-            'dampingan_bk' => 'required|boolean',
-            'semester' => 'required|in:Ganjil,Genap',
-            'tahun_ajaran' => 'required|string',
-        ]);
+    $data = $request->all();
 
-        $data = $request->all();
-
-        if ($request->hasFile('bukti')) {
-            if ($laporanKasus->bukti) {
-                Storage::disk('public')->delete($laporanKasus->bukti);
-            }
-            $data['bukti'] = $request->file('bukti')->store('bukti', 'public');
+    // Hapus bukti jika checkbox dicentang
+    if ($request->has('hapus_bukti')) {
+        if ($laporanKasus->bukti) {
+            Storage::disk('public')->delete($laporanKasus->bukti);
+            $data['bukti'] = null;
         }
-
-        $laporanKasus->update($data);
-
-        return redirect()->route('laporan-kasus.index')->with('success', 'Laporan kasus berhasil diperbarui.');
     }
+
+    // Jika ada file bukti baru, simpan
+    if ($request->hasFile('bukti')) {
+        if ($laporanKasus->bukti) {
+            Storage::disk('public')->delete($laporanKasus->bukti);
+        }
+        $data['bukti'] = $request->file('bukti')->store('bukti', 'public');
+    }
+
+    $laporanKasus->update($data);
+
+    return redirect()->route('laporan-kasus.index')->with('success', 'Laporan kasus berhasil diperbarui.');
+}
 
     // Menghapus laporan kasus
     public function destroy($id)
     {
-        $laporanKasus = LaporanKasus::find($id);
+        $laporanKasus = LaporanKasus::findOrFail($id);
 
         if ($laporanKasus->bukti) {
             Storage::disk('public')->delete($laporanKasus->bukti);
@@ -111,23 +116,40 @@ class LaporanKasusController extends Controller
     // Mengambil data laporan kasus untuk GridJS
     public function show()
     {
-        $laporanKasus = LaporanKasus::with('siswa')->get();
+        if (Auth::user()->level == 'bk') {
+            $laporanKasus = LaporanKasus::where('dampingan_bk', true)->with('siswa')->get();
+        }
+        else {
+            $laporanKasus = LaporanKasus::with('siswa')->get();
+        }
 
         $data = $laporanKasus->map(function ($item, $index) {
             return [
                 'no' => $index + 1,
                 'tanggal' => Carbon::parse($item->tanggal)->format('d-m-Y'),
-                'nama_siswa' => $item->siswa->nama_lengkap,
+                'nama_siswa' => $item->siswa->nama_lengkap ?? 'Tidak Diketahui',
                 'kasus' => $item->kasus,
                 'bukti' => $item->bukti,
                 'tindak_lanjut' => $item->tindak_lanjut,
-                'status' => $item->status,
                 'dampingan_bk' => $item->dampingan_bk,
                 'semester' => $item->semester,
                 'tahun_ajaran' => $item->tahun_ajaran,
+                'status' => $this->getStatusLabel($item->status),
+                'id' => $item->id
             ];
         });
 
         return response()->json($data);
+    }
+
+    private function getStatusLabel($status)
+    {
+        $statusMap = [
+            'penanganan_walas' => 'Penanganan Walas',
+            'penanganan_kesiswaan' => 'Penanganan Kesiswaan',
+            'selesai' => 'Selesai',
+        ];
+
+        return $statusMap[$status] ?? 'Tidak Diketahui';
     }
 }
