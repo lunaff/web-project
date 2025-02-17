@@ -9,7 +9,8 @@ class CalendarController extends Controller
 {
     public function index()
     {
-        return view('calendar.index');
+        $events = Calendar::all();
+        return view('calendar.index', compact('events'));
     }
 
     // Fetch Events
@@ -23,7 +24,7 @@ class CalendarController extends Controller
                 'title' => $event->title,
                 'start' => $event->start,
                 'end' => $event->end,
-                'className' => $event->category, // Agar warna sesuai kategori
+                'className' => $event->category, 
             ];
         }));
     }
@@ -31,7 +32,6 @@ class CalendarController extends Controller
     // Store New Event
     public function store(Request $request)
     {
-        // Validasi input
         $request->validate([
             'title' => 'required|string|max:255',
             'start' => 'required|date',
@@ -39,7 +39,6 @@ class CalendarController extends Controller
             'category' => 'nullable|string'
         ]);
 
-        // Simpan data ke database
         $event = new Calendar();
         $event->title = $request->title;
         $event->start = $request->start;
@@ -63,8 +62,10 @@ class CalendarController extends Controller
     public function destroy($id)
     {
         $event = Calendar::findOrFail($id);
-        $event->delete();
-
-        return response()->json(['success' => true, 'message' => 'Event deleted successfully!']);
+        if ($event) {
+            $event->delete();
+            return response()->json(['success' => true, 'message' => 'Event deleted successfully!']);
+        }
+        return response()->json(['success' => false, 'message' => 'Event not found!']);
     }
 }

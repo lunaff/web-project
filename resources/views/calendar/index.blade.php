@@ -34,7 +34,6 @@
                                             <i class="mdi mdi-checkbox-blank-circle font-size-11 me-2"></i>Create New theme
                                         </div>
                                     </div>
-
                                     <div class="row justify-content-center mt-5">
                                         <img src="assets/images/calendar-img.png" alt="" class="img-fluid d-block">
                                     </div>
@@ -52,6 +51,15 @@
                     </div> 
 
                     <div style='clear:both'></div>
+
+                    <div class="col-sm-3" id="success-alert">
+                        <div class="alert alert-success alert-dismissible fade"  role="alert" style="display: none;">
+                            <i class="mdi mdi-check-all d-block display-4 mt-2 mb-3 text-success"></i>
+                            <h5 class="text-success">Success</h5>
+                            <p id="alert-message">Data has been saved successfully!</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
                         
                     <!-- Add New Event MODAL -->
                     <div class="modal fade" id="event-modal" tabindex="-1">
@@ -95,16 +103,8 @@
                                             <!-- Category -->
                                             <div class="col-12">
                                                 <div class="mb-3">
-                                                    <label class="form-label">Category</label>
-                                                    <select class="form-select shadow-none" name="category" id="event-category">
-                                                        <option value="" selected>-- Select --</option>
-                                                        <option value="bg-danger">Danger</option>
-                                                        <option value="bg-success">Success</option>
-                                                        <option value="bg-primary">Primary</option>
-                                                        <option value="bg-info">Info</option>
-                                                        <option value="bg-dark">Dark</option>
-                                                        <option value="bg-warning">Warning</option>
-                                                    </select>
+                                                    <label class="form-label">Deskripsi Lengkap</label>
+                                                    <input class="form-control" type="text" name="category" id="event-category"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -123,12 +123,10 @@
                             </div> <!-- end modal-content-->
                         </div> <!-- end modal dialog-->
                     </div>
-                    
                     <!-- end modal-->
                 </div>
             </div>
             <!-- end row -->
-
         </div>
         <!-- container-fluid -->
     </div>
@@ -149,7 +147,7 @@
 <script>
     $(document).ready(function() {
         $('#btn-new-event').click(function() {
-            $('#event-modal').modal('show'); // Menampilkan modal
+            $('#event-modal').modal('show'); 
         });
 
         var calendarEl = document.getElementById('calendar');
@@ -158,18 +156,16 @@
             initialView: 'dayGridMonth',
             editable: true,
             selectable: true,
-            events: "/calendar/events", // Ambil event dari database
+            events: @json($events),
 
-            // Klik tanggal di kalender
             dateClick: function(info) {
                 $('#event-modal').modal('show');
                 $('#event-title').val('');
                 $('#event-category').val('');
-                $('#event-start').val(info.dateStr); // Set tanggal otomatis
-                $('#event-end').val(''); // Reset end date
+                $('#event-start').val(info.dateStr);
+                $('#event-end').val('');
             },
 
-            // Pindah event (drag & drop)
             eventDrop: function(info) {
                 $.ajax({
                     url: "/calendar/update/" + info.event.id,
@@ -189,7 +185,6 @@
                 });
             },
 
-            // Klik event untuk edit/hapus
             eventClick: function(info) {
                 $('#event-title').val(info.event.title);
                 $('#event-category').val(info.event.classNames[0]);
@@ -200,12 +195,20 @@
                 $('#btn-delete-event').off('click').on('click', function() {
                     if (confirm("Delete this event?")) {
                         $.ajax({
-                            url: "/calendar/delete/" + info.event.id,
+                            url: "/calendar/destroy/" + info.event.id,
                             type: "DELETE",
                             data: { _token: '{{ csrf_token() }}' },
-                            success: function() {
-                                calendar.refetchEvents();
-                                $('#event-modal').modal('hide');
+                            success: function(response) {
+                                if (response.success) {
+                                    alert(response.message);
+                                    calendar.refetchEvents();
+                                    $('#event-modal').modal('hide');
+                                } else {
+                                    alert("Failed to delete event.");
+                                }
+                            },
+                            error: function(xhr) {
+                                alert("Error: " + xhr.responseText);
                             }
                         });
                     }
@@ -219,29 +222,28 @@
         $('#form-event').on('submit', function(e) {
             e.preventDefault(); // Mencegah form submit default
 
-            // Ambil data dari form
             let title = $('#event-title').val();
             let start = $('#event-start').val();
             let end = $('#event-end').val();
             let category = $('#event-category').val();
 
-            // Kirim data ke server
             $.ajax({
-                url: "{{ route('calendar.store') }}", 
+                url: "{{ route('calendar.store') }}",
                 type: "POST",
                 data: {
                     title: title,
                     start: start,
                     end: end,
                     category: category,
-                    _token: '{{ csrf_token() }}' // CSRF Token Laravel
+                    _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert(response.message);
+                        $('#alert-message').text(response.message); // Set pesan alert
+                        calendar.refetchEvents(); // Refresh kalender
+                        $('#success-alert').fadeIn(); // Tampilkan alert
                         $('#event-modal').modal('hide'); // Tutup modal
-                        $('#calendar').fullCalendar('refetchEvents'); // Refresh kalender
-                    }
+                    } 
                 },
                 error: function(xhr) {
                     alert("Error: " + xhr.responseText);
@@ -249,6 +251,5 @@
             });
         });
     });
-
 </script>
 @endsection
