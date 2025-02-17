@@ -78,4 +78,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report/laporan-kasus', [ReportController::class, 'getLaporanKasus']);
     Route::get('/report/top-kasus', [ReportController::class, 'topKasus']);
     Route::get('/report/prestasi-terbaru', [ReportController::class, 'getPrestasiTerbaru']);
+    Route::get('/report/prestasi', [ReportController::class, 'getPrestasiData']);
+    Route::get('/report/jumlah-siswa', [ReportController::class, 'getJumlahSiswa']);
+    Route::get('/report/pembinaan', [ReportController::class, 'getJumlahPembinaan']);
+    Route::get('/report/pelanggaran', [ReportController::class, 'getJumlahPelanggaran']);
+    Route::get('/report/upcoming-kegiatan', [ReportController::class, 'getUpcomingKegiatan']);
 });

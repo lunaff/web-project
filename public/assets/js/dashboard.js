@@ -1,5 +1,29 @@
+function loadJumlahSiswa() {
+    fetch("/report/jumlah-siswa") // Panggil endpoint Laravel
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data dari server:", data); // Debugging
+
+            if (data.total_siswa !== undefined && data.total_siswi !== undefined) {
+                document.getElementById("jumlah-siswa").innerText = data.total_siswa;
+                document.getElementById("jumlah-siswi").innerText = data.total_siswi;
+            } else {
+                document.getElementById("jumlah-siswa").innerText = "N/A";
+                document.getElementById("jumlah-siswi").innerText = "N/A";
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching jumlah siswa:", error);
+            document.getElementById("jumlah-siswa").innerText = "Error";
+            document.getElementById("jumlah-siswi").innerText = "Error";
+        });
+}
+
+// Panggil fungsi saat halaman selesai dimuat
+document.addEventListener("DOMContentLoaded", loadJumlahSiswa);
+
 document.addEventListener("DOMContentLoaded", function () {
-    const selectTahun = document.getElementById("filter-tahun");
+    const selectTahun = document.getElementById("filter-tahun-kasus");
     const tahunSekarang = new Date().getFullYear();
 
     // Generate 4 tahun terakhir
@@ -13,15 +37,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Set tahun default ke tahun ini
     selectTahun.value = tahunSekarang;
-    loadChartData(tahunSekarang);
+    loadChartKasus(tahunSekarang);
 
     // Event Listener saat tahun diubah
     selectTahun.addEventListener("change", function () {
-        loadChartData(this.value);
+        loadChartKasus(this.value);
     });
 });
 
-function loadChartData(tahun) {
+document.addEventListener("DOMContentLoaded", function () {
+    const selectTahun = document.getElementById("filter-tahun-prestasi");
+    const tahunSekarang = new Date().getFullYear();
+
+    // Generate 4 tahun terakhir
+    for (let i = 0; i < 4; i++) {
+        const tahun = tahunSekarang - i;
+        const option = document.createElement("option");
+        option.value = tahun;
+        option.textContent = tahun;
+        selectTahun.appendChild(option);
+    }
+
+    // Set tahun default ke tahun ini
+    selectTahun.value = tahunSekarang;
+    loadChartPrestasi(tahunSekarang);
+
+    // Event Listener saat tahun diubah
+    selectTahun.addEventListener("change", function () {
+        loadChartPrestasi(this.value);
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectTahun = document.getElementById("filter-tahun-pembinaan");
+    const tahunSekarang = new Date().getFullYear();
+
+    // Generate 4 tahun terakhir
+    for (let i = 0; i < 4; i++) {
+        const tahun = tahunSekarang - i;
+        const option = document.createElement("option");
+        option.value = tahun;
+        option.textContent = tahun;
+        selectTahun.appendChild(option);
+    }
+
+    // Set tahun default ke tahun ini
+    selectTahun.value = tahunSekarang;
+    loadChartPembinaan(tahunSekarang);
+
+    // Event Listener saat tahun diubah
+    selectTahun.addEventListener("change", function () {
+        loadChartPembinaan(this.value);
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectTahun = document.getElementById("filter-tahun-pelanggaran");
+    const tahunSekarang = new Date().getFullYear();
+
+    // Generate 4 tahun terakhir
+    for (let i = 0; i < 4; i++) {
+        const tahun = tahunSekarang - i;
+        const option = document.createElement("option");
+        option.value = tahun;
+        option.textContent = tahun;
+        selectTahun.appendChild(option);
+    }
+
+    // Set tahun default ke tahun ini
+    selectTahun.value = tahunSekarang;
+    loadChartPelanggaran(tahunSekarang);
+
+    // Event Listener saat tahun diubah
+    selectTahun.addEventListener("change", function () {
+        loadChartPelanggaran(this.value);
+    });
+});
+
+function loadChartKasus(tahun) {
     console.log("Mengambil data laporan untuk tahun:", tahun);
 
     fetch(`/report/laporan-kasus?tahun=${tahun}`)
@@ -37,12 +130,142 @@ function loadChartData(tahun) {
                 chart: { type: "bar", height: 300 },
                 xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"] },
                 yaxis: {
-                    title: {
-                        text: "Jumlah Kasus"
+                    title: { text: "Jumlah Kasus" },
+                    labels: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di sumbu Y
+                        }
                     }
-                },                
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di tooltip
+                        }
+                    }
+                },
                 colors: ["#1f58c7"],
                 fill: { opacity: 1 }
+            };
+
+            const chart = new ApexCharts(chartContainer, options);
+            chart.render();
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+
+function loadChartPrestasi(tahun) {
+    console.log("Mengambil data laporan untuk tahun:", tahun);
+
+    fetch(`/report/prestasi?tahun=${tahun}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data dari server:", data);
+
+            const chartContainer = document.querySelector("#chart-prestasi");
+            chartContainer.innerHTML = ""; // Hapus chart lama
+
+            const options = {
+                series: [{ name: "Jumlah Prestasi", data: data }],
+                chart: { type: "bar", height: 300 },
+                xaxis: { categories: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"] },
+                yaxis: {
+                    title: { text: "Jumlah Prestasi" },
+                    labels: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di sumbu Y
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di tooltip
+                        }
+                    }
+                },
+                colors: ["#1f58c7"],
+                fill: { opacity: 1 }
+            };
+
+            const chart = new ApexCharts(chartContainer, options);
+            chart.render();
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+
+function loadChartPembinaan(tahun) {
+    fetch(`/report/pembinaan?tahun=${tahun}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data dari server:", data);
+
+            const chartContainer = document.querySelector("#chart-pembinaan");
+            chartContainer.innerHTML = ""; // Hapus chart lama
+
+            const options = {
+                series: [{ name: "Jumlah Pembinaan", data: data }],
+                chart: { type: "line", height: 350, zoom: { enabled: false }},
+                xaxis: {
+                    categories: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
+                },
+                yaxis: {
+                    title: { text: "Jumlah Pembinaan" },
+                    labels: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di sumbu Y
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di tooltip
+                        }
+                    }
+                },
+                colors: ["#1f58c7"],
+                stroke: { curve: 'smooth' }
+            };
+
+            const chart = new ApexCharts(chartContainer, options);
+            chart.render();
+        })
+        .catch(error => console.error("Error fetching data:", error));
+}
+
+function loadChartPelanggaran(tahun) {
+    fetch(`/report/pelanggaran?tahun=${tahun}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data dari server:", data);
+
+            const chartContainer = document.querySelector("#chart-pelanggaran");
+            chartContainer.innerHTML = ""; // Hapus chart lama
+
+            const options = {
+                series: [{ name: "Jumlah Pelanggaran", data: data }],
+                chart: { type: "line", height: 350, zoom: { enabled: false }},
+                xaxis: {
+                    categories: ["Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des"]
+                },
+                yaxis: {
+                    title: { text: "Jumlah Pelanggaran" },
+                    labels: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di sumbu Y
+                        }
+                    }
+                },
+                tooltip: {
+                    y: {
+                        formatter: function (value) {
+                            return Math.round(value); // Membulatkan angka di tooltip
+                        }
+                    }
+                },
+                colors: ["#1f58c7"],
+                stroke: { curve: 'smooth' }
             };
 
             const chart = new ApexCharts(chartContainer, options);
@@ -121,3 +344,45 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("Gagal mengambil data:", error));
 });
 
+function loadUpcomingKegiatan() {
+    fetch('/report/upcoming-kegiatan')
+        .then(response => response.json())
+        .then(data => {
+            const listContainer = document.getElementById('list-kegiatan-sekolah');
+            listContainer.innerHTML = ''; // Kosongkan kontainer terlebih dahulu
+
+            if (data.length === 0) {
+                listContainer.innerHTML = '<div class="text-center p-3">Tidak ada kegiatan yang akan datang.</div>';
+                return;
+            }
+
+            // Loop untuk menampilkan kegiatan
+            data.forEach(kegiatan => {
+                const kegiatanItem = document.createElement('div');
+                kegiatanItem.classList.add('p-3', 'border-bottom');
+
+                // Menambahkan konten kegiatan
+                kegiatanItem.innerHTML = `
+                    <div class="card border border-primary">
+                        <div class="card-header bg-transparent border-primary">
+                            <h6>${kegiatan.nama}</h6>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-0"><strong>Tanggal:</strong> ${new Date(kegiatan.tanggal).toLocaleDateString()}</p>
+                            <p class="mb-0"><strong>Penyelenggara:</strong> ${kegiatan.penyelenggara}</p>
+                        </div>
+                    </div>
+                `;
+
+                listContainer.appendChild(kegiatanItem);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            const listContainer = document.getElementById('list-kegiatan-sekolah');
+            listContainer.innerHTML = '<div class="text-center p-3">Terjadi kesalahan saat memuat data.</div>';
+        });
+}
+
+// Panggil fungsi saat halaman dimuat
+document.addEventListener('DOMContentLoaded', loadUpcomingKegiatan);
