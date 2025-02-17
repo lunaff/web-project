@@ -40,6 +40,19 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="tingkat">Tingkat Prestasi</label>
+                                        <select class="form-control @error('tingkat') is-invalid @enderror" id="tingkat" name="tingkat">
+                                            <option value="">Pilih tingkat prestasi</option>
+                                            <option value="Kabupaten/Kota" {{ old('tingkat') == 'Kabupaten/Kota' ? 'selected' : '' }}>Kabupaten/Kota</option>
+                                            <option value="Provinsi" {{ old('tingkat') == 'Provinsi' ? 'selected' : '' }}>Provinsi</option>
+                                            <option value="Nasional" {{ old('tingkat') == 'Nasional' ? 'selected' : '' }}>Nasional</option>
+                                            <option value="Internasional" {{ old('tingkat') == 'Internasional' ? 'selected' : '' }}>Internasional</option>
+                                        </select>
+                                        @error('tingkat')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
                                     <div class="mb-3">
                                         <label for="deskripsi">Deskripsi</label>
@@ -64,7 +77,15 @@
                                             <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
+                                    <div class="mb-3" id="kelas-komp" style="display:none;">
+                                        <label for="kelas">Kelas</label>
+                                        <input type="text" class="form-control" id="kelas" name="kelas" readonly>
+                                    </div>
+                                    
+                                    <div class="mb-3" id="kompetensi-komp" style="display:none;">
+                                        <label for="kompetensi_keahlian">Kompetensi Keahlian</label>
+                                        <input type="text" class="form-control" id="kompetensi_keahlian" name="kompetensi_keahlian" readonly>
+                                    </div>
                                     <div class="mb-3">
                                         <label for="tanggal_dokumentasi">Tanggal Dokumentasi</label>
                                         <input type="date" class="form-control @error('tanggal_dokumentasi') is-invalid @enderror" id="tanggal_dokumentasi" name="tanggal_dokumentasi" value="{{ old('tanggal_dokumentasi') }}">
@@ -115,7 +136,9 @@
                                                                 <td>{{ $s->nama_lengkap }}</td>
                                                                 <td>{{ $s->nis }}</td>
                                                                 <td>
-                                                                    <a href="#" class="btn btn-primary btn-sm" onclick="pilihSiswa('{{ $s->id }}', '{{ $s->nama_lengkap }}')" data-bs-dismiss="modal">
+                                                                    <a href="#" class="btn btn-primary btn-sm" 
+                                                                    onclick="pilihSiswa('{{ $s->id }}', '{{ $s->nama_lengkap }}', '{{ $s->kdkelas }}', '{{ $s->kdkompetensi }}')" 
+                                                                    data-bs-dismiss="modal">
                                                                         Pilih
                                                                     </a>
                                                                 </td>
@@ -137,11 +160,18 @@
     </div>
 @section('script')
     <script>
-        function pilihSiswa(id, nama_lengkap) {
-            event.preventDefault();
+        function pilihSiswa(id, nama_lengkap, kelas, kompetensi_keahlian) {
+            // Set nilai siswa_id dan nama_lengkap
             document.getElementById('siswa_id').value = id;
             document.getElementById('nama_lengkap').value = nama_lengkap;
-            // $('#modalCariSiswa').modal('hide');
+
+            // Set nilai kelas dan kompetensi keahlian
+            document.getElementById('kelas').value = kelas;
+            document.getElementById('kompetensi_keahlian').value = kompetensi_keahlian;
+
+            // Menampilkan field kelas dan kompetensi keahlian setelah memilih siswa
+            document.getElementById('kelas-komp').style.display = 'block';
+            document.getElementById('kompetensi-komp').style.display = 'block';
         }
     </script>
 @endsection 

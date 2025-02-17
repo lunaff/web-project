@@ -77,9 +77,11 @@
                                                             <td>{{ $kasus->kasus }}</td>
                                                             <td>{{ $kasus->siswa->nama_lengkap }}</td>
                                                             <td>
-                                                                <a href="#" class="btn btn-primary btn-sm" onclick="pilihSiswa('{{ $kasus->id }}', '{{ $kasus->nama_lengkap }}')" data-bs-dismiss="modal">
+                                                                <button type="button" class="btn btn-primary btn-sm"
+                                                                    onclick="pilihKasus('{{ $kasus->id }}', '{{ $kasus->kasus }}')"
+                                                                    data-bs-dismiss="modal">
                                                                     Pilih
-                                                                </a>
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                         @endforeach
@@ -97,10 +99,10 @@
         </div>
     </div>
 </div>
+
 @section('script')
 <script>
     function pilihKasus(id, namaKasus) {
-        event.preventDefault();
         document.getElementById('idKasus').value = id;
         document.getElementById('namaKasus').value = namaKasus;
     }

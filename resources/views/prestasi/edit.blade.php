@@ -43,6 +43,18 @@
                                     </div>
 
                                     <div class="mb-3">
+                                        <label for="tingkat">Tingkat Prestasi</label>
+                                        <select class="form-control @error('tingkat') is-invalid @enderror" id="tingkat" name="tingkat">
+                                            <option value="Nasional" {{ old('tingkat', $prestasi->tingkat) == 'Nasional' ? 'selected' : '' }}>Nasional</option>
+                                            <option value="Provinsi" {{ old('tingkat', $prestasi->tingkat) == 'Provinsi' ? 'selected' : '' }}>Provinsi</option>
+                                            <option value="Internasional" {{ old('tingkat', $prestasi->tingkat) == 'Internasional' ? 'selected' : '' }}>Internasional</option>
+                                            <option value="Kabupaten/Kota" {{ old('tingkat', $prestasi->tingkat) == 'Kabupaten/Kota' ? 'selected' : '' }}>Kabupaten/Kota</option>
+                                        </select>
+                                        @error('tingkat')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
                                         <label for="deskripsi">Deskripsi</label>
                                         <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="3">{{ old('deskripsi', $prestasi->deskripsi) }}</textarea>
                                         @error('deskripsi')
