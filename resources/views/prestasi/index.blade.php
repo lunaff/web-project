@@ -29,8 +29,11 @@
                 { name: "ID", hidden: true }, 
                 "Tanggal",
                 "Jenis Prestasi",
+                "Tingkat",
                 "Deskripsi",
                 "Siswa/i",
+                "Kelas",
+                "Kompetensi Keahlian",
                 "Tanggal Dokumentasi",
                 {
                     name: "Actions",
@@ -60,8 +63,11 @@
                         prestasi.id,
                         prestasi.tanggal,
                         prestasi.jenis,
+                        prestasi.tingkat,
                         prestasi.deskripsi,
                         prestasi.siswa_id,
+                        prestasi.siswa_id.kelas ? prestasi.siswa.kdkelas : '-', // Add Kelas
+                        prestasi.siswa_id.kdkompetensi ? prestasi.siswa.kdkelas : '-', // Add Kompetensi Keahlian
                         prestasi.tanggal_dokumentasi,
                     ]);
                 }

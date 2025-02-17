@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('siswa', function (Blueprint $table) {
             $table->id();
+            $table->boolean('active')->default(true);
             $table->string('nis')->unique();
             $table->unsignedBigInteger('kdkelas')->nullable();
             $table->unsignedBigInteger('kdkompetensi')->nullable();
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->string('no_hp', 20);
             $table->string('email')->unique();
             $table->string('nisn', 50);
+            $table->enum('jk', ['L', 'P']);
             $table->string('tahun_masuk', 50);
             $table->string('nama_ayah', 50);
             $table->string('nama_ibu', 50);

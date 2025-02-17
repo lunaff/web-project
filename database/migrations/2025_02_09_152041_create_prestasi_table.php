@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal'); 
             $table->enum('jenis', ['akademik', 'non-akademik']);
+            $table->enum('tingkat', ['Nasional', 'Provinsi', 'Internasional', 'Kabupaten/Kota']);
             $table->text('deskripsi')->nullable(); // Deskripsi prestasi
             $table->foreignId('siswa_id')->constrained('siswa')->onDelete('cascade'); 
             $table->date('tanggal_dokumentasi')->nullable(); 

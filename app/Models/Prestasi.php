@@ -14,6 +14,7 @@ class Prestasi extends Model
     protected $fillable = [
         'tanggal',
         'jenis',
+        'tingkat',
         'deskripsi',
         'siswa_id',
         'tanggal_dokumentasi',
