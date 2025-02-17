@@ -32,4 +32,9 @@ class LaporanKasus extends Model
     {
         return $this->belongsTo(Siswa::class, 'kdsiswa', 'id'); // Relasi ke model Siswa
     }
+
+    public function pembinaan()
+    {
+        return $this->hasMany(Pembinaan::class, 'id_kasus', 'id');
+    }
 }

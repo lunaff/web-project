@@ -10,7 +10,7 @@ class Pembinaan extends Model
     use HasFactory;
 
     protected $table = 'pembinaan';
-    
+
     protected $fillable = [
         'id_kasus',
         'id_guru',

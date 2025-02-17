@@ -17,6 +17,7 @@ use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\TrackRecordController;
 
 use App\Http\Controllers\Dokumentasi\DokumentasiKegiatanController;
 use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController;
@@ -73,6 +74,7 @@ Route::middleware(['auth'])->group(function () {
     ]);
     Route::resource('kunjungan-rumah', KunjunganRumahController::class);
     Route::resource('calendar', CalendarController::class);
+    Route::get('/track-record/{nis}', [TrackRecordController::class, 'index'])->name('track-record.index');
 
     // REPORTING
     Route::get('/report/laporan-kasus', [ReportController::class, 'getLaporanKasus']);
