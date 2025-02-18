@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\KompetensiKeahlian;
 use App\Models\Guru;
 use App\Imports\KompetensiKeahlianImport;
+use App\Exports\KompetensiKeahlianExport;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -133,5 +134,10 @@ class KompetensiKeahlianController extends Controller
     
         return redirect()->route('kompetensi-keahlian.index')
             ->with('success', 'Kompetensi Keahlian deleted successfully.');
+    }
+
+    public function exportKompK()
+    {
+        return Excel::download(new KompetensiKeahlianExport, 'data_kompKeahlian.xlsx');
     }
 }

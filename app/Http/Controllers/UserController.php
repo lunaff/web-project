@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Guru;
 use App\Models\Siswa;
 use App\Imports\UserImport;
+use App\Exports\UserExport;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -168,6 +169,11 @@ class UserController extends Controller
         // Redirect to the user index page with a success message
         return redirect()->route('user.index')
             ->with('success', 'User deleted successfully.');
+    }
+
+    public function exportUser()
+    {
+        return Excel::download(new UserExport, 'data_user.xlsx');
     }
     
 }

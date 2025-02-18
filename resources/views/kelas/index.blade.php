@@ -14,6 +14,7 @@
 @section('page', 'Kelas')
 @section('create', route('kelas.create'))
 @section('import', route('kelas.import'))
+@section('export', route('export.kelas'))
 
 @section('main')
     @include('table')

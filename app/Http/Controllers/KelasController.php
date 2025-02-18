@@ -6,6 +6,7 @@ use App\Models\Kelas;
 use App\Models\Guru;
 use App\Models\KompetensiKeahlian;
 use App\Imports\KelasImport;
+use App\Exports\KelasExport;
 
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -154,5 +155,9 @@ class KelasController extends Controller
     
         return redirect()->route('kelas.index')
             ->with('success', 'Kelas deleted successfully.');
+    }
+    public function exportKelas()
+    {
+        return Excel::download(new KelasExport, 'data_kelas.xlsx');
     }
 }

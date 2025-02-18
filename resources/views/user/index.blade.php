@@ -14,6 +14,7 @@
 @section('page', 'User')
 @section('create', route('user.create'))
 @section('import', route('user.import'))
+@section('export', route('export.user'))
 
 @section('main')
     @include('table')

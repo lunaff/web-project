@@ -13,6 +13,8 @@
 
 @section('page', 'Siswa')
 @section('create', route('siswa.create'))
+@section('import', route('siswa.import'))
+@section('export', route('export.siswa'))
 
 @section('main')
     @include('table')

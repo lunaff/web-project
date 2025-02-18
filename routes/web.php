@@ -49,9 +49,18 @@ Route::middleware(['auth'])->group(function () {
 
         // Import routes
         Route::post('user/import', [UserController::class, 'import'])->name('user.import');
+        Route::post('siswa/import', [SiswaController::class, 'import'])->name('siswa.import');
         Route::post('guru/import', [GuruController::class, 'import'])->name('guru.import');
         Route::post('kelas/import', [KelasController::class, 'import'])->name('kelas.import');
         Route::post('kompetensi-keahlian/import', [KompetensiKeahlianController::class, 'import'])->name('kompetensi-keahlian.import');
+
+        //Export routes
+        Route::get('export-user', [UserController::class, 'exportUser'])->name('export.user');
+        Route::get('export-siswa', [SiswaController::class, 'exportSiswa'])->name('export.siswa');
+        Route::get('export-guru', [GuruController::class, 'exportGuru'])->name('export.guru');
+        Route::get('export-kompetensi-keahlian', [KompetensiKeahlianController::class, 'exportKompK'])->name('export.kompetensi-keahlian');
+        Route::get('export-kelas', [KelasController::class, 'exportKelas'])->name('export.kelas');
+
     });
 
     Route::middleware([CheckUserLevel::class . ':admin,osis'])->group(function () {

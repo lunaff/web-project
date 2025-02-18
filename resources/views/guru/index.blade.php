@@ -12,6 +12,7 @@
 @section('page', 'Guru')
 @section('create', route('guru.create'))
 @section('import', route('guru.import'))
+@section('export', route('export.guru'))
 
 @section('main')
     @include('table')

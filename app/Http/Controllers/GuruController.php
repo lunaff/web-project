@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Guru;
 use App\Imports\GuruImport;
+use App\Exports\GuruExport;
 
-use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Http\Request;
 
 class GuruController extends Controller
 {
@@ -135,6 +136,10 @@ class GuruController extends Controller
         // Redirect to the guru index page with a success message
         return redirect()->route('guru.index')
             ->with('success', 'Guru deleted successfully.');
+    }
+    public function exportGuru()
+    {
+        return Excel::download(new GuruExport, 'data_guru.xlsx');
     }
 
 }

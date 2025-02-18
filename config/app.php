@@ -122,5 +122,20 @@ return [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
+    /*
+    |--------------------------------------------------------------------------
+    | Package Service Providers
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify the service providers for third-party packages.
+    |
+    */
+
+    // 'providers' => [ 
+    //     Maatwebsite\Excel\ExcelServiceProvider::class, 
+    // ], 
+    // 'aliases' => [ 
+    //     'Excel' => Maatwebsite\Excel\Facades\Excel::class, 
+    // ],
 
 ];

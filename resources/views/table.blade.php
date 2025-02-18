@@ -25,6 +25,16 @@
                                     Import
                                 </button>
                             </form>
+                            <!-- Export Form -->
+                            <form id="exportForm" action="@yield('export')" method="GET">
+                                @csrf
+                                <button type="button" class="btn btn-info" onclick="exportData()">
+                                    Template Import
+                                </button>
+                            </form>
+                            
+                            <!-- Hidden Export Link -->
+                            <a href="@yield('export')" id="exportLink" style="display: none;"></a>
                         </div>
                     </div>
                     <div class="table-container">
@@ -40,5 +50,8 @@
 <script>
     function submitForm() {
         document.getElementById("importForm").submit();
+    }
+    function exportData() {
+        document.getElementById("exportLink").click(); // Trigger the hidden link click
     }
 </script>

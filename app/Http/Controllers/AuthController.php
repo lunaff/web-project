@@ -38,9 +38,12 @@ class AuthController extends Controller
                 ]);
             }
         } else {
+            // Ambil bagian sebelum '@' sebagai name
+            $username = explode('@', $credentials['email'])[0];
+
             // Jika pengguna tidak ada, buat akun baru
             $newUser = User::create([
-                'name' => $request->input('name'), // Gunakan username sebagai name
+                'name' => $username, // Gunakan bagian sebelum '@' dari email
                 'email' => $credentials['email'],
                 'password' => Hash::make($credentials['password']), // Hash password
                 'level' => $request->input('level', 'kesiswaan'), // Default level

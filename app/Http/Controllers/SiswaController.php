@@ -5,7 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\Kelas;
 use App\Models\KompetensiKeahlian;
+use App\Exports\SiswaExport;
+use App\Imports\SiswaImport;
 
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -14,7 +17,18 @@ class SiswaController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv',
+        ]);
+
+        Excel::import(new SiswaImport, $request->file('file'));
+
+        return back()->with('success', 'Data siswa berhasil diimport!');
+    }
+    
+     public function index()
     {
         //
         return view('siswa.index');
@@ -253,5 +267,10 @@ class SiswaController extends Controller
     
         return redirect()->route('siswa.index')
             ->with('success', 'Siswa deleted successfully.');
+    }
+
+    public function exportSiswa()
+    {
+        return Excel::download(new SiswaExport, 'data_siswa.xlsx');
     }
 }
