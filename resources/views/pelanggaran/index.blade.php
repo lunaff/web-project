@@ -51,7 +51,7 @@
     <script>
         const editUrlBase = "{{ route('pelanggaran.edit', ['pelanggaran' => '__pelanggaran_id__']) }}";
         const deleteUrlBase = "{{ route('pelanggaran.destroy', ['pelanggaran' => '__pelanggaran_id__']) }}";
-        
+
         new gridjs.Grid({
             columns: [
                 // { name: "No", formatter: (_, row) => row.index + 1 },
@@ -69,10 +69,10 @@
                     formatter: (cell, row) => gridjs.html(`
                         <td>
                             <div style="display: flex; gap: 10px;">
-                                <a href="${editUrlBase.replace('__pelanggaran_id__', row.cells[0].data)}" class="btn btn-sm btn-primary">
+                                <a href="${editUrlBase.replace('__pelanggaran_id__', row.cells[6].data)}" class="btn btn-sm btn-primary">
                                     <i class="fa fa-edit"></i>
                                 </a>
-                                <form action="${deleteUrlBase.replace('__pelanggaran_id__', row.cells[0].data)}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+                                <form action="${deleteUrlBase.replace('__pelanggaran_id__', row.cells[6].data)}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger">

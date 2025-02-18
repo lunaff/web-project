@@ -29,7 +29,16 @@
         new gridjs.Grid({
             columns: [
                 "NIS",
-                "Nama Lengkap",
+                {
+                    name: "Nama Lengkap",
+                    formatter: (cell, row) => {
+                        const nis = row.cells[0].data; // Ambil NIS dari kolom pertama
+                        const nama = cell; // Ambil nama siswa dari kolom ini
+                        return gridjs.html(
+                            `<a href="/track-record/${nis}" data-bs-toggle="tooltip" title="Ketuk untuk melihat profil siswa">${nama}</a>`
+                        );
+                    }
+                },
                 "Kelas",
                 "Kompetensi Keahlian",
                 "Tempat Lahir",
