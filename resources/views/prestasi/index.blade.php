@@ -23,10 +23,10 @@
         const editUrlBase = "{{ route('prestasi.edit', ['prestasi' => '__prestasi_id__']) }}";
         const docUrlBase = "{{ route('prestasi.dokumentasi', ['prestasi' => '__prestasi_id__']) }}";
         const deleteUrlBase = "{{ route('prestasi.destroy', ['prestasi' => '__prestasi_id__']) }}";
-    
+
         new gridjs.Grid({
             columns: [
-                { name: "ID", hidden: true }, 
+                { name: "ID", hidden: true },
                 "Tanggal",
                 "Jenis Prestasi",
                 "Tingkat",
