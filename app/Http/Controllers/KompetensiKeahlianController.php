@@ -60,7 +60,7 @@ class KompetensiKeahlianController extends Controller
         ]);
 
         KompetensiKeahlian::create($array);
-        return redirect()->route('kompetensi-keahlian.index')->with('success', 'Berhasivalue: l menambah Kompetensi Keahlian baru');
+        return redirect()->route('kompetensi-keahlian.index')->with('success', 'Berhasi menambah Kompetensi Keahlian baru');
     }
 
     /**
