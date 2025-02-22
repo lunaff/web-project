@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('registrasi_siswa', function (Blueprint $table) {
             $table->id();
+            $table->string('siswa_nis'); // Pastikan tipe datanya sesuai dengan NIS di tabel siswa
+            $table->foreign('siswa_nis')->references('nis')->on('siswa')->onDelete('cascade');
+            $table->enum('jenis_pendaftaran', ['Siswa Baru', 'Pindahan']); // Jenis pendaftaran
+            $table->date('tanggal_masuk');
+            $table->string('no_ijazah')->nullable(); // No ijazah SMP
             $table->timestamps();
         });
     }

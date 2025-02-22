@@ -79,11 +79,22 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->routeIs('siswa.*') ? 'mm-active' : '' }}">
+                <!-- <li class="{{ request()->routeIs('siswa.*') ? 'mm-active' : '' }}">
                     <a href="{{ route('siswa.index') }}">
                         <i class="bx bx-user-pin icon nav-icon"></i>
                         <span class="menu-item" data-key="t-siswa">Siswa</span>
                     </a>
+                </li> -->
+
+                <li class="{{ request()->routeIs('siswa.*') ? 'mm-active' : '' }}">
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-user-pin icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-siswa">Siswa</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('siswa.index') }}" data-key="t-siswa-list">List Siswa</a></li>
+                        <li><a href="{{ route('siswa.registrasi.mutasi') }}" data-key="t-registrasi-mutasi">Registrasi & Mutasi</a></li>
+                    </ul>
                 </li>
 
                 @endif

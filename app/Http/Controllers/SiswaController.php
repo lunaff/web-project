@@ -7,6 +7,8 @@ use App\Models\Kelas;
 use App\Models\KompetensiKeahlian;
 use App\Exports\SiswaExport;
 use App\Imports\SiswaImport;
+use App\Models\MutasiSiswa;
+use App\Models\RegistrasiSiswa;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -357,4 +359,15 @@ class SiswaController extends Controller
     {
         return Excel::download(new SiswaExport, 'data_siswa.xlsx');
     }
+
+    public function getRegistrasi($nis) {
+        $data = RegistrasiSiswa::where('siswa_nis', $nis)->first();
+        return response()->json($data);
+    }
+    
+    public function getMutasi($nis) {
+        $data = MutasiSiswa::where('siswa_nis', $nis)->first();
+        return response()->json($data);
+    }
+    
 }
