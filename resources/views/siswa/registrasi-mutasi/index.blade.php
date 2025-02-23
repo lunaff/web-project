@@ -34,20 +34,22 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Jenis Pendaftaran</label>
-                            <select class="form-control" name="jenis_pendaftaran">
+                            <select class="form-control" name="jenis_pendaftaran" @if(Auth::user()->level == 'kesiswaan') disabled @endif>
                                 <option value="Siswa Baru" {{ old('jenis_pendaftaran') == 'Siswa Baru' ? 'selected' : '' }}>Siswa Baru</option>
                                 <option value="Pindahan" {{ old('jenis_pendaftaran') == 'Pindahan' ? 'selected' : '' }}>Pindahan</option>
                             </select>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal Masuk</label>
-                            <input type="date" name="tanggal_masuk" class="form-control" value="{{ old('tanggal_masuk') }}">
+                            <input type="date" name="tanggal_masuk" class="form-control" value="{{ old('tanggal_masuk') }}" @if(Auth::user()->level == 'kesiswaan') disabled @endif>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">No Ijazah SMP</label>
-                            <input type="text" name="no_ijazah" class="form-control" id="noIjazah" value="{{ old('no_ijazah') }}">
+                            <input type="text" name="no_ijazah" class="form-control" id="noIjazah" value="{{ old('no_ijazah') }}" @if(Auth::user()->level == 'kesiswaan') disabled @endif>
                         </div>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        @if(Auth::user()->level != 'kesiswaan')
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        @endif
                     </form>
                 </div>
             </div>
@@ -70,7 +72,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Keluar Karena</label>
-                            <select class="form-control" name="alasan">
+                            <select class="form-control" name="alasan" @if(Auth::user()->level == 'kesiswaan') disabled @endif>
+                                <option value="" selected>-- PILIH --</option>
                                 <option value="Lulus" {{ old('alasan') == 'Lulus' ? 'selected' : '' }}>Lulus</option>
                                 <option value="Mutasi" {{ old('alasan') == 'Mutasi' ? 'selected' : '' }}>Mutasi</option>
                                 <option value="Dikeluarkan" {{ old('alasan') == 'Dikeluarkan' ? 'selected' : '' }}>Dikeluarkan</option>
@@ -83,13 +86,15 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tanggal Keluar</label>
-                            <input type="date" name="tanggal_keluar" value="{{ old('tanggal_keluar') }}" class="form-control">
+                            <input type="date" name="tanggal_keluar" value="{{ old('tanggal_keluar') }}" class="form-control" @if(Auth::user()->level == 'kesiswaan') disabled @endif>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Keterangan</label>
-                            <textarea name="notes" class="form-control">{{ old('notes') }}</textarea>
+                            <textarea name="notes" class="form-control" @if(Auth::user()->level == 'kesiswaan') disabled @endif>{{ old('notes') }}</textarea>
                         </div>
-                        <button type="submit" class="btn btn-danger">Simpan</button>
+                        @if(Auth::user()->level != 'kesiswaan')
+                            <button type="submit" class="btn btn-danger">Simpan</button>
+                        @endif
                     </form>
                 </div>
             </div>
@@ -115,16 +120,29 @@
                     },
                     "Kelas",
                     "Kompetensi Keahlian",
+                    { name : "sudah_registrasi", hidden: true },
+                    { name : "sudah_mutasi", hidden: true },     
                     {
                         name: "Actions",
                         formatter: (cell, row) => {
                             const nis = row.cells[0].data;
-                            const id = row.cells[4].data;
+                            const sudahRegistrasi = row.cells[4].data;  // Data dari server, misal true/false
+                            const sudahMutasi = row.cells[5].data;      // Data dari server, misal true/false
+                            const userLevel = "{{ Auth::user()->level }}"; // Ambil level user dari Blade
+
+                            let regisButton = sudahRegistrasi || userLevel !== "kesiswaan" 
+                                ? `<button class="btn btn-sm btn-primary regisBtn" data-nis="${nis}" data-bs-toggle="modal" data-bs-target="#registrasiModal">Registrasi</button>` 
+                                : '';
+
+                            let mutasiButton = sudahMutasi || userLevel !== "kesiswaan" 
+                                ? `<button class="btn btn-sm btn-danger mutasiBtn" data-nis="${nis}" data-bs-toggle="modal" data-bs-target="#mutasiModal">Mutasi</button>` 
+                                : '';
+
                             return gridjs.html(`
                                 <td>
                                     <div style="display: flex; gap: 10px;">
-                                        <button class="btn btn-sm btn-primary regisBtn" data-nis="${nis}" data-bs-toggle="modal" data-bs-target="#registrasiModal">Registrasi</button>
-                                        <button class="btn btn-sm btn-danger mutasiBtn" data-nis="${nis}" data-bs-toggle="modal" data-bs-target="#mutasiModal">Mutasi</button>
+                                        ${regisButton}
+                                        ${mutasiButton}
                                     </div>
                                 </td>
                             `);
@@ -139,7 +157,8 @@
                             siswa.nama_lengkap,
                             siswa.kdkelas,
                             siswa.kdkompetensi,
-                            null
+                            siswa.sudah_registrasi,
+                            siswa.sudah_mutasi,
                         ]);
                     }
                 },

@@ -17,7 +17,11 @@
 @section('export', route('export.siswa'))
 
 @section('main')
-    @include('table')
+    @if (Auth::user()->level == 'kesiswaan')
+        @include('table2')
+    @else
+        @include('table1')
+    @endif
 @endsection
 @section('script')
     <script src="{{ asset('assets/libs/gridjs/gridjs.umd.js') }}"></script>
@@ -107,6 +111,7 @@
                 "Prestasi Non Akademik",
                 "Ekstrakurikuler",
                 "Biografi",
+                @if(Auth::user()->level != 'kesiswaan')
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
@@ -127,6 +132,7 @@
                         </td>
                     `)
                 }
+                @endif
             ],
             server: {
                 url: '/siswa/data', // The URL to fetch siswa data
