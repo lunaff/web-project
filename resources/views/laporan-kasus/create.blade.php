@@ -167,8 +167,8 @@
                                                                     <td>{{ $key + 1 }}</td>
                                                                     <td>{{ $s->nis }}</td>
                                                                     <td>{{ $s->nama_lengkap }}</td>
-                                                                    <td>{{ $s->fkelas->nama_kelas ?? '-' }}</td>
-                                                                    <td>{{ $s->fkompetensi->nama_jurusan ?? '-' }}</td>
+                                                                    <td>{{ $s->fkelas->kelas ?? '-' }}</td>
+                                                                    <td>{{ $s->fkompetensi->kompetensi_keahlian ?? '-' }}</td>
                                                                     <td>
                                                                         <a href="#" class="btn btn-primary btn-xs" onclick="pilih1('{{ $s->id }}', '{{ $s->nama_lengkap }}')" data-bs-toggle="modal">
                                                                             Pilih

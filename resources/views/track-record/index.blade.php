@@ -59,11 +59,11 @@
                                                 </tr>
                                                 <tr>
                                                     <th class="fw-bold">Kompetensi Keahlian :</th>
-                                                    <td class="text-muted">{{ $siswa->fkompetensi->nama ?? '-' }}</td>
+                                                    <td class="text-muted">{{ $siswa->fkompetensi->kompetensi_keahlian ?? '-' }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th class="fw-bold">Kelas :</th>
-                                                    <td class="text-muted">{{ $siswa->fkelas->nama ?? '-' }}</td>
+                                                    <td class="text-muted">{{ $siswa->fkelas->kelas ?? '-' }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th class="fw-bold">Tempat, Tanggal Lahir :</th>
