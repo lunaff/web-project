@@ -117,4 +117,14 @@ class Siswa extends Model
     {
         return $this->hasMany(LaporanKasus::class, 'kdsiswa', 'id'); // Relasi ke model LaporanKasus
     }
+
+    public function registrasi()
+    {
+        return $this->hasOne(RegistrasiSiswa::class, 'siswa_nis', 'nis');
+    }
+    
+    public function mutasi()
+    {
+        return $this->hasOne(MutasiSiswa::class, 'siswa_nis', 'nis');
+    }    
 }

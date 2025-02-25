@@ -3,7 +3,7 @@
 
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <a href="{{ route('dashboard.index') }}" class="logo logo-dark">
+        <!-- <a href="{{ route('dashboard.index') }}" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="assets/images/logo-dark-sm.png" alt="" height="26">
             </span>
@@ -19,7 +19,7 @@
             <span class="logo-sm">
                 <img src="assets/images/logo-light-sm.png" alt="" height="26">
             </span>
-        </a>
+        </a> -->
     </div>
 
     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
@@ -48,7 +48,7 @@
                 </li>
 
                 @if(in_array(Auth::user()->level, ['admin', 'operator']))
-
+                
                 <li class="menu-title" data-key="t-master">Data Master</li>
 
                 <li class="{{ request()->routeIs('user.*') ? 'mm-active' : '' }}">
@@ -79,11 +79,26 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->routeIs('siswa.*') ? 'mm-active' : '' }}">
+                <!-- <li class="{{ request()->routeIs('siswa.*') ? 'mm-active' : '' }}">
                     <a href="{{ route('siswa.index') }}">
                         <i class="bx bx-user-pin icon nav-icon"></i>
                         <span class="menu-item" data-key="t-siswa">Siswa</span>
                     </a>
+                </li> -->
+                
+                @endif
+                
+                @if(!in_array(Auth::user()->level, ['osis', 'kepsek', 'bk']))
+
+                <li class="{{ request()->routeIs('siswa.*') ? 'mm-active' : '' }}">
+                    <a href="javascript: void(0);" class="has-arrow">
+                        <i class="bx bx-user-pin icon nav-icon"></i>
+                        <span class="menu-item" data-key="t-siswa">Siswa</span>
+                    </a>
+                    <ul class="sub-menu" aria-expanded="false">
+                        <li><a href="{{ route('siswa.index') }}" data-key="t-siswa-list">List Siswa</a></li>
+                        <li><a href="{{ route('siswa.registrasi.mutasi') }}" data-key="t-registrasi-mutasi">Registrasi & Mutasi</a></li>
+                    </ul>
                 </li>
 
                 @endif

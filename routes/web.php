@@ -18,6 +18,7 @@ use App\Http\Controllers\LaporanKasusController;
 use App\Http\Controllers\KunjunganRumahController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\TrackRecordController;
+use App\Http\Controllers\RegistrasiMutasiController;
 
 use App\Http\Controllers\Dokumentasi\DokumentasiKegiatanController;
 use App\Http\Controllers\Dokumentasi\DokumentasiPrestasiController;
@@ -45,7 +46,6 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('guru', GuruController::class);
         Route::resource('kompetensi-keahlian', KompetensiKeahlianController::class);
         Route::resource('kelas', KelasController::class);
-        Route::resource('siswa', SiswaController::class);
 
         // Import routes
         Route::post('user/import', [UserController::class, 'import'])->name('user.import');
@@ -70,6 +70,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('prestasi/{prestasi}/dokumentasi', [DokumentasiPrestasiController::class, 'index'])->name('prestasi.dokumentasi');
         Route::get('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'create'])->name('prestasi.form');
         Route::post('prestasi/{prestasi}/upload', [DokumentasiPrestasiController::class, 'store'])->name('prestasi.upload');
+    });
+
+    Route::middleware([CheckUserLevel::class . ':admin,operator,kesiswaan'])->group(function () {
+        Route::prefix('siswa')->group(function () {
+            Route::get('registrasi-mutasi', [RegistrasiMutasiController::class, 'index'])->name('siswa.registrasi.mutasi');
+            Route::get('registrasi/{nis}', [SiswaController::class, 'getRegistrasi']);
+            Route::put('registrasi', [RegistrasiMutasiController::class, 'registrasi'])->name('siswa.registrasi');
+            Route::get('mutasi/{nis}', [SiswaController::class, 'getMutasi']);
+            Route::put('mutasi', [RegistrasiMutasiController::class, 'mutasi'])->name('siswa.mutasi');
+        });        
+        Route::resource('siswa', SiswaController::class);
     });
 
     // Routes yang membutuhkan login tetapi tidak terbatas oleh level user

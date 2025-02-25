@@ -7,6 +7,8 @@ use App\Models\Kelas;
 use App\Models\KompetensiKeahlian;
 use App\Exports\SiswaExport;
 use App\Imports\SiswaImport;
+use App\Models\MutasiSiswa;
+use App\Models\RegistrasiSiswa;
 
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
@@ -182,25 +184,18 @@ class SiswaController extends Controller
             $siswaAttributes = $siswa->getAttributes();
     
             // Ganti 'kdkelas' dan 'kdkompetensi' dengan nama
-            if ($siswa->fkelas) {
-                $siswaAttributes['kdkelas'] = $siswa->fkelas->kelas;
-            } else {
-                $siswaAttributes['kdkelas'] = '-';
-            }
+            $siswaAttributes['kdkelas'] = $siswa->fkelas ? $siswa->fkelas->kelas : '-';
+            $siswaAttributes['kdkompetensi'] = $siswa->fkompetensi ? $siswa->fkompetensi->kompetensi_keahlian : '-';
     
-            if ($siswa->fkompetensi) {
-                $siswaAttributes['kdkompetensi'] = $siswa->fkompetensi->kompetensi_keahlian;
-            } else {
-                $siswaAttributes['kdkompetensi'] = '-';
-            }
+            // Tambahkan status registrasi dan mutasi
+            $siswaAttributes['sudah_registrasi'] = $siswa->registrasi()->exists(); // True jika ada registrasi
+            $siswaAttributes['sudah_mutasi'] = $siswa->mutasi()->exists(); // True jika ada mutasi
     
-            // Return hasil dengan mengganti hanya field yang diperlukan
             return $siswaAttributes;
         });
     
-        // Return data as JSON
         return response()->json($data);
-    }    
+    }     
 
     /**
      * Show the form for editing the specified resource.
@@ -362,4 +357,15 @@ class SiswaController extends Controller
     {
         return Excel::download(new SiswaExport, 'data_siswa.xlsx');
     }
+
+    public function getRegistrasi($nis) {
+        $data = RegistrasiSiswa::where('siswa_nis', $nis)->first();
+        return response()->json($data);
+    }
+    
+    public function getMutasi($nis) {
+        $data = MutasiSiswa::where('siswa_nis', $nis)->first();
+        return response()->json($data);
+    }
+    
 }
