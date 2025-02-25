@@ -77,10 +77,6 @@ class Siswa extends Model
         'berat_badan',
         'tinggi_badan',
         'jarak_rmh_sklh',
-        'riwayat_penyakit',
-        'prestasi_akademik',
-        'prestasi_non_akademik',
-        'ekstrakurikuler',
         'kdkelas',
         'kdkompetensi',
     ];

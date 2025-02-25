@@ -105,15 +105,7 @@
                 "Berat Badan",
                 "Tinggi Badan",
                 "Jarak Rumah ke Sekolah",
-                "Riwayat Penyakit",
-                "Prestasi Akademik",
-                "Prestasi Non Akademik",
-                "Ekstrakurikuler",
-<<<<<<< HEAD
-=======
-                "Biografi",
                 @if(Auth::user()->level != 'kesiswaan')
->>>>>>> 99f72dd2fa8a08c21bde8e19429d3b2c35904772
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
@@ -205,10 +197,6 @@
                         parseInt(siswa.berat_badan),
                         parseInt(siswa.tinggi_badan),
                         parseInt(siswa.jarak_rmh_sklh),
-                        siswa.riwayat_penyakit,
-                        siswa.prestasi_akademik,
-                        siswa.prestasi_non_akademik,
-                        siswa.ekstrakurikuler,
                         null
                     ]);
                 }

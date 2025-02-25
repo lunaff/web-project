@@ -98,44 +98,12 @@
                                                     <td class="text-muted">{{ $siswa->nama_ibu }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="fw-bold">Alamat Orang Tua :</th>
-                                                    <td class="text-muted">{{ $siswa->alamat_ortu }}</td>
-                                                </tr>
-                                                <tr>
                                                     <th class="fw-bold">No. HP Orang Tua :</th>
                                                     <td class="text-muted">{{ $siswa->no_ortu }}</td>
                                                 </tr>
                                                 <tr>
                                                     <th class="fw-bold">Nama Sekolah Asal :</th>
                                                     <td class="text-muted">{{ $siswa->nama_sekolah_asal }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Alamat Sekolah Asal :</th>
-                                                    <td class="text-muted">{{ $siswa->alamat_sekolah_asal }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Riwayat Pendidikan :</th>
-                                                    <td class="text-muted">{{ $siswa->riwayat_penyakit }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Prestasi Akademik :</th>
-                                                    <td class="text-muted">{{ $siswa->prestasi_akademik }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Prestasi Non Akademik :</th>
-                                                    <td class="text-muted">{{ $siswa->prestasi_non_akademik }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Tahun Masuk :</th>
-                                                    <td class="text-muted">{{ $siswa->tahun_masuk }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Tahun Lulus :</th>
-                                                    <td class="text-muted">{{ $siswa->tahun_lulus }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Ekstrakulikuler :</th>
-                                                    <td class="text-muted">{{ $siswa->ekstrakurikuler }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

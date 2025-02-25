@@ -92,10 +92,6 @@ return new class extends Migration
             $table->decimal('berat_badan', 5, 2)->nullable();
             $table->decimal('tinggi_badan', 5, 2)->nullable();
             $table->decimal('jarak_rmh_sklh', 10, 3)->nullable();
-            $table->string('riwayat_penyakit', 50)->nullable();
-            $table->string('prestasi_akademik', 300)->nullable();
-            $table->string('prestasi_non_akademik', 300)->nullable();
-            $table->string('ekstrakurikuler', 50)->nullable();
             $table->timestamps();
         });
     }

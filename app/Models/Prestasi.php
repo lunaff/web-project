@@ -29,4 +29,5 @@ class Prestasi extends Model
     {
         return $this->hasMany(DokumentasiPrestasi::class);
     }
+    
 }

@@ -134,10 +134,6 @@ class SiswaController extends Controller
             'berat_badan' => 'nullable|numeric|between:0,999.99',
             'tinggi_badan' => 'nullable|numeric|between:0,999.99',
             'jarak_rmh_sklh' => 'nullable|numeric|between:0,9999.999',
-            'riwayat_penyakit' => 'nullable|string|max:50',
-            'prestasi_akademik' => 'nullable|string|max:300',
-            'prestasi_non_akademik' => 'nullable|string|max:300',
-            'ekstrakurikuler' => 'nullable|string|max:50',
         ]);
 
         $array = $request->only([
@@ -157,8 +153,7 @@ class SiswaController extends Controller
             'nomor_kip', 'nama_di_kip', 'nomor_kks', 'no_registrasi_akta_lahir', 'bank',
             'nomor_rekening_bank', 'rekening_atas_nama', 'layak_pip', 'alasan_layak_pip',
             'kebutuhan_khusus', 'nama_sekolah_asal', 'anak_keberapa', 'lintang', 'bujur',
-            'no_kk', 'berat_badan', 'tinggi_badan', 'jarak_rmh_sklh', 'riwayat_penyakit',
-             'prestasi_akademik', 'prestasi_non_akademik', 'ekstrakurikuler'
+            'no_kk', 'berat_badan', 'tinggi_badan', 'jarak_rmh_sklh'
         ]);
 
         // Simpan data ke database
@@ -298,10 +293,6 @@ class SiswaController extends Controller
             'berat_badan' => 'nullable|numeric|between:0,999.99',
             'tinggi_badan' => 'nullable|numeric|between:0,999.99',
             'jarak_rmh_sklh' => 'nullable|numeric|between:0,9999.999',
-            'riwayat_penyakit' => 'nullable|string|max:50',
-            'prestasi_akademik' => 'nullable|string|max:300',
-            'prestasi_non_akademik' => 'nullable|string|max:300',
-            'ekstrakurikuler' => 'nullable|string|max:50',
         ]);
     
         $array = $request->only([
@@ -321,8 +312,7 @@ class SiswaController extends Controller
             'nomor_kip', 'nama_di_kip', 'nomor_kks', 'no_registrasi_akta_lahir', 'bank',
             'nomor_rekening_bank', 'rekening_atas_nama', 'layak_pip', 'alasan_layak_pip',
             'kebutuhan_khusus', 'nama_sekolah_asal', 'anak_keberapa', 'lintang', 'bujur',
-            'no_kk', 'berat_badan', 'tinggi_badan', 'jarak_rmh_sklh', 'riwayat_penyakit',
-            'prestasi_akademik', 'prestasi_non_akademik', 'ekstrakurikuler'
+            'no_kk', 'berat_badan', 'tinggi_badan', 'jarak_rmh_sklh'
         ]);
     
         $siswa->update($array);
