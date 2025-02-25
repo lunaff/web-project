@@ -134,16 +134,8 @@
                                                     <td class="text-muted">{{ $siswa->tahun_lulus }}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th class="fw-bold">Alergi :</th>
-                                                    <td class="text-muted">{{ $siswa->alergi }}</td>
-                                                </tr>
-                                                <tr>
                                                     <th class="fw-bold">Ekstrakulikuler :</th>
                                                     <td class="text-muted">{{ $siswa->ekstrakurikuler }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="fw-bold">Biografi :</th>
-                                                    <td class="text-muted">{{ $siswa->biografi }}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

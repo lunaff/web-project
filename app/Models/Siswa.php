@@ -78,14 +78,11 @@ class Siswa extends Model
         'tinggi_badan',
         'jarak_rmh_sklh',
         'riwayat_penyakit',
-        'alergi',
         'prestasi_akademik',
         'prestasi_non_akademik',
         'ekstrakurikuler',
-        'biografi',
         'kdkelas',
         'kdkompetensi',
-        'rombel_saat_ini',
     ];
 
     protected $casts = [

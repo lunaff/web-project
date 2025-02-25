@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nis')->unique();
             $table->string('nisn', 50);
             $table->string('tempat_lahir', 50);
-            $table->date('tanggal_lahir');
+            $table->date('tanggal_lahir')->nullable();
             $table->string('nik', 50)->nullable();
             $table->enum('agama', ['Islam', 'Katolik', 'Protestan', 'Buddha', 'Hindu', 'Lainnya']);
             $table->string('alamat', 300);
@@ -61,7 +61,9 @@ return new class extends Migration
 
 
             $table->unsignedBigInteger('kdkelas')->nullable();
+            $table->foreign('kdkelas')->references('id')->on('kelas')->onDelete('set null');
             $table->unsignedBigInteger('kdkompetensi')->nullable();
+            $table->foreign('kdkompetensi')->references('id')->on('kompetensi_keahlian')->onDelete('set null');
             $table->string('no_peserta_un', 50)->nullable();
             $table->string('no_seri_ijazah', 50)->nullable();
             $table->boolean('penerima_kip')->default(false);
@@ -91,12 +93,9 @@ return new class extends Migration
             $table->decimal('tinggi_badan', 5, 2)->nullable();
             $table->decimal('jarak_rmh_sklh', 10, 3)->nullable();
             $table->string('riwayat_penyakit', 50)->nullable();
-            $table->string('alergi', 50)->nullable();
             $table->string('prestasi_akademik', 300)->nullable();
             $table->string('prestasi_non_akademik', 300)->nullable();
             $table->string('ekstrakurikuler', 50)->nullable();
-            $table->string('biografi', 500)->nullable();
-            $table->string('rombel_saat_ini', 100)->storedAs("CONCAT(kdkelas, ' - ', kdkompetensi)");
             $table->timestamps();
         });
     }

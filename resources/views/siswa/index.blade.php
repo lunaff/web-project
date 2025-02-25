@@ -102,11 +102,9 @@
                 "Tinggi Badan",
                 "Jarak Rumah ke Sekolah",
                 "Riwayat Penyakit",
-                "Alergi",
                 "Prestasi Akademik",
                 "Prestasi Non Akademik",
                 "Ekstrakurikuler",
-                "Biografi",
                 {
                     name: "Actions",
                     formatter: (cell, row) => gridjs.html(`
@@ -198,11 +196,9 @@
                         parseInt(siswa.tinggi_badan),
                         parseInt(siswa.jarak_rmh_sklh),
                         siswa.riwayat_penyakit,
-                        siswa.alergi,
                         siswa.prestasi_akademik,
                         siswa.prestasi_non_akademik,
                         siswa.ekstrakurikuler,
-                        siswa.biografi,
                         null
                     ]);
                 }

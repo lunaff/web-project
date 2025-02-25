@@ -620,14 +620,6 @@
                                     </div>
 
                                     <div class="mb-3">
-                                        <label for="alergi">Alergi</label>
-                                        <input type="text" class="form-control @error('alergi') is-invalid @enderror" id="alergi" placeholder="Alergi" name="alergi" value="{{ old('alergi', $siswa->alergi) }}">
-                                        @error('alergi')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
                                         <label for="prestasi_akademik">Prestasi Akademik</label>
                                         <input type="text" class="form-control @error('prestasi_akademik') is-invalid @enderror" id="prestasi_akademik" placeholder="Prestasi Akademik" name="prestasi_akademik" value="{{ old('prestasi_akademik', $siswa->prestasi_akademik) }}">
                                         @error('prestasi_akademik')
@@ -650,15 +642,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
-
-                                    <div class="mb-3">
-                                        <label for="biografi">Biografi</label>
-                                        <textarea class="form-control @error('biografi') is-invalid @enderror" id="biografi" name="biografi" placeholder="Biografi">{{ old('biografi', $siswa->biografi) }}</textarea>
-                                        @error('biografi')
-                                        <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
                                     <!-- Modal KOMPETENSI -->
                                     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                         <div class="modal-dialog modal-lg modal-dialog-scrollable p-5">

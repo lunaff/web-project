@@ -18,58 +18,63 @@ class SiswaImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
-        $namaKompetensi = $row['kompetensi_keahlian'];
-        $kompetensi = KompetensiKeahlian::where('kompetensi_keahlian', $namaKompetensi)->first();
+        try {
+            // Validasi data yang diperlukan
+            if (empty($row['NIS']) || empty($row['Nama_Lengkap']) || empty($row['JK'])) {
+                throw new \Exception("Data NIS, Nama_Lengkap, atau JK tidak boleh kosong.");
+            }
 
-        if (!$kompetensi) {
-            throw ValidationException::withMessages([
-                'kompetensi_keahlian' => "Kompetensi '{$namaKompetensi}' tidak ditemukan di database.",
+            $namaKompetensi = $row['Kompetensi_Keahlian'] ?? null;
+            $kompetensi = KompetensiKeahlian::where('kompetensi_keahlian', $namaKompetensi)->first();
+
+            if (!$kompetensi) {
+                throw new \Exception("Kompetensi '{$namaKompetensi}' tidak ditemukan.");
+            }
+
+            $namaKelas = $row['Kelas'] ?? null;
+            $kelas = Kelas::where('kelas', $namaKelas)->first();
+
+            if (!$kelas) {
+                throw new \Exception("Kelas '{$namaKelas}' tidak ditemukan.");
+            }
+
+            // Lanjutkan dengan membuat model Siswa
+            return new Siswa([
+                'nis'                    => $row['NIS'] ?? '',
+                'active'                 => isset($row['Active']) ? filter_var($row['Active'], FILTER_VALIDATE_BOOLEAN) : true,
+                'kdkelas'                => $kelas->id ?? null,
+                'kdkompetensi'           => $kompetensi->id ?? null,
+                'nama_lengkap'           => $row['Nama_Lengkap'] ?? '',
+                'nipd'                   => $row['NIPD'] ?? '',
+                'jk'                     => $this->getValidGender($row['JK'] ?? null),
+                'nisn'                   => $row['NISN'] ?? '',
+                'tempat_lahir'           => $row['Tempat_Lahir'] ?? '',
+                'tanggal_lahir'          => $this->convertToDate($row['Tanggal_Lahir'] ?? null),
+                'nik'                    => $row['NIS'] ?? '',
+                'agama'                  => !empty($row['Agama']) ? trim($row['Agama']) ?? '' : 'Islam',
+                'alamat'                 => $row['Alamat'] ?? '',
+                'no_hp'                  => $row['No_HP'] ?? '',
+                'email'                  => $row['Email'] ?? '',
+                'penerima_kps'           => !empty($row['Penerima_KPS']) ? (int) $row['Penerima_KPS'] : 0,
+                'no_kps'                 => $row['No_KPS'] ?? '',
+                'kewarganegaraan'        => in_array($row['Kewarganegaraan'] ?? '', ['WNI', 'WNA']) ? $row['Kewarganegaraan'] : 'WNI',
+                'no_ortu'                => $row['No_Orang_Tua/Wali'] ?? '',
+                'nama_sekolah_asal'      => $row['Nama_Sekolah_Asal'] ?? '',
             ]);
-        }
 
-        $namaKelas = $row['kelas'];
-        $kelas = Kelas::where('kelas', $namaKelas)->first();
+        } catch (\Exception $e) {
+            \Log::error("Error di baris: " . json_encode($row) . " - " . $e->getMessage());
 
-
-
-        if (!$kelas) {
-            throw ValidationException::withMessages([
-                'kelas' => "Tidak ditemukan kelas untuk kompetensi '{$namaKelas}'.",
+            // Simpan error dalam session agar bisa ditampilkan di UI
+            session()->push('import_errors', [
+                'row' => json_encode($row, JSON_PRETTY_PRINT),
+                'message' => $e->getMessage(),
             ]);
-        }
 
-        return new Siswa([
-            'nis'                    => $row['nis'] ?? '',
-            'active'                 => true, 
-            'kdkelas'                => $kelas->kelas ?? null,  // Ambil kode kelas dari model Kelas
-            'kdkompetensi'           => $kompetensi->kompetensi_keahlian ?? null,  // Ambil kode kompetensi dari model
-            'nama_lengkap'           => $row['nama_lengkap'] ?? '',
-            'tempat_lahir'           => $row['tempat_lahir'] ?? '',
-            'tanggal_lahir'          => $this->convertToDate($row['tanggal_lahir'] ?? null),
-            'alamat'                 => $row['alamat'] ?? '',
-            'agama'                  => $row['agama'] ?? '',
-            'kewarganegaraan'        => $row['kewarganegaraan'] ?? '',  
-            'no_hp'                  => $row['no_hp'] ?? '',
-            'email'                  => $row['email'] ?? '',
-            'nisn'                   => $row['nisn'] ?? '',
-            'jk'                     => $this->getValidGender($row['jk'] ?? null), 
-            'tahun_masuk'            => $row['tahun_masuk'] ?? '',
-            'nama_ayah'              => $row['nama_ayah'] ?? '',
-            'nama_ibu'               => $row['nama_ibu'] ?? '',
-            'alamat_ortu'            => $row['alamat_ortu'] ?? '',
-            'no_ortu'                => $row['no_ortu'] ?? '',
-            'nama_sekolah_asal'      => $row['nama_sekolah_asal'] ?? '',
-            'alamat_sekolah'         => $row['alamat_sekolah'] ?? '',
-            'tahun_lulus'            => $row['tahun_lulus'] ?? '',
-            'riwayat_penyakit'       => $row['riwayat_penyakit'] ?? null, 
-            'alergi'                 => $row['alergi'] ?? null, 
-            'prestasi_akademik'      => $row['prestasi_akademik'] ?? null, 
-            'prestasi_non_akademik'  => $row['prestasi_non_akademik'] ?? null, 
-            'ekstrakurikuler'        => $row['ekstrakurikuler'] ?? null, 
-            'biografi'               => $row['biografi'] ?? null, 
-        ]);
+            return null; // Lanjutkan ke data berikutnya
+        }
     }
-
+        
     /**
      * Convert date to a valid format if necessary
      */
@@ -79,18 +84,26 @@ class SiswaImport implements ToModel, WithHeadingRow
             return null;
         }
 
-        // Convert if it's an Excel serial date format
+        // Jika tanggal adalah format Excel serial date
         if (is_numeric($date)) {
-            $unixDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date);
-            return $unixDate->format('Y-m-d');
+            try {
+                $unixDate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($date);
+                return $unixDate->format('Y-m-d');
+            }catch (\Exception $e) {
+                return null;
+            }
+            
         }
 
-        // Validate date format
-        if (strtotime($date)) {
-            return date('Y-m-d', strtotime($date));
+        // Jika tanggal adalah string, coba parsing ke format Y-m-d
+        try {
+            $parsedDate = \Carbon\Carbon::createFromFormat('d/m/Y', $date);
+            return $parsedDate->format('Y-m-d');
+        }catch (\Exception $e) {
+            \Log::error("Error parsing date: " . $e->getMessage());
+            return null;
         }
-
-        return null; // Invalid date
+        
     }
 
     /**
@@ -101,4 +114,6 @@ class SiswaImport implements ToModel, WithHeadingRow
         $gender = strtoupper(trim($gender)); // Normalize input
         return in_array($gender, ['L', 'P']) ? $gender : 'L';
     }
+    
 }
+

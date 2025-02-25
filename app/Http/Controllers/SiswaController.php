@@ -22,12 +22,21 @@ class SiswaController extends Controller
         $request->validate([
             'file' => 'required|mimes:xlsx,csv',
         ]);
-
-        Excel::import(new SiswaImport, $request->file('file'));
-
-        return back()->with('success', 'Data siswa berhasil diimport!');
-    }
     
+        try {
+            Excel::import(new SiswaImport, $request->file('file'));
+    
+            // Cek apakah ada error dari sesi
+            $errors = session('import_errors', []);
+            if (!empty($errors)) {
+                return back()->with('error_rows', $errors);
+            }
+    
+            return back()->with('success', 'Data siswa berhasil diimport!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
+    }
      public function index()
     {
         //
@@ -124,11 +133,9 @@ class SiswaController extends Controller
             'tinggi_badan' => 'nullable|numeric|between:0,999.99',
             'jarak_rmh_sklh' => 'nullable|numeric|between:0,9999.999',
             'riwayat_penyakit' => 'nullable|string|max:50',
-            'alergi' => 'nullable|string|max:50',
             'prestasi_akademik' => 'nullable|string|max:300',
             'prestasi_non_akademik' => 'nullable|string|max:300',
             'ekstrakurikuler' => 'nullable|string|max:50',
-            'biografi' => 'nullable|string|max:500',
         ]);
 
         $array = $request->only([
@@ -149,7 +156,7 @@ class SiswaController extends Controller
             'nomor_rekening_bank', 'rekening_atas_nama', 'layak_pip', 'alasan_layak_pip',
             'kebutuhan_khusus', 'nama_sekolah_asal', 'anak_keberapa', 'lintang', 'bujur',
             'no_kk', 'berat_badan', 'tinggi_badan', 'jarak_rmh_sklh', 'riwayat_penyakit',
-            'alergi', 'prestasi_akademik', 'prestasi_non_akademik', 'ekstrakurikuler', 'biografi'
+             'prestasi_akademik', 'prestasi_non_akademik', 'ekstrakurikuler'
         ]);
 
         // Simpan data ke database
@@ -297,11 +304,9 @@ class SiswaController extends Controller
             'tinggi_badan' => 'nullable|numeric|between:0,999.99',
             'jarak_rmh_sklh' => 'nullable|numeric|between:0,9999.999',
             'riwayat_penyakit' => 'nullable|string|max:50',
-            'alergi' => 'nullable|string|max:50',
             'prestasi_akademik' => 'nullable|string|max:300',
             'prestasi_non_akademik' => 'nullable|string|max:300',
             'ekstrakurikuler' => 'nullable|string|max:50',
-            'biografi' => 'nullable|string|max:500',
         ]);
     
         $array = $request->only([
@@ -322,7 +327,7 @@ class SiswaController extends Controller
             'nomor_rekening_bank', 'rekening_atas_nama', 'layak_pip', 'alasan_layak_pip',
             'kebutuhan_khusus', 'nama_sekolah_asal', 'anak_keberapa', 'lintang', 'bujur',
             'no_kk', 'berat_badan', 'tinggi_badan', 'jarak_rmh_sklh', 'riwayat_penyakit',
-            'alergi', 'prestasi_akademik', 'prestasi_non_akademik', 'ekstrakurikuler', 'biografi'
+            'prestasi_akademik', 'prestasi_non_akademik', 'ekstrakurikuler'
         ]);
     
         $siswa->update($array);

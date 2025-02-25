@@ -43,11 +43,9 @@ class SiswaExport implements WithHeadings
             'Alamat Sekolah', 
             'Tahun Lulus', 
             'Riwayat Penyakit', 
-            'Alergi', 
             'Prestasi Akademik', 
             'Prestasi Non Akademik', 
             'Ekstrakurikuler', 
-            'Biografi', 
         ];
     }
 }
