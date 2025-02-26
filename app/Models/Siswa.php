@@ -15,6 +15,7 @@ class Siswa extends Model
 
     protected $table = 'siswa';
     protected $fillable = [
+        'active',
         'nama_lengkap',
         'nipd',
         'nis',
@@ -123,4 +124,8 @@ class Siswa extends Model
     {
         return $this->hasOne(MutasiSiswa::class, 'siswa_nis', 'nis');
     }    
+    public function prestasi()
+    {
+        return $this->hasMany(Prestasi::class, 'siswa_id', 'id');
+    }
 }

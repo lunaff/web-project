@@ -51,15 +51,15 @@
 
                                     <div class="mb-3">
                                         <label for="id_kasus">Deskripsi Kasus</label>
-                                        <input type="hidden" name="id_kasus" id="id_kasus" value="{{ old('id_kasus', $selectedKasus->kasus ?? '') }}">
+                                        <input type="hidden" name="id_kasus" id="id_kasus" value="{{ old('id_kasus', $selectedKasus->id ?? '') }}">
                                         <div class="input-group">
-                                            <input type="text" class="form-control @error('id_kasus') is-invalid @enderror" placeholder="Pilih Kasus" id="deskripsi_kasus" name="deskripsi_kasus" value="{{ old('deskripsi_kasus', $selectedKasus->kasus ?? '') }}" readonly>
+                                            <input type="text" class="form-control @error('id_kasus') is-invalid @enderror" placeholder="Pilih Kasus" id="deskripsi_kasus" name="deskripsi_kasus" value="{{ old('kasus', $selectedKasus->kasus ?? '') }}" readonly>
                                             <div class="input-group-append">
                                                 <a href="#" class="btn btn-warning" type="button" data-bs-toggle="modal" data-bs-target="#modalKasus">Cari Kasus</a>
                                             </div>
                                         </div>
                                         @error('id_kasus')
-                                        <span class="text-danger">{{ $message }}</span>
+                                            <span class="text-danger">{{ $message }}</span>
                                         @enderror
                                     </div>
                                     
@@ -154,7 +154,7 @@
                                                             @foreach ($kasus as $key => $k)
                                                                 <tr>
                                                                     <td>{{ $key + 1 }}</td>
-                                                                    <td>{{ $k->siswa->nama_lengkap }}</td>
+                                                                    <td>{{ $k->siswa->nama_lengkap ?? 'N/A' }}</td> <!-- Pastikan relasi siswa ada -->
                                                                     <td>{{ $k->kasus }}</td>
                                                                     <td>
                                                                         <a href="#" class="btn btn-primary btn-xs" onclick="pilihKasus('{{ $k->id }}', '{{ $k->kasus }}')" data-bs-toggle="modal">Pilih</a>
@@ -206,10 +206,10 @@
     }
 
     // Fungsi untuk memilih Kasus
-    function pilihKasus(id, deskripsi) {
+    function pilihKasus(id, kasus) {
         event.preventDefault();
         document.getElementById('id_kasus').value = id;
-        document.getElementById('deskripsi_kasus').value = deskripsi;
+        document.getElementById('deskripsi_kasus').value = kasus;
         // $('#modalKasus').modal('hide'); // Menutup modal
     }
 </script>

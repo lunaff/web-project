@@ -171,7 +171,7 @@ class SiswaController extends Controller
     public function show(string $id)
     {
         // Memuat relasi 'fkelas' dan 'fkompetensi' dengan query 'with'
-        $siswas = Siswa::with('fkelas', 'fkompetensi')->get();
+        $siswas = Siswa::where('active', 1)->with('fkelas', 'fkompetensi')->get();
     
         // Mengubah data siswa hanya untuk field tertentu tanpa mendeklarasikan semuanya
         $data = $siswas->map(function ($siswa) {

@@ -149,28 +149,34 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="mt-4">
-                                            @if ($siswa->prestasi_akademik)
-                                                <h5 class="font-size-16 mb-4">Prestasi Akademik</h5>
+                                            @if ($siswa->prestasi->isNotEmpty())
+                                                <h5 class="font-size-16 mb-4">Prestasi</h5>
                                                 <div class="table-responsive">
                                                     <table class="table table-nowrap table-hover mb-1">
                                                         <thead class="bg-light">
                                                             <tr>
                                                                 <th scope="col">#</th>
+                                                                <th scope="col">Tanggal</th>
+                                                                <th scope="col">Jenis</th>
+                                                                <th scope="col">Tingkat</th>
                                                                 <th scope="col">Deskripsi</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($siswa->prestasi_akademik as $index => $prestasi)
+                                                            @foreach ($siswa->prestasi as $index => $prestasi)
                                                                 <tr>
                                                                     <th scope="row">{{ $index + 1 }}</th>
-                                                                    <td>{{ $prestasi }}</td>
+                                                                    <td>{{ $prestasi->tanggal }}</td>
+                                                                    <td>{{ $prestasi->jenis }}</td>
+                                                                    <td>{{ $prestasi->tingkat }}</td>
+                                                                    <td>{{ $prestasi->deskripsi }}</td>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
                                                     </table>
                                                 </div>
                                             @else
-                                                <p class="text-muted">Tidak ada data prestasi akademik.</p>
+                                                <p class="text-muted">Tidak ada data prestasi.</p>
                                             @endif
                                         </div>
                                     </div>

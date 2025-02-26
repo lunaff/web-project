@@ -3,23 +3,23 @@
 
     <!-- LOGO -->
     <div class="navbar-brand-box">
-        <!-- <a href="{{ route('dashboard.index') }}" class="logo logo-dark">
+        <a href="{{ route('dashboard.index') }}" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="assets/images/logo-dark-sm.png" alt="" height="26">
             </span>
-            <span class="logo-lg">
+            {{-- <span class="logo-lg">
                 <img src="assets/images/logo-dark.png" alt="" height="28">
-            </span>
+            </span> --}}
         </a>
 
         <a href="{{ route('dashboard.index') }}" class="logo logo-light">
-            <span class="logo-lg">
+            {{-- <span class="logo-lg">
                 <img src="assets/images/logo-light.png" alt="" height="30">
-            </span>
+            </span> --}}
             <span class="logo-sm">
                 <img src="assets/images/logo-light-sm.png" alt="" height="26">
             </span>
-        </a> -->
+        </a>
     </div>
 
     <button type="button" class="btn btn-sm px-3 font-size-24 header-item waves-effect vertical-menu-btn">
@@ -102,6 +102,7 @@
                 </li>
 
                 @endif
+                @if(!in_array(Auth::user()->level, ['kepsek']))
 
                 <li class="menu-title" data-key="t-kesiswaan">Kesiswaan</li>
 
@@ -147,6 +148,7 @@
                     </a>
                 </li>
 
+                @endif
                 @endif
             </ul>
         </div>

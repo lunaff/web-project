@@ -66,6 +66,8 @@
                 </div>
                 <div class="modal-body">
                     <form id="mutasiForm" action="{{ route('siswa.mutasi') }}" method="post">
+                        @method('PUT')
+                        @csrf
                         <div class="mb-3">
                             <label class="form-label">NIS</label>
                             <input type="text" id="mutasiNIS" class="form-control" name="siswa_nis" readonly>
@@ -197,7 +199,7 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data) {
-                                document.querySelector("select[name='keluar_karena']").value = data.keluar_karena || "lulus";
+                                document.querySelector("select[name='alasan']").value = data.alasan || "lulus";
                                 document.querySelector("input[name='tanggal_keluar']").value = data.tanggal_keluar || "";
                                 document.querySelector("input[name='notes']").value = data.notes || "";
                             }
